@@ -1,0 +1,66 @@
+[
+  {
+    "id": 1,
+    "tag": "HAND-MADE",
+    "name": "Floral Jar Scented Candle",
+    "oldPrice": "₹350.00",
+    "price": "₹250.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/cd409784-79b3-45b8-aad8-54de5bf77d03.jpeg"
+  },
+  {
+    "id": 2,
+    "tag": "HAND-MADE",
+    "name": "Mini Lotus Jar Scented Candle",
+    "oldPrice": "₹350.00",
+    "price": "₹250.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/0ab34ff3-98c4-4ddb-8006-d5e02d7b2770.jpeg"
+  },
+  {
+    "id": 3,
+    "tag": "HANDMADE",
+    "name": "Chrysanthemum Flower Scented Jar Candle",
+    "oldPrice": "₹350.00",
+    "price": "₹250.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/ba2f623a-9b0c-4a2e-9d55-4216a897d1e0.jpeg"
+  },
+  {
+    "id": 4,
+    "tag": "HANDMADE",
+    "name": "Coffee Beans Jar Scented Candle",
+    "oldPrice": "₹250.00",
+    "price": "₹120.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/06df9e34-4eeb-4ae4-9772-3924ea7b4103.jpeg"
+  },
+  {
+    "id": 5,
+    "tag": "HAND-MADE",
+    "name": "Floral Jar Scented Candle",
+    "oldPrice": "₹350.00",
+    "price": "₹250.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/cd409784-79b3-45b8-aad8-54de5bf77d03.jpeg"
+  },
+  {
+    "id": 6,
+    "tag": "HAND-MADE",
+    "name": "Mini Lotus Jar Scented Candle",
+    "oldPrice": "₹350.00",
+    "price": "₹250.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/0ab34ff3-98c4-4ddb-8006-d5e02d7b2770.jpeg"
+  },
+  {
+    "id": 7,
+    "tag": "HANDMADE",
+    "name": "Chrysanthemum Flower Scented Jar Candle",
+    "oldPrice": "₹350.00",
+    "price": "₹250.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/ba2f623a-9b0c-4a2e-9d55-4216a897d1e0.jpeg"
+  },
+  {
+    "id": 8,
+    "tag": "HANDMADE",
+    "name": "Coffee Beans Jar Scented Candle",
+    "oldPrice": "₹250.00",
+    "price": "₹120.00",
+    "img": "https://cdn.zyrosite.com/cdn-cgi/image/format=auto,w=375,h=469,fit=crop,q=100/cdn-ecommerce/store_01K3H2GWY3RPE8ASQJB0M0BS4T/assets/06df9e34-4eeb-4ae4-9772-3924ea7b4103.jpeg"
+  }
+]
