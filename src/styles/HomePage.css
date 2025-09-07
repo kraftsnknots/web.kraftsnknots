@@ -1,227 +1,104 @@
-.video-container {
-    position: relative;
+.top-tab {
+    background-color: #1f212f !important;
+    font-family: 'Inter', sans-serif !important;
+    font-size: 14px;
+    font-weight: 550 !important;
+}
+
+.nav-tab {
+    background-color: #ffffff !important;
+    font-family: Arial, Helvetica, sans-serif !important;
+    font-size: 16px;
+    font-weight: 550 !important;
+}
+
+
+
+
+
+
+
+.subscription-panel {
     width: 100%;
-    height: 700px;
-    /* Full screen */
-    overflow: hidden;
+    height: 504px;
+    background-color: #1f1f2e;
+    padding: 80px;
 }
 
-.background-video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: 1;
-    /* Behind overlay & text */
-}
-
-/* ✅ Dark overlay for dimming */
-.video-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    /* adjust opacity for brightness */
-    z-index: 2;
-}
-
-/* ✅ Text on top */
-.video-text {
-    position: absolute;
-    top: 55%;
-    left: 40%;
-    transform: translate(-50%, -40%);
-    color: white;
-    text-align: left;
-    z-index: 3;
-}
-
-.video-text h1 {
-    font-size: 4rem;
-    font-weight: bold;
-}
-
-.video-text p {
-    font-size: 1rem;
-    margin-top: 10px;
-}
-
-.main-btn {
-    background-color: #000 !important;
-    /* White text */
-    border: none;
-    /* No border */
-    font-size: 1rem !important;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    border-radius: 30px !important;
-    font-weight: 600 !important;
-}
-
-.main-btn:hover {
-    background-color: #fff !important;
-    /* Darker on hover */
-    color: #000 !important;
-}
-
-.image-card {
-    position: relative;
-    width: 606px;
-    height: 545px;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.background-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* Dark overlay effect */
-.image-card::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.35);
-    /* brightness control */
-    border-radius: 15px;
-}
-
-/* Overlay text and button */
-.overlay-content {
-    width: 80%;
-    position: absolute;
-    top: 50%;
-    transform: translate(10%, -40%);
-    color: white;
-    text-align: center;
-    z-index: 2;
-}
-
-.overlay-content .small-text {
-    font-size: 0.9rem;
-    font-weight: 600;
-    letter-spacing: 1px;
-    font-family: 'inter', sans-serif;
-}
-
-.overlay-content h2 {
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin: 10px 0;
-    font-family: 'Outfit', sans-serif;
-}
-
-.shop-btn {
-    margin-top: 50px;
-    padding: 15px 50px;
-    font-size: 1rem;
-    font-weight: 500;
-    border: none;
-    border-radius: 25px;
-    background: white;
-    color: black;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-.shop-btn:hover {
-    background: #000;
-    color: white;
-}
-
-.shop-btn2{
-    margin-top: 100px;
-}
-
-
-.shop-page {
-  background: #fff;
-}
-
-.product-card {
-  text-align: left;
-  font-family: "Arial", sans-serif;
-  width: 288px;
-  height: 360px;
-}
-
-.product-img-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.product-img-wrapper img {
-  border-radius: 4px;
-  width: 100%;
-  height: auto;
-  object-fit: cover;
-}
-
-/* Product Tag */
-.product-tag {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  background: #000;
-  color: #fff;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 4px 8px;
-  border-radius: 2px;
-  text-transform: uppercase;
-}
-
-/* Product Info */
-.product-info {
-  margin-top: 10px;
-}
-
-.product-name {
-  font-size: 1rem;
-  font-weight: 500;
-  margin: 0;
-}
-
-.product-price {
-  font-size: 0.95rem;
-  margin: 5px 0 0;
-}
-
-.old-price {
-  text-decoration: line-through;
-  color: gray;
-  margin-right: 5px;
-}
-
-.new-price {
-  font-weight: bold;
-  color: #000;
-}
-
-.subscription-heading{
+.subscription-heading {
     font-family: 'Outfit' sans-serif;
     font-size: 40px;
 }
 
-.subscription-text{
+.subscription-text {
     font-family: 'Inter', sans-serif;
     font-size: 16px;
 }
-.subscription-form{
+
+.subscription-form {
     width: 30%;
 }
-.subscription-input{
-    color: grey!important;
+
+.subscription-input {
+    color: grey !important;
     font-family: 'Inter', sans-serif !important;
-    font-size: 18px!important;
+    font-size: 18px !important;
+    padding: 15px!important;
+}
+
+.gallery-text {
+    font-family: 'Outfit', sans-serif;
+    font-size: 50px;
+}
+
+.gallery-small-text {
+    font-family: 'Inter', sans-serif;
+    font-size: 18px;
+    color: grey;
+}
+
+.gallery-row {
+    width: 95%;
+}
+
+
+
+.gallery-images {
+    transition: transform 0.3s ease;
+    width: 580px;
+    height: 465px;
+    border-radius: 20px;
+}
+
+
+.footer-container {
+    font-family: 'Inter', sans-serif;
+    background-color: #1f1f2e;
+    padding: 0 0;
+}
+
+
+
+
+
+
+@media screen and (max-width: 425px) {
+    .gallery-row {
+        width: 100%;
+    }
+    .subscription-panel {
+        padding: 30px;
+    }
+    .subscription-heading{
+        font-size: 25px;
+    }
+    .subscription-text{
+        font-size: 15px;
+    }
+    .subscription-form{
+        width: 100%;
+    }
+    .subscription-input{
+        padding: 10px!important
+    }
 }
