@@ -6,7 +6,7 @@ import Reveal from "../components/Reveal";
 export default function AuthPage() {
     return (
         <>
-            <Header />
+            <Header bg="#e8f1ff"/>
             <Reveal><Authorization /></Reveal>
             <Reveal><Footer /></Reveal>
         </>

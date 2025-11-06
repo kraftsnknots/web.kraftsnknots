@@ -22,6 +22,7 @@ import {
   removeFromWishlist,
 } from "../features/cartWishlistSlice";
 import "./styles/ProductDetails.css";
+import StarRating from "./StarRating";
 
 export default function ProductDetails({ productId }) {
   const [product, setProduct] = useState(null);
@@ -144,62 +145,64 @@ export default function ProductDetails({ productId }) {
 
   return (
     <div className="product-page">
-      {/* 🖼️ Gallery */}
-      <div className="gallery">
-        <div className="thumbnails">
-          {product.images?.map((img, index) => (
-            <img
-              key={index}
-              src={img}
-              alt={`thumb-${index}`}
-              className={`thumbnail ${selectedImage === img ? "active" : ""}`}
-              onClick={() => setSelectedImage(img)}
-            />
-          ))}
-        </div>
-        <div className="main-image">
-          <img src={selectedImage} alt={product.title} />
-          {product.ribbon && <span className="ribbon">{product.ribbon}</span>}
-        </div>
-      </div>
-
-      {/* 📋 Details */}
-      <div className="details">
-        <h1 className="title">{product.title}</h1>
-        <h3 className="subtitle">{product.subtitle}</h3>
-        <p className="price">₹{product.price || product.options?.[0]?.price}</p>
-
-        <div className="description">
-          <p>
-            {product.description ||
-              "This beautifully handcrafted candle adds warmth and charm to any space. Perfect for gifts or home decor."}
-          </p>
+      <div className="product-details-section-1">
+        {/* 🖼️ Gallery */}
+        <div className="gallery">
+          <div className="thumbnails">
+            {product.images?.map((img, index) => (
+              <img
+                key={index}
+                src={img}
+                alt={`thumb-${index}`}
+                className={`thumbnail ${selectedImage === img ? "active" : ""}`}
+                onClick={() => setSelectedImage(img)}
+              />
+            ))}
+          </div>
+          <div className="main-image">
+            <img src={selectedImage} alt={product.title} />
+            {product.ribbon && <span className="ribbon">{product.ribbon}</span>}
+          </div>
         </div>
 
-        <div className="quantity-controls">
-          <div className="cartlist">
-            <Button variant="light" onClick={decreaseQty}>
-              −
-            </Button>
-            <span>{quantity}</span>
-            <Button variant="light" onClick={increaseQty}>
-              ＋
-            </Button>
-            <Button
-              variant={inCart ? "outline-dark" : "dark"}
-              onClick={handleCart}
-            >
-              {inCart ? "REMOVE FROM CART" : "ADD TO CART"}
-            </Button>
+        {/* 📋 Details */}
+        <div className="details">
+          <h1 className="title">{product.title}</h1>
+          <h3 className="subtitle">{product.subtitle}</h3>
+          <p className="price">₹{product.price || product.options?.[0]?.price}</p>
+
+          <div className="description">
+            <p>
+              {product.description ||
+                "This beautifully handcrafted candle adds warmth and charm to any space. Perfect for gifts or home decor."}
+            </p>
           </div>
 
-          <Button
-            variant={inWishlist ? "outline-danger" : "light"}
-            className="wishlist"
-            onClick={handleWishlist}
-          >
-            {inWishlist ? "♥ IN WISHLIST" : "♡ ADD TO WISHLIST"}
-          </Button>
+          <div className="quantity-controls">
+            <div className="cartlist">
+              <Button variant="light" onClick={decreaseQty}>
+                −
+              </Button>
+              <span>{quantity}</span>
+              <Button variant="light" onClick={increaseQty}>
+                ＋
+              </Button>
+              <Button
+                variant={inCart ? "outline-dark" : "dark"}
+                onClick={handleCart}
+              >
+                {inCart ? "REMOVE FROM CART" : "ADD TO CART"}
+              </Button>
+            </div>
+
+            <Button
+              variant={inWishlist ? "outline-danger" : "light"}
+              className="wishlist"
+              onClick={handleWishlist}
+            >
+              {inWishlist ? "♥ IN WISHLIST" : "♡ ADD TO WISHLIST"}
+            </Button>
+          </div>
         </div>
       </div>
 
@@ -276,25 +279,16 @@ export default function ProductDetails({ productId }) {
               {user ? (
                 <Form onSubmit={handleReviewSubmit} className="review-form mt-4">
                   <h5>Write a review</h5>
-                  <Form.Group className="mb-3">
-                    <Form.Label>Rating (1–5)</Form.Label>
-                    <Form.Select
-                      value={newReview.rating}
-                      onChange={(e) =>
-                        setNewReview((prev) => ({
-                          ...prev,
-                          rating: Number(e.target.value),
-                        }))
+                  <Form.Group controlId="rating" className="mb-3">
+                    <Form.Label>Rating</Form.Label>
+                    <StarRating
+                      rating={newReview.rating}
+                      setRating={(val) =>
+                        setNewReview((prev) => ({ ...prev, rating: val }))
                       }
-                    >
-                      <option value="0">Select rating</option>
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <option key={n} value={n}>
-                          {n} Star{n > 1 ? "s" : ""}
-                        </option>
-                      ))}
-                    </Form.Select>
+                    />
                   </Form.Group>
+
 
                   <Form.Group className="mb-3">
                     <Form.Label>Comment</Form.Label>
@@ -311,7 +305,7 @@ export default function ProductDetails({ productId }) {
                     />
                   </Form.Group>
 
-                  <Button type="submit" disabled={submitting}>
+                  <Button variant="dark" type="submit" disabled={submitting}>
                     {submitting ? "Submitting..." : "Submit Review"}
                   </Button>
                 </Form>

@@ -13,7 +13,6 @@ import {
 import ProductCardSkeleton from "../components/ProductCardSkeleton";
 import "./styles/Shop.css";
 import { Link } from "react-router-dom";
-import Button from "react-bootstrap/esm/Button";
 
 export default function Shop() {
   const dispatch = useDispatch();

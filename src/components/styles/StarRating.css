@@ -1,0 +1,8 @@
+.star-rating svg {
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.star-rating svg:hover {
+  transform: scale(2.2);
+  color: #ffb800;
+}

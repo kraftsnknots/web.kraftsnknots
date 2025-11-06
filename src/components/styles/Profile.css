@@ -1,0 +1,235 @@
+.profile-layout {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 2rem;
+  padding: 3rem;
+  background: #f9fafc;
+  min-height: 100vh;
+  flex-wrap: wrap;
+  font-family: "Inter", sans-serif;
+}
+
+/* ---- Profile Card ---- */
+.profile-card {
+  background: #fff;
+  border-radius: 20px;
+  width: 320px;
+  padding: 2rem 2rem 2.5rem;
+  text-align: center;
+  position: relative;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 300px;
+  object-fit: fill;
+  margin-bottom: 1rem;
+  border: 3px solid #f8f8f8;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+.profile-name {
+  font-weight: 700;
+  color: #222;
+}
+
+.profile-email {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+
+.profile-phone {
+  color: #777;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.2rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.status-indicator {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ccc;
+}
+
+.status-indicator.active {
+  background: linear-gradient(135deg, #ff4081, #ff9800);
+  box-shadow: 0 0 8px rgba(255, 152, 0, 0.6);
+}
+
+.profile-save-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #ff4081, #ff9800);
+  color: #fff;
+  border: none;
+  border-radius: 30px;
+  padding: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.profile-save-btn:hover {
+  opacity: 0.9;
+}
+
+.profile-logout-btn {
+  width: 100%;
+  border: 1px solid #ff5252;
+  background: #fff;
+  color: #ff5252;
+  border-radius: 30px;
+  padding: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.8rem;
+  transition: 0.3s;
+}
+
+.profile-logout-btn:hover {
+  background: #ff5252;
+  color: #fff;
+}
+
+/* ---- Orders Card ---- */
+.orders-card {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  width: 1000px;
+  padding: 2rem 2.5rem;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+}
+
+.orders-card h3 {
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 1.5rem;
+}
+
+.no-orders {
+  text-align: center;
+  color: #999;
+  font-style: italic;
+}
+
+.order-box {
+  border: 1px solid #eee;
+  border-radius: 12px;
+  padding: 1rem;
+  margin-bottom: 1.2rem;
+  transition: 0.3s;
+}
+
+.order-box:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.order-status {
+  background: #e3f2fd;
+  color: #0277bd;
+  padding: 0.2rem 0.6rem;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  text-transform: capitalize;
+}
+
+.order-items {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding: 0.8rem 0;
+  margin: 0.5rem 0;
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.8rem;
+}
+
+.item-thumb {
+  width: 64px;
+  height: 64px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-info h5 {
+  margin: 0;
+  font-size: 0.95rem;
+  color: #222;
+}
+
+.item-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.opt {
+  font-size: 0.8rem;
+  color: #999;
+}
+
+.order-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.8rem;
+}
+
+.invoice-link {
+  font-size: 0.85rem;
+  color: #007aff;
+  text-decoration: none;
+}
+
+.invoice-link:hover {
+  text-decoration: underline;
+}
+
+.spinner {
+  border: 3px solid #eee;
+  border-top: 3px solid #ff9800;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .profile-layout {
+    flex-direction: column;
+    align-items: center;
+  }
+  .orders-card {
+    width: 90%;
+  }
+}

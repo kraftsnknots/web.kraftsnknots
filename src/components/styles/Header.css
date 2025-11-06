@@ -32,15 +32,15 @@
     display: flex;
     align-items: center;
     gap: 4px;
+    text-decoration: none;
 }
 
 /* ⚪ Main Navbar */
 .main-navbar {
-    background: #fff;
     width: 100%;
     height: 120px;
     /* padding: 0 15%; */
-    border-bottom: 1px solid #e5e5e5;
+    /* border-bottom: 1px solid #e5e5e5; */
     /* box-shadow: rgba(0, 0, 0, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
 }
 
@@ -123,8 +123,7 @@
     font-size: 18px;
     line-height: 1.66em;
     font-weight: 400;
-    color: #707070;
-    background-color: #fff;
+    color: #000;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
 }
@@ -132,6 +131,20 @@
 .nav-icons .icon:hover {
     transform: scale(1.1);
 }
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.logout-btn:hover {
+  opacity: 0.8;
+}
+
 
 /* Responsive Adjustments */
 @media screen and (max-width: 992px) {

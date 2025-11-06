@@ -24,7 +24,7 @@ export default function Footer() {
     >
 
       {/* Footer Content */}
-      <Container fluid className="mt-5 pt-5 d-flex flex-column align-items-center" style={{ borderTop: '10px groove #eee' }}>
+      <Container fluid className="m-0 pt-5 d-flex flex-column align-items-center" style={{ borderTop: '10px groove #eee' }}>
         {/* Newsletter Section */}
         <Row style={{ paddingBottom: 5, borderBottom: '1px solid #333', marginBottom: 25, width: '100%' }}>
           <Col lg={12}>

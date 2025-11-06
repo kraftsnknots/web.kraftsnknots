@@ -7,7 +7,7 @@ import Contact from "../components/Contact";
 export default function ContactPage() {
     return (
         <>
-            <Header />
+            <Header bg="linear-gradient(135deg, #fff, #f5f1f0)"/>
             <Reveal><Contact /></Reveal>
             <Reveal><Footer /></Reveal>
         </>

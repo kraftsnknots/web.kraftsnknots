@@ -8,8 +8,8 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import ProductDetailsPage from './pages/ProductsDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
+import AuthPage from './pages/AuthPage';
 import ProfilePage from './pages/ProfilePage';
-import AuthPage from './pages/ShopPage';
 
 function App() {
   return (
@@ -23,10 +23,8 @@ function App() {
         <Route path="/auth" element={<AuthPage />} />
 
         {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
-          <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/add" element={<AddProduct />} />
-        </Route>
+        <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+        <Route path="/add" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
       </Routes>
     </Router>
   )

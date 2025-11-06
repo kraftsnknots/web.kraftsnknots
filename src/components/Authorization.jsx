@@ -1,193 +1,230 @@
-// src/pages/AuthPage.jsx
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { signupUser, loginUser, resetPassword } from "../features/userSlice";
-import { Form, Button, Row, Col, Alert } from "react-bootstrap";
+import { loginUser, signupUser, resetPassword } from "../features/userSlice";
+import { useNavigate  } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import "./styles/Authorization.css";
 
 export default function Authorization() {
   const dispatch = useDispatch();
-  const { loading, error, message } = useSelector((state) => state.user);
+  const navigate = useNavigate();
+  const { loading, error, message } = useSelector((s) => s.user);
 
-  // Sign-up form
-  const [signupForm, setSignupForm] = useState({
-    firstName: "",
-    lastName: "",
+  const [isForgot, setIsForgot] = useState(false);
+
+  const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [signupData, setSignupData] = useState({
+    name: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    confirm: "",
   });
+  const [resetEmail, setResetEmail] = useState("");
 
-  // Login form
-  const [loginForm, setLoginForm] = useState({
-    email: "",
-    password: "",
-  });
+
+  // Handlers
+  const handleLogin = (e) => {
+    e.preventDefault();
+    dispatch(loginUser(loginData));
+    navigate('/profile');
+  };
 
   const handleSignup = (e) => {
     e.preventDefault();
-    if (signupForm.password !== signupForm.confirmPassword)
-      return alert("Passwords do not match");
-    const name = `${signupForm.firstName} ${signupForm.lastName}`;
-    dispatch(signupUser({ name, email: signupForm.email, password: signupForm.password }));
+    if (signupData.password !== signupData.confirm) {
+      alert("Passwords do not match!");
+      return;
+    }
+    dispatch(
+      signupUser({
+        name: signupData.name,
+        email: signupData.email,
+        password: signupData.password,
+      })
+    );
   };
 
-  const handleLogin = (e) => {
+  const handleForgot = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ email: loginForm.email, password: loginForm.password }));
-  };
-
-  const handleForgotPassword = () => {
-    if (!loginForm.email) return alert("Enter your email first");
-    dispatch(resetPassword(loginForm.email));
+    if (!resetEmail) return;
+    dispatch(resetPassword(resetEmail));
   };
 
   return (
-    <div className="auth-wrapper">
-      <Row className="auth-container">
-        {/* Left Side — Signup */}
-        <Col md={6} className="auth-box">
-          <h4 className="section-title">NEW CUSTOMER</h4>
-          <p className="section-subtext">
-            By creating an account, you’ll be able to shop faster, stay updated
-            on orders, and track your previous purchases.
-          </p>
-
-          <Form onSubmit={handleSignup}>
-            <h6>Your Personal Details:</h6>
-            <Row>
-              <Col>
-                <Form.Group>
-                  <Form.Label>First Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    required
-                    value={signupForm.firstName}
-                    onChange={(e) =>
-                      setSignupForm({ ...signupForm, firstName: e.target.value })
-                    }
-                  />
-                </Form.Group>
-              </Col>
-              <Col>
-                <Form.Group>
-                  <Form.Label>Last Name</Form.Label>
-                  <Form.Control
-                    type="text"
-                    required
-                    value={signupForm.lastName}
-                    onChange={(e) =>
-                      setSignupForm({ ...signupForm, lastName: e.target.value })
-                    }
-                  />
-                </Form.Group>
-              </Col>
-            </Row>
-
-            <Form.Group className="mt-3">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                required
-                value={signupForm.email}
-                onChange={(e) =>
-                  setSignupForm({ ...signupForm, email: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <h6 className="mt-4">Your Password:</h6>
-            <Form.Group>
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                required
-                value={signupForm.password}
-                onChange={(e) =>
-                  setSignupForm({ ...signupForm, password: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Form.Group className="mt-2">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                required
-                value={signupForm.confirmPassword}
-                onChange={(e) =>
-                  setSignupForm({ ...signupForm, confirmPassword: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Button
-              type="submit"
-              className="mt-4 btn-auth"
-              disabled={loading}
-            >
-              {loading ? "Creating..." : "Sign up"}
-            </Button>
-
-            {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-          </Form>
-        </Col>
-
-        {/* Right Side — Login */}
-        <Col md={6} className="auth-box">
-          <h4 className="section-title">RETURNING CUSTOMER</h4>
-          <p className="section-subtext">
-            If you already have an account, please log in below.
-          </p>
-
-          <Form onSubmit={handleLogin}>
-            <Form.Group>
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                type="email"
-                required
-                value={loginForm.email}
-                onChange={(e) =>
-                  setLoginForm({ ...loginForm, email: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Form.Group className="mt-3">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                required
-                value={loginForm.password}
-                onChange={(e) =>
-                  setLoginForm({ ...loginForm, password: e.target.value })
-                }
-              />
-            </Form.Group>
-
-            <Button
-              type="submit"
-              className="mt-4 btn-auth"
-              disabled={loading}
-            >
-              {loading ? "Logging in..." : "Login"}
-            </Button>
-
-            <div className="mt-3 d-flex justify-content-between">
-              <Button
-                variant="link"
-                className="forgot-link p-0"
-                onClick={handleForgotPassword}
-              >
-                Forgotten Password
-              </Button>
-              {message && <small className="text-success">{message}</small>}
+    <div className="dual-auth-wrapper">
+      {/* --- Left: Login / Forgot Password --- */}
+      <AnimatePresence mode="wait">
+        {!isForgot ? (
+          <motion.div
+            key="login"
+            className="auth-card glass-card"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="auth-header">
+              <h2>Welcome Back 👋</h2>
+              <p>Sign in to continue exploring our candle collection.</p>
             </div>
 
-            {error && <Alert variant="danger" className="mt-3">{error}</Alert>}
-          </Form>
-        </Col>
-      </Row>
+            <form onSubmit={handleLogin}>
+              <div className="input-group">
+                <FaEnvelope className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={loginData.email}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, email: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="input-group">
+                <FaLock className="input-icon" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  value={loginData.password}
+                  onChange={(e) =>
+                    setLoginData({ ...loginData, password: e.target.value })
+                  }
+                  required
+                />
+              </div>
+
+              <div className="auth-actions">
+                <button
+                  type="button"
+                  className="link-btn"
+                  onClick={() => setIsForgot(true)}
+                >
+                  Forgot password?
+                </button>
+              </div>
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Signing in..." : "Login"}
+              </button>
+
+              {error && <p className="error-text">{error}</p>}
+            </form>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="forgot"
+            className="auth-card glass-card"
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className="auth-header">
+              <h2>Reset Password 🔑</h2>
+              <p>Enter your email and we’ll send a reset link.</p>
+            </div>
+
+            <form onSubmit={handleForgot}>
+              <div className="input-group">
+                <FaEnvelope className="input-icon" />
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={resetEmail}
+                  onChange={(e) => setResetEmail(e.target.value)}
+                  required
+                />
+              </div>
+
+              <button type="submit" disabled={loading}>
+                {loading ? "Sending..." : "Send Reset Link"}
+              </button>
+              {message && <p className="success-text">{message}</p>}
+              {error && <p className="error-text">{error}</p>}
+            </form>
+
+            <button className="link-btn" onClick={() => setIsForgot(false)}>
+              ← Back to Login
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* --- Right: Sign Up --- */}
+      <motion.div
+        className="auth-card glass-card signup-card"
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7 }}
+      >
+        <div className="auth-header">
+          <h2>Create Account ✨</h2>
+          <p>Join our candle community and start shopping today!</p>
+        </div>
+
+        <form onSubmit={handleSignup}>
+          <div className="input-group">
+            <FaUser className="input-icon" />
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={signupData.name}
+              onChange={(e) =>
+                setSignupData({ ...signupData, name: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <FaEnvelope className="input-icon" />
+            <input
+              type="email"
+              placeholder="Email"
+              value={signupData.email}
+              onChange={(e) =>
+                setSignupData({ ...signupData, email: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <FaLock className="input-icon" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={signupData.password}
+              onChange={(e) =>
+                setSignupData({ ...signupData, password: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <FaLock className="input-icon" />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              value={signupData.confirm}
+              onChange={(e) =>
+                setSignupData({ ...signupData, confirm: e.target.value })
+              }
+              required
+            />
+          </div>
+
+          <button type="submit" disabled={loading}>
+            {loading ? "Creating..." : "Sign Up"}
+          </button>
+
+          {error && <p className="error-text">{error}</p>}
+        </form>
+      </motion.div>
     </div>
   );
 }

@@ -2,9 +2,15 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 60px 10%;
+  padding: 60px 20%;
   font-family: "Poppins", sans-serif;
   color: #222;
+}
+
+.product-details-section-1 {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 /* Gallery Section */
@@ -65,7 +71,7 @@
 }
 
 .title {
-  font-size: 2rem;
+  font-size: 1.8rem;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -86,7 +92,14 @@
   color: #555;
   line-height: 1.7;
   margin-bottom: 30px;
+  text-align: justify;
+  font-size: 15px;
+  height: 220px;
+  max-height: 220px;
+  overflow-y: auto;
+  scrollbar-width: thin;
 }
+
 
 /* Quantity + Cart */
 .quantity-controls {
@@ -102,14 +115,14 @@
   text-align: center;
 }
 
-.cartlist{
+.cartlist {
   display: flex;
   width: 50%;
   justify-content: space-around;
   align-items: center;
 }
 
-.wishlist{
+.wishlist {
   float: right;
 }
 
@@ -128,7 +141,6 @@
 /* Tabs */
 .tabs {
   width: 100%;
-  max-width: 1000px;
   margin-top: 60px;
 }
 
@@ -156,6 +168,7 @@
   margin-top: 25px;
   color: #666;
   line-height: 1.8;
+  text-align: justify;
 }
 
 .reviews-section {

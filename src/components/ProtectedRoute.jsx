@@ -1,21 +1,17 @@
-// src/components/ProtectedRoute.jsx
-import React from "react";
+// ProtectedRoute.jsx
+
 import { useSelector } from "react-redux";
-import { Navigate, Outlet, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
-/**
- * A protected route wrapper that only allows access
- * if the user is logged in (exists in Redux state).
- */
-export default function ProtectedRoute() {
-  const { user } = useSelector((state) => state.user);
-  const location = useLocation();
+const ProtectedRoute = ({ children }) => {
+  const user = useSelector((state) => state.user);
 
-  // If user is not logged in, redirect to login page
   if (!user) {
-    return <Navigate to="/auth" state={{ from: location }} replace />;
+    // User is not logged in, redirect to login
+    return <Navigate to="/auth" replace />;
   }
 
-  // Otherwise, render the nested route content
-  return <Outlet />;
-}
+  return children;
+};
+
+export default ProtectedRoute;
