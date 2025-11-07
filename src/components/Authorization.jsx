@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser, signupUser, resetPassword } from "../features/userSlice";
-import { useNavigate  } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
 import "./styles/Authorization.css";
@@ -9,7 +9,8 @@ import "./styles/Authorization.css";
 export default function Authorization() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loading, error, message } = useSelector((s) => s.user);
+  const location = useLocation();
+  const { user, loading, error, message } = useSelector((s) => s.user);
 
   const [isForgot, setIsForgot] = useState(false);
 
@@ -22,6 +23,13 @@ export default function Authorization() {
   });
   const [resetEmail, setResetEmail] = useState("");
 
+  const from = location.state?.from?.pathname || "/";
+
+  useEffect(() => {
+    if (user) {
+      navigate(from, { replace: true }); // redirect after login
+    }
+  }, [user, from, navigate]);
 
   // Handlers
   const handleLogin = (e) => {

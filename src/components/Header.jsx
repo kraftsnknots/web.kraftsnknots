@@ -1,30 +1,23 @@
-import { useState, useEffect } from "react";
+// src/components/Header.jsx
+import { useState } from "react";
 import { Image, Offcanvas } from "react-bootstrap";
 import { IoHeartOutline, IoBagOutline, IoSearch, IoMenu } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../features/userSlice";
 import "./styles/Header.css";
 
 const logoUrl =
   "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a";
 
-export default function Header({bg}) {
+export default function Header({ bg }) {
   const [showCart, setShowCart] = useState(false);
-  const [user, setUser] = useState(null);
+  const { user } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const auth = getAuth();
-
-  // ✅ Listen to auth state changes
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-    });
-    return unsubscribe;
-  }, [auth]);
 
   const handleLogout = async () => {
-    await signOut(auth);
-    setUser(null);
+    await dispatch(logoutUser());
     navigate("/auth");
   };
 
@@ -76,12 +69,24 @@ export default function Header({bg}) {
       </div>
 
       {/* 🔹 Main Navbar */}
-      <div className="main-navbar m-0 d-flex align-items-center justify-content-between" style={{background: bg}}>
+      <div
+        className="main-navbar m-0 d-flex align-items-center justify-content-between"
+        style={{ background: bg }}
+      >
+        {/* Left Nav Links */}
         <div className="d-flex align-items-center justify-content-end column-gap-5 nav-left">
-          <Link to="/" className="nav-link-custom">HOME</Link>
-          <Link to="/shop" className="nav-link-custom">SHOP</Link>
-          <Link to="/about" className="nav-link-custom">ABOUT US</Link>
-          <Link to="/contact" className="nav-link-custom">CONTACT</Link>
+          <Link to="/" className="nav-link-custom">
+            HOME
+          </Link>
+          <Link to="/shop" className="nav-link-custom">
+            SHOP
+          </Link>
+          <Link to="/about" className="nav-link-custom">
+            ABOUT US
+          </Link>
+          <Link to="/contact" className="nav-link-custom">
+            CONTACT
+          </Link>
         </div>
 
         {/* Center Logo */}
@@ -91,15 +96,29 @@ export default function Header({bg}) {
           </Link>
         </div>
 
-        {/* Right-side Icons */}
+        {/* Right Icons */}
         <div className="d-flex align-items-center justify-content-center column-gap-3 nav-icons">
-          <span><IoHeartOutline className="icon" title="Wishlist" /><small>(0)</small></span>
-          <span><IoBagOutline className="icon" title="Cart" onClick={() => setShowCart(true)} /><small>(0)</small></span>
-          <span><IoSearch className="icon" title="Search" /></span>
-          <span><IoMenu className="icon" title="Menu" /></span>
+          <span>
+            <IoHeartOutline className="icon" title="Wishlist" />
+            <small>(0)</small>
+          </span>
+          <span>
+            <IoBagOutline
+              className="icon"
+              title="Cart"
+              onClick={() => setShowCart(true)}
+            />
+            <small>(0)</small>
+          </span>
+          <span>
+            <IoSearch className="icon" title="Search" />
+          </span>
+          <span>
+            <IoMenu className="icon" title="Menu" />
+          </span>
         </div>
       </div>
- 
+
       {/* 🛍 Offcanvas Cart */}
       <Offcanvas show={showCart} onHide={() => setShowCart(false)} placement="end">
         <Offcanvas.Header closeButton>
