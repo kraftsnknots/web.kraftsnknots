@@ -16,7 +16,7 @@
       rgba(255, 196, 0, 0.08),
       transparent 70%);
 }
-
+ 
 /* 🕯 Candle Image Styling */
 .image-circle {
   width: 300px;
@@ -86,42 +86,43 @@
 }
 
 .subscription-input {
-  flex: 1;
-  padding: 15px 20px;
-  font-size: 1rem;
-  border: none;
-  border-bottom: 1px solid #555;
-  border-radius: 0;
-  background-color: transparent;
-  color: #fff;
-  transition: border-color 0.3s ease;
+  flex: 1!important;
+  padding: 15px 20px!important;
+  font-size: 1rem!important;
+  border: none!important;
+  border-bottom: 1px solid #ffb800!important;
+  border-radius: 0!important;
+  background-color: transparent!important;
+  color: #fff!important;
+  transition: border-color 0.3s ease!important;
 }
 
 .subscription-input::placeholder {
-  color: #777;
+  color: #777!important;
 }
 
 .subscription-input:focus {
-  border-color: #ffb800;
-  outline: none;
+  border-color: #ffb800!important;
+  outline: none!important;
 }
 
 .subscription-btn {
-  background: #ffb800;
-  border: none;
-  color: #000;
-  font-weight: 700;
-  letter-spacing: 1px;
-  padding: 12px 30px;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-  border-radius: 0;
-  margin-left: 10px;
+  background: #ffb800!important;
+  border: none!important;
+  color: #000!important;
+  font-weight: 700!important;
+  letter-spacing: 1px!important;
+  padding: 12px 0!important;
+  text-transform: uppercase!important;
+  transition: all 0.3s ease!important;
+  border-radius: 0!important;
+  margin-left: 10px!important;
+  width: 30%!important;
 }
 
 .subscription-btn:hover {
-  background: #ffc832;
-  transform: translateY(-2px);
+  background: #ffc832!important;
+  transform: translateY(-2px)!important;
 }
 
 /* 📱 Responsive */

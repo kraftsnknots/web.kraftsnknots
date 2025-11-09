@@ -1,7 +1,9 @@
 // src/components/Header.jsx
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Image, Offcanvas } from "react-bootstrap";
 import { IoHeartOutline, IoBagOutline, IoSearch, IoMenu } from "react-icons/io5";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getApp } from "firebase/app";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/userSlice";
@@ -12,12 +14,37 @@ const logoUrl =
 
 export default function Header({ bg }) {
   const [showCart, setShowCart] = useState(false);
-  const { user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user); 
+  const db = getFirestore(getApp());
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [profile, setProfile] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    photoURL: "",
+  });
 
-  const handleLogout = async () => {
-    await dispatch(logoutUser());
+  console.log(profile)
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+       
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) setProfile(snap.data());
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUser();
+  }, [user]);
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
     navigate("/auth");
   };
 
@@ -31,23 +58,10 @@ export default function Header({ bg }) {
 
           {user ? (
             <button onClick={handleLogout} className="account logout-btn">
-              Logout{" "}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                className="bi bi-box-arrow-right"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M10 12.5a.5.5 0 0 1 .5-.5h3.793l-1.147-1.146a.5.5 0 0 1 .708-.708l2 2a.498.498 0 0 1 .146.354.5.5 0 0 1-.146.354l-2 2a.5.5 0 1 1-.708-.708L14.293 13H10.5a.5.5 0 0 1-.5-.5M4 3a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h3v1H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h3v1H4z"
-                />
-                <path
-                  fillRule="evenodd"
-                  d="M10.854 8.354a.5.5 0 0 1 0-.708L13.146 5.354a.5.5 0 1 1 .708.708L11.707 8l2.147 1.938a.5.5 0 0 1-.708.708L10.854 8.354z"
-                />
+              Logout {' '}
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-box-arrow-right" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M10 12.5a.5.5 0 0 1-.5.5h-8a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 .5.5v2a.5.5 0 0 0 1 0v-2A1.5 1.5 0 0 0 9.5 2h-8A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h8a1.5 1.5 0 0 0 1.5-1.5v-2a.5.5 0 0 0-1 0z" />
+                <path fill-rule="evenodd" d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708z" />
               </svg>
             </button>
           ) : (
@@ -114,7 +128,11 @@ export default function Header({ bg }) {
             <IoSearch className="icon" title="Search" />
           </span>
           <span>
-            <IoMenu className="icon" title="Menu" />
+            {user?.uid &&
+              <Link to="/profile">
+                <Image src={profile.photoURL} alt="Display Picture" className="display-pic" />
+              </Link>
+            }
           </span>
         </div>
       </div>

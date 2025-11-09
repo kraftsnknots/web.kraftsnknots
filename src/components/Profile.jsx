@@ -1,31 +1,22 @@
-import React, { useEffect, useState, useMemo } from "react";
+// src/pages/ProfilePage.jsx
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
+import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getApp } from "firebase/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../features/userSlice";
 import "./styles/Profile.css";
-import { useNavigate } from "react-router-dom";
-import { IoDocumentTextOutline } from "react-icons/io5";
-import { Modal, Button, Image } from "react-bootstrap";
-import ProfileSkeleton from "../components/ProfileSkeleton";
+import "./styles/ProfileSkeleton.css";
+import MyOrders from "./MyOrders";
+import CustomerCare from "./CustomerCare";
 
-export default function Profile() {
+export default function ProfilePage() {
   const { user } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
   const db = getFirestore(getApp());
-  const storage = getStorage(getApp());
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [link, setLink] = useState('my-orders');
 
   const [profile, setProfile] = useState({
     name: "",
@@ -33,142 +24,43 @@ export default function Profile() {
     phone: "",
     photoURL: "",
   });
-  const [orders, setOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" });
-  const [filterStatus, setFilterStatus] = useState("all");
-  const [selectedOrder, setSelectedOrder] = useState(null);
-  const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [updating, setUpdating] = useState(false);
 
-  // 🧩 Fetch user & orders
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUser = async () => {
       try {
         if (!user?.uid) return;
-
-        // Fetch user info
-        const userRef = doc(db, "users", user.uid);
-        const userSnap = await getDoc(userRef);
-        if (userSnap.exists()) {
-          const data = userSnap.data();
-          setProfile({
-            name: data.name,
-            email: data.email,
-            phone: data.phone || "",
-            photoURL: data.photoURL || "",
-          });
-        }
-
-        // Fetch orders
-        const ordersRef = collection(db, "successOrders");
-        const q = query(ordersRef, where("userId", "==", user.uid));
-        const orderSnap = await getDocs(q);
-        const orderList = [];
-
-        for (const d of orderSnap.docs) {
-          const orderData = d.data();
-          let invoiceUrl = "#";
-
-          if (orderData.invoiceUrl) {
-            try {
-              const fileRef = ref(storage, orderData.invoiceUrl);
-              invoiceUrl = await getDownloadURL(fileRef);
-            } catch (e) {
-              console.warn("Invoice URL fetch failed:", e.message);
-            }
-          }
-
-          orderList.push({
-            id: d.id,
-            ...orderData,
-            invoiceUrl,
-          });
-        }
-
-        setOrders(orderList);
-        setFilteredOrders(orderList);
-      } catch (err) {
-        console.error("Error fetching data:", err);
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
+        if (snap.exists()) setProfile(snap.data());
+      } catch (e) {
+        console.error(e);
       } finally {
         setLoading(false);
       }
     };
-    fetchData();
+    fetchUser();
   }, [user]);
-
-  // 🧭 Sorting logic
-  const sortedOrders = useMemo(() => {
-    const sorted = [...filteredOrders];
-    if (sortConfig.key) {
-      sorted.sort((a, b) => {
-        const valA =
-          sortConfig.key === "total"
-            ? a.total
-            : sortConfig.key === "date"
-              ? new Date(a.createdAt?.seconds * 1000 || a.orderDate)
-              : a[sortConfig.key];
-        const valB =
-          sortConfig.key === "total"
-            ? b.total
-            : sortConfig.key === "date"
-              ? new Date(b.createdAt?.seconds * 1000 || b.orderDate)
-              : b[sortConfig.key];
-
-        if (valA < valB) return sortConfig.direction === "asc" ? -1 : 1;
-        if (valA > valB) return sortConfig.direction === "asc" ? 1 : -1;
-        return 0;
-      });
-    }
-    return sorted;
-  }, [filteredOrders, sortConfig]);
-
-  const requestSort = (key) => {
-    let direction = "asc";
-    if (sortConfig.key === key && sortConfig.direction === "asc") direction = "desc";
-    setSortConfig({ key, direction });
-  };
-
-  // 🧩 Filtering
-  const handleFilterChange = (value) => {
-    setFilterStatus(value);
-    if (value === "all") {
-      setFilteredOrders(orders);
-    } else {
-      setFilteredOrders(orders.filter((o) => o?.status === value));
-    }
-  };
-
-  const handleUpdate = async () => {
-    if (!profile.name.trim()) return alert("Name cannot be empty");
-    try {
-      setUpdating(true);
-      const userRef = doc(db, "users", user.uid);
-      await updateDoc(userRef, { name: profile.name });
-      alert("Profile updated successfully!");
-    } catch (err) {
-      console.error("Error updating profile:", err);
-      alert("Failed to update profile");
-    } finally {
-      setUpdating(false);
-    }
-  };
 
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/");
   };
 
-  // 🧾 Modal open
-  const openOrderDetails = (order) => {
-    setSelectedOrder(order);
-    setShowModal(true);
-  };
-
   if (loading) {
     return (
-      <ProfileSkeleton />
+      <div className="profile-skeleton-container">
+        {/* Left Profile Card */}
+        <div className="profile-skeleton-card">
+          <div className="skeleton skeleton-photo" />
+          <div className="skeleton skeleton-name" />
+          <div className="skeleton skeleton-email" />
+          <div className="skeleton skeleton-phone" />
+
+          <div className="skeleton skeleton-btn primary" />
+          <div className="skeleton skeleton-btn secondary" />
+        </div>
+      </div>
     );
   }
 
@@ -181,215 +73,62 @@ export default function Profile() {
     >
       {/* ---- Profile Card ---- */}
       <div className="profile-card">
-        <div className="profile-image-section">
-          <img
-            src={
-              profile.photoURL ||
-              "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
-            }
-            alt="Display Picture"
-            className="profile-avatar"
-          />
-        </div>
-        <h3 className="profile-name">{profile.name}</h3>
-        <p className="profile-email">{profile.email}</p>
-        {profile.phone && <p className="profile-phone">{profile.phone}</p>}
-
-        <button
-          onClick={handleUpdate}
-          disabled={updating}
-          className="profile-save-btn"
-        >
-          {updating ? "Saving..." : "Save"}
-        </button>
-
-        <button onClick={handleLogout} className="profile-logout-btn">
-          Logout
-        </button>
-      </div>
-
-      {/* ---- Orders Table ---- */}
-      <div className="orders-card">
-        <div className="d-flex flex-column justify-content-between align-items-start mb-1">
-          <h3>My Orders</h3>
-          <div className="sorted-buttons d-flex align-items-center justify-content-end">
-            <Button variant={filterStatus === "all" ? "dark" : "light"} onClick={() => handleFilterChange('all')} ><text style={{ color: filterStatus === "all" ? "green" : "red" }}>⬤</text> All Orders</Button>
-            <Button variant={filterStatus === "processing" ? "dark" : "light"} onClick={() => handleFilterChange('processing')}><text style={{ color: filterStatus === "processing" ? "green" : "red" }}>⬤</text> Processing</Button>
-            <Button variant={filterStatus === "delivered" ? "dark" : "light"} onClick={() => handleFilterChange('delivered')}><text style={{ color: filterStatus === "delivered" ? "green" : "red" }}>⬤</text> Delivered</Button>
-            <Button variant={filterStatus === "cancelled" ? "dark" : "light"} onClick={() => handleFilterChange('cancelled')}><text style={{ color: filterStatus === "cancelled" ? "green" : "red" }}>⬤</text> Cancelled</Button>
+        <div className="d-flex justify-content-between align-items-center gap-1">
+          <div className="profile-image-section">
+            <img
+              src={
+                profile.photoURL ||
+                "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+              }
+              alt="Display Picture"
+              className="profile-avatar"
+            />
+          </div>
+          <div
+            className="d-flex flex-column justify-content-center align-items-start"
+            style={{ height: 80, marginBottom: "1rem" }}
+          >
+            <h3 className="profile-name">{profile.name}</h3>
+            <small className="profile-id">{user.uid}</small>
           </div>
         </div>
 
-        {sortedOrders.length === 0 ? (
-          <p className="no-orders">No orders found.</p>
-        ) : (
-          <div className="orders-table-container">
-            <table className="orders-table">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Date</th>
-                  <th>Time</th>
-                  <th>Payment</th>
-                  <th>Total</th>
-                  <th>Items</th>
-                  <th>Fulfillment</th>
-                  <th>Invoice</th>
-                </tr>
-              </thead>
-              <tbody>
-                {sortedOrders.map((order) => {
-                  const date = order.createdAt?.seconds
-                    ? new Date(order.createdAt.seconds * 1000)
-                    : new Date(`${order.orderDate}T00:00:00`);
-                  const formattedDate = date.toLocaleDateString();
-                  const formattedTime = date.toLocaleTimeString([], {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  });
-                  const fulfillment = order.shipping?.status || "processing";
+        <div className="d-flex flex-column justify-content-between align-items-start p-2">
+          <p className="profile-email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-envelope" viewBox="0 0 16 16">
+              <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1zm13 2.383-4.708 2.825L15 11.105zm-.034 6.876-5.64-3.471L8 9.583l-1.326-.795-5.64 3.47A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.741M1 11.105l4.708-2.897L1 5.383z" />
+            </svg>{' '}E-mail: {profile.email}</p>
+          {profile.phone && <p className="profile-phone">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+              <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
+            </svg>{' '}Phone: {profile.phone}</p>}
+        </div>
 
-                  return (
-                    <tr key={order.id} onClick={() => openOrderDetails(order)} style={{ cursor: "pointer" }}>
-                      <td>{order.orderNumber || "—"}</td>
-                      <td>{formattedDate}</td>
-                      <td>{formattedTime}</td>
-                      <td>
-                        <span
-                          className={`status-chip ${order.payment?.status === "success"
-                            ? "delivered"
-                            : order.payment?.status === "failed"
-                              ? "cancelled"
-                              : "pending"
-                            }`}
-                        >
-                          {order.payment?.status || "pending"}
-                        </span>
-                      </td>
-                      <td>₹{order.total?.toFixed(2) || "—"}</td>
-                      <td>{order.cartItems?.length || 0}</td>
-                      <td>
-                        <span
-                          className={`status-chip ${fulfillment === "delivered"
-                            ? "delivered"
-                            : fulfillment === "cancelled"
-                              ? "cancelled"
-                              : "pending"
-                            }`}
-                        >
-                          {fulfillment}
-                        </span>
-                      </td>
-                      <td className="actions-cell">
-                        <IoDocumentTextOutline className="action-icon" />
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
+        {/* ---- Sidebar Menu ---- */}
+        <div className="profile-sidebar">
+          <ul className="profile-menu">
+            <li className={`menu-item ${link === 'my-orders' && 'active'}`} onClick={() => setLink('my-orders')}>
+              <i className="bi bi-file-earmark-text"></i> My Orders
+            </li>
+            <li className={`menu-item ${link === 'ccare' && 'active'}`} onClick={() => setLink('ccare')}>
+              <i className="bi bi-headset"></i> Customer Care
+            </li>
+            <li className={`menu-item ${link === 'scards' && 'active'}`} onClick={() => setLink('scards')}>
+              <i className="bi bi-credit-card"></i> Saved Cards
+            </li>
+            <li className={`menu-item ${link === 'ppayments' && 'active'}`} onClick={() => setLink('ppayments')}>
+              <i className="bi bi-clock-history"></i> Pending Payments
+            </li>
+            <li className={`menu-item ${link === 'gcards' && 'active'}`} onClick={() => setLink('gcards')}>
+              <i className="bi bi-gift"></i> Gift Cards
+            </li>
+            <li className="menu-item logout" onClick={handleLogout}>
+              <i className="bi bi-box-arrow-right"></i> Logout
+            </li>
+          </ul>
+        </div>
       </div>
-
-      {/* ---- Order Details Modal ---- */}
-      {selectedOrder && (
-        <Modal
-          show={showModal}
-          onHide={() => setShowModal(false)}
-          centered
-          size="lg"
-          backdrop="static"
-        >
-          <Modal.Header closeButton className="border-0">
-            <Modal.Title className="fw-bold">
-              Order {selectedOrder.orderNumber}
-            </Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <div className="order-details-modal">
-              <div className="d-flex justify-content-between align-items-center mb-3">
-                <span className="text-muted">
-                  Date: {selectedOrder.orderDate}
-                </span>
-                <span
-                  className={`status-chip ${selectedOrder.shipping?.status === "delivered"
-                    ? "delivered"
-                    : selectedOrder.shipping?.status === "cancelled"
-                      ? "cancelled"
-                      : "pending"
-                    }`}
-                >
-                  {selectedOrder.shipping?.status || "processing"}
-                </span>
-              </div>
-
-              {/* Items */}
-              <div className="order-items-modal mb-3">
-                {selectedOrder.cartItems?.map((item, i) => (
-                  <div
-                    key={i}
-                    className="d-flex align-items-center border-bottom py-2"
-                  >
-                    <Image
-                      src={item.image}
-                      alt={item.title}
-                      style={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: 8,
-                        objectFit: "cover",
-                        marginRight: 10,
-                      }}
-                    />
-                    <div style={{ flexGrow: 1 }}>
-                      <h6 className="mb-0">{item.title}</h6>
-                      <small className="text-muted">
-                        Qty: {item.quantity} | ₹{item.price}
-                      </small>
-                      <div className="text-muted small">
-                        {item.options?.map((opt) => (
-                          <span key={opt.name}>
-                            {opt.name}: {opt.value}{" "}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Totals */}
-              <div className="order-summary mt-3">
-                <p>
-                  <strong>Subtotal:</strong> ₹{selectedOrder.subtotal || "—"}
-                </p>
-                <p>
-                  <strong>Tax:</strong> ₹{selectedOrder.tax || "—"}
-                </p>
-                <p>
-                  <strong>Total:</strong>{" "}
-                  <span className="fw-bold text-success">
-                    ₹{selectedOrder.total?.toFixed(2) || "—"}
-                  </span>
-                </p>
-              </div>
-
-              <div className="d-flex justify-content-end">
-                {selectedOrder.invoiceUrl && (
-                  <Button
-                    variant="dark"
-                    onClick={() => window.open(selectedOrder.invoiceUrl, "_blank")}
-                  >
-                    <IoDocumentTextOutline className="me-2" />
-                    View Invoice
-                  </Button>
-                )}
-              </div>
-            </div>
-          </Modal.Body>
-        </Modal>
-      )}
+      {link === "my-orders" ? <MyOrders /> : link === "ccare" ? <CustomerCare /> : ''}
     </motion.div>
   );
 }

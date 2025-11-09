@@ -17,8 +17,6 @@ export default function Subscription() {
             <img src={candleImg} alt="Candle" className="candle-image" />
             <div className="candle-image-circle"></div>
           </div>
-
-
         </Col>
 
         {/* ✉️ Right Side Text + Form */}

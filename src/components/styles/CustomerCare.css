@@ -1,0 +1,298 @@
+/* 🌿 Customer Care Form & Layout */
+.customer-care-card {
+  /* background: #000; */
+  border-radius: 14px;
+  padding: 0 28px;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.orders-card h2 {
+  padding: 28px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #000;
+  margin-bottom: 20px;
+  letter-spacing: 0.4px;
+}
+
+.customer-care-card form {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+}
+
+.customer-care-card label {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 8px;
+  color: #222;
+}
+
+.customer-care-card textarea {
+  border: 3px solid #e6e6e6;
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 15px;
+  background-color: #fbfbfb;
+  resize: none;
+  min-height: 120px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.customer-care-card textarea:focus {
+  border-color: #000;
+  background-color: #fff;
+}
+
+.char-counter {
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+  margin-top: 6px;
+}
+
+.error-text {
+  color: #e74c3c;
+  font-size: 13px;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+.button-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+
+.send-btn {
+  background-color: #000;
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 40px;
+  font-weight: 600;
+  font-size: 15px;
+  transition: all 0.25s ease;
+  cursor: pointer;
+}
+
+.send-btn:hover:not(:disabled) {
+  background-color: #333;
+  transform: translateY(-1px);
+}
+
+.send-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.note {
+  margin-top: 18px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.note b {
+  color: #000;
+}
+
+/* 🧾 Enquiry Table Styles */
+.enquiry-list {
+  width: 48%;
+}
+
+.enquiry-list h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #000;
+}
+
+.orders-table-container {
+  overflow-y: auto;
+  z-index: 9999999999999;
+  height: 400px;
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.orders-table thead {
+  background-color: #f7f7f7;
+}
+
+.orders-table th {
+  font-weight: 600;
+  text-align: left;
+  padding: 12px 16px;
+  font-size: 14px;
+  color: #333;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.orders-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  color: #444;
+}
+
+/* Row Hover and Click */
+.collapsible-row {
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.collapsible-row:hover {
+  background: #fafafa;
+}
+
+/* Highlight newly replied messages */
+.highlight-replied {
+  animation: glow 2s ease-in-out 1;
+  background: #f8fff8;
+}
+
+@keyframes glow {
+  0% {
+    background: #e0ffe8;
+  }
+
+  100% {
+    background: #fff;
+  }
+}
+
+/* 🟢 Status Chips */
+.status-chip {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 10px;
+  border-radius: 12px;
+  text-transform: capitalize;
+  letter-spacing: 0.2px;
+}
+
+.status-chip.pending {
+  background-color: rgba(245, 158, 11, 0.15);
+  color: #d97706;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.status-chip.delivered {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* 📜 Expanded Message Section */
+.expanded-message-cell {
+  background: #f9f9f9;
+  border-top: none;
+  padding: 0;
+}
+
+.expanded-message {
+  padding: 20px 22px;
+  border-top: 1px solid #eee;
+  background: #f9f9f9;
+}
+
+/* Chat Bubble Layout */
+.user-message,
+.admin-reply {
+  margin-bottom: 18px;
+}
+
+.msg-label {
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.msg-bubble {
+  border-radius: 12px;
+  padding: 12px 16px;
+  line-height: 1.5;
+  font-size: 14px;
+  margin-bottom: 8px;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.user-bubble {
+  background: #000;
+  color: #fff;
+  align-self: flex-start;
+  border: 1px solid #000;
+  
+  width: 52%;
+}
+
+.admin-bubble {
+  background: #e8ffe8;
+  color: #111;
+  align-self: flex-end;
+  border: 1px solid #b6efb6;
+}
+
+.msg-time {
+  font-size: 12px;
+  color: #777;
+}
+
+.no-reply-msg {
+  background: #fdfdfd;
+  padding: 10px 16px;
+  border-left: 3px solid #ddd;
+  border-radius: 8px;
+  color: #555;
+  font-size: 13px;
+  font-style: italic;
+}
+
+/* 🧍 Empty State */
+.no-orders {
+  text-align: center;
+  color: #888;
+  font-size: 14px;
+  padding: 20px;
+}
+
+/* 📱 Responsive Adjustments */
+@media (max-width: 768px) {
+  .customer-care-card {
+    padding: 20px;
+  }
+
+  .orders-table th,
+  .orders-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .send-btn {
+    width: 100%;
+  }
+
+  .msg-bubble {
+    font-size: 13px;
+  }
+
+  .msg-label {
+    font-size: 13px;
+  }
+}

@@ -108,7 +108,8 @@
     width: 33.33%;
     height: 100%;
 }
-.nav-icons>span{
+
+.nav-icons>span {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -133,18 +134,23 @@
 }
 
 .logout-btn {
-  background: none;
-  border: none;
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-  transition: opacity 0.3s ease;
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
 }
 
 .logout-btn:hover {
-  opacity: 0.8;
+    opacity: 0.8;
 }
 
+.display-pic {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
 
 /* Responsive Adjustments */
 @media screen and (max-width: 992px) {
