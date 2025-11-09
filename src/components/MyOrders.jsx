@@ -141,7 +141,7 @@ export default function MyOrders() {
       {/* ---- Orders Table ---- */}
       <div className="d-flex flex-column justify-content-between align-items-start mb-1">
         <h3>My Orders</h3>
-        {sortedOrders.length > 0 &&
+        {orders.length > 0 &&
           <div className="sorted-buttons d-flex align-items-center justify-content-end">
             <Button
               variant={filterStatus === "all" ? "dark" : "light"}

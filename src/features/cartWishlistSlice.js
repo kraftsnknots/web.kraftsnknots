@@ -8,10 +8,11 @@ const initialState = {
 const cartWishlistSlice = createSlice({
   name: "cartWishlist",
   initialState,
-  reducers: {
+  reducers: { 
     // 🛒 CART actions
     addToCart: (state, action) => {
       const item = action.payload;
+      
       const exists = state.cart.find((x) => x.id === item.id);
       if (!exists) state.cart.push(item);
     },
@@ -25,6 +26,8 @@ const cartWishlistSlice = createSlice({
     // 💖 WISHLIST actions
     addToWishlist: (state, action) => {
       const item = action.payload;
+      console.log(item);
+      
       const exists = state.wishlist.find((x) => x.id === item.id);
       if (!exists) state.wishlist.push(item);
     },

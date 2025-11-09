@@ -130,7 +130,11 @@
 
 .wishlist {
   float: right;
-  width: 185px;
+}
+
+.filled-heart, .empty-heart{
+  font-size: 30px;
+  color: red;
 }
 
 

@@ -75,6 +75,37 @@ export default function CustomerCare() {
     fetchUser();
   }, [auth, db]);
 
+  // 🧾 Realtime Enquiry Listener
+  useEffect(() => {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const q = query(
+      collection(db, "mobileAppContactFormQueries"),
+      where("userId", "==", user.uid),
+      where("deleted", "==", 0),
+      orderBy("createdAt", "desc")
+    );
+
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const list = snapshot.docs.map((d) => ({
+          id: d.id,
+          ...d.data(),
+        }));
+        setEnquiries(list);
+        setFetchingEnquiries(false);
+      },
+      (error) => {
+        console.error("Realtime listener failed:", error);
+        setFetchingEnquiries(false);
+      }
+    );
+
+    return () => unsubscribe();
+  }, [auth, db]);
+
   // ✏️ Field change
   const handleChange = (key, value) => {
     if (key === "message" && value.length > MAX_MESSAGE_LENGTH) return;
@@ -118,15 +149,13 @@ export default function CustomerCare() {
         deleted: 0,
       };
 
-
-      await addDoc(collection(db, "mobileAppContactFormQueries"), formDetails);
-
       const res = await axios.post(
         "https://us-central1-ujaas-aroma.cloudfunctions.net/sendContactFormConfirmation",
         { formDetails: formDetails }
       );
 
       if (res.data.success) {
+        await addDoc(collection(db, "mobileAppContactFormQueries"), formDetails);
         setAlertMessage(true);
         setForm({ ...form, message: "" });
       } else {
@@ -139,36 +168,6 @@ export default function CustomerCare() {
       setLoading(false);
     }
   };
-
-  // 🧾 Realtime Enquiry Listener
-  useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const q = query(
-      collection(db, "mobileAppContactFormQueries"),
-      where("userId", "==", user.uid),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const list = snapshot.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-        }));
-        setEnquiries(list);
-        setFetchingEnquiries(false);
-      },
-      (error) => {
-        console.error("Realtime listener failed:", error);
-        setFetchingEnquiries(false);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [auth, db]);
 
   const remaining = MAX_MESSAGE_LENGTH - form.message.length;
   const isFormValid =
@@ -254,7 +253,10 @@ export default function CustomerCare() {
         {/* ---- Enquiry History Table ---- */}
         <div className="enquiry-list">
           {fetchingEnquiries ? (
-            <p>Loading enquiries...</p>
+            <div className="loader-div d-flex flex-column justify-content-center align-items-center">
+              <div className="loader"></div>
+              <div className="fetching-loader"></div>
+            </div>
           ) : sortedEnquiries.length === 0 ? (
             <p className="no-orders">No previous enquiries found.</p>
           ) : (

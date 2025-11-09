@@ -16,10 +16,10 @@ export default function Authorization({ lastPage }) {
   const [errorMsgs, setErrorMsgs] = useState('');
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [signupData, setSignupData] = useState({
-    name: "Raghu Sharma",
-    email: "techsharma04@outlook.com",
-    password: "Alliswell1",
-    confirm: "Alliswell1",
+    name: "",
+    email: "",
+    password: "",
+    confirm: "",
   });
   const [resetEmail, setResetEmail] = useState("");
 

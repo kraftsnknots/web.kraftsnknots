@@ -77,7 +77,7 @@ export default function Wishlist() {
   const handleAddToCart = (item) => {
     setAddingItemId(item.id);
     setTimeout(() => {
-      dispatch(addToCart(item));
+      dispatch(addToCart({...item, quantity:1}));
       setAddingItemId(null);
     }, 1000); // simulate 1s delay for feedback
   };
@@ -87,7 +87,7 @@ export default function Wishlist() {
       className="orders-card"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
+      transition={{ duration: 0.6 }} 
     >
       {/* ---- Wishlist Table ---- */}
       <div className="d-flex flex-column justify-content-between align-items-start mb-2">
@@ -140,7 +140,7 @@ export default function Wishlist() {
                 {currentItems.map((item) => {
                   const inCart = isInCart(item.id);
                   const isLoading = addingItemId === item.id;
-
+                  
                   return (
                     <tr
                     //   key={item.id}

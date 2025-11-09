@@ -139,6 +139,7 @@
 .enquiry-list {
   width: 48%;
   border-radius: 10px;
+  position: relative;
 }
 
 .enquiry-list h4 {

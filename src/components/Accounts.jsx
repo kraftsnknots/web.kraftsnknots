@@ -113,8 +113,8 @@ export default function Accounts() {
             <li className={`menu-item ${link === 'scards' && 'active'}`} onClick={() => setLink('scards')}>
               <i className="bi bi-credit-card"></i> Saved Cards
             </li>
-            <li className={`menu-item ${link === 'ppayments' && 'active'}`} onClick={() => setLink('ppayments')}>
-              <i className="bi bi-clock-history"></i> Pending Payments
+            <li className={`menu-item ${link === 'saddresses' && 'active'}`} onClick={() => setLink('saddresses')}>
+              <i className="bi bi-pin-map"></i> Addresses
             </li>
             {/* <li className={`menu-item ${link === 'gcards' && 'active'}`} onClick={() => setLink('gcards')}>
               <i className="bi bi-gift"></i> Gift Cards

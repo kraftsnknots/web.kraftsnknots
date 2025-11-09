@@ -215,13 +215,9 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
               </Button>
             </div>
 
-            <Button
-              variant={inWishlist ? "danger" : "danger"}
-              className="wishlist"
-              onClick={handleWishlist}
-            >
-              {inWishlist ? "♥ IN WISHLIST" : "♡ ADD TO WISHLIST"}
-            </Button>
+            <span classN ame="wishlist" onClick={handleWishlist}>
+              {inWishlist ? <i className="bi bi-hearts filled-heart"></i> : <i className="bi bi-suit-heart empty-heart"></i>}
+            </span>
           </div>
         </div>
       </div>
