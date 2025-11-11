@@ -1,24 +1,16 @@
+// src/pages/CustomerCare.jsx
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  getAuth, onAuthStateChanged
-} from "firebase/auth";
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  collection,
-  addDoc,
-  serverTimestamp,
-  query,
-  where,
-  orderBy,
-  onSnapshot,
-} from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 import { getApp } from "firebase/app";
+import { useDispatch, useSelector } from "react-redux";
+import { Alert, Pagination } from "react-bootstrap";
+import {
+  listenToUserEnquiries,
+  clearEnquiries,
+  submitEnquiry,
+} from "../features/enquiriesSlice";
 import axios from "axios";
-import Alert from "react-bootstrap/Alert";
-import Pagination from "react-bootstrap/Pagination";
 import "./styles/CustomerCare.css";
 
 const MAX_MESSAGE_LENGTH = 1000;
@@ -27,157 +19,41 @@ const phoneRegex = /^[0-9()+\-\s]{7,20}$/;
 
 export default function CustomerCare() {
   const auth = getAuth(getApp());
-  const db = getFirestore(getApp());
+  const dispatch = useDispatch();
+  const { list: enquiries, status } = useSelector((s) => s.enquiries);
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", message: "" });
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
-  const [prefetching, setPrefetching] = useState(true);
-  const [enquiries, setEnquiries] = useState([]);
-  const [fetchingEnquiries, setFetchingEnquiries] = useState(true);
-  const [expandedId, setExpandedId] = useState(null);
   const [alertMessage, setAlertMessage] = useState(false);
+  const [expandedId, setExpandedId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  // 🧩 Prefill logged-in user info
+  const itemsPerPage = 7;
+  const user = auth.currentUser;
+
+  // 🧠 Prefill user info
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = auth.currentUser;
-        if (!user) {
-          setPrefetching(false);
-          return;
-        }
+    const u = auth.currentUser;
+    if (!u) return;
+    setForm((f) => ({
+      ...f,
+      name: u.displayName || "",
+      email: u.email || "",
+    }));
+  }, [auth]);
 
-        const ref = doc(db, "users", user.uid);
-        const snap = await getDoc(ref);
-        if (snap.exists()) {
-          const data = snap.data();
-          setForm((p) => ({
-            ...p,
-            name: data.name || p.name,
-            email: data.email || user.email || p.email,
-            phone: data.phone || p.phone,
-          }));
-        } else {
-          setForm((p) => ({ ...p, email: user.email || p.email }));
-        }
-      } catch (err) {
-        console.warn("fetchUser error:", err);
-      } finally {
-        setPrefetching(false);
-      }
-    };
-    fetchUser();
-  }, [auth, db]);
-
-  // 🧾 Realtime Enquiry Listener
+  // 🔁 Start realtime listener
   useEffect(() => {
-    const user = auth.currentUser;
-    if (!user) return;
-
-    const q = query(
-      collection(db, "mobileAppContactFormQueries"),
-      where("userId", "==", user.uid),
-      where("deleted", "==", 0),
-      orderBy("createdAt", "desc")
-    );
-
-    const unsubscribe = onSnapshot(
-      q,
-      (snapshot) => {
-        const list = snapshot.docs.map((d) => ({
-          id: d.id,
-          ...d.data(),
-        }));
-        setEnquiries(list);
-        setFetchingEnquiries(false);
-      },
-      (error) => {
-        console.error("Realtime listener failed:", error);
-        setFetchingEnquiries(false);
-      }
-    );
-
-    return () => unsubscribe();
-  }, [auth, db]);
-
-  // ✏️ Field change
-  const handleChange = (key, value) => {
-    if (key === "message" && value.length > MAX_MESSAGE_LENGTH) return;
-    setForm((prev) => ({ ...prev, [key]: value }));
-    setErrors((prev) => ({ ...prev, [key]: "" }));
-  };
-
-  // ✅ Validation
-  const validateAll = () => {
-    const e = {};
-    if (!form.name.trim()) e.name = "Name is required";
-    if (!form.email.trim()) e.email = "Email is required";
-    else if (!emailRegex.test(form.email.trim())) e.email = "Invalid email";
-    if (!form.phone.trim()) e.phone = "Phone is required";
-    else if (!phoneRegex.test(form.phone.trim())) e.phone = "Invalid phone";
-    if (!form.message.trim()) e.message = "Message required";
-    else if (form.message.trim().length > MAX_MESSAGE_LENGTH)
-      e.message = `Max ${MAX_MESSAGE_LENGTH} characters`;
-
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
-
-  // 🚀 Submit
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!validateAll()) return alert("Please correct form errors.");
-
-    const user = auth.currentUser;
-    if (!user) return alert("You must be logged in to send a message.");
-
-    setLoading(true);
-    try {
-      const formDetails = {
-        userId: user.uid,
-        name: form.name.trim(),
-        email: form.email.trim(),
-        phone: form.phone.trim(),
-        message: form.message.trim(),
-        createdAt: serverTimestamp(),
-        deleted: 0,
-      };
-
-      const res = await axios.post(
-        "https://us-central1-ujaas-aroma.cloudfunctions.net/sendContactFormConfirmation",
-        { formDetails: formDetails }
-      );
-
-      if (res.data.success) {
-        await addDoc(collection(db, "mobileAppContactFormQueries"), formDetails);
-        setAlertMessage(true);
-        setForm({ ...form, message: "" });
-      } else {
-        alert("Something went wrong. Please try again later.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Failed to send message. Please try again later.");
-    } finally {
-      setLoading(false);
+    if (user?.uid) {
+      dispatch(listenToUserEnquiries(user.uid));
     }
-  };
+    return () => {
+      dispatch(clearEnquiries());
+    };
+  }, [user, dispatch]);
 
-  const remaining = MAX_MESSAGE_LENGTH - form.message.length;
-  const isFormValid =
-    !prefetching &&
-    form.name.trim() &&
-    emailRegex.test(form.email.trim()) &&
-    phoneRegex.test(form.phone.trim()) &&
-    form.message.trim() &&
-    form.message.trim().length <= MAX_MESSAGE_LENGTH;
-
+  // 🧾 Derived list
   const sortedEnquiries = useMemo(() => {
     return [...enquiries].sort((a, b) => {
       const aTime = a.createdAt?.seconds || 0;
@@ -186,19 +62,64 @@ export default function CustomerCare() {
     });
   }, [enquiries]);
 
-  // 📄 Pagination Setup
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
   const totalPages = Math.ceil(sortedEnquiries.length / itemsPerPage);
+  const currentItems = sortedEnquiries.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
-  const currentItems = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return sortedEnquiries.slice(startIndex, startIndex + itemsPerPage);
-  }, [sortedEnquiries, currentPage]);
+  // ✏️ Form updates
+  const handleChange = (key, value) => {
+    if (key === "message" && value.length > MAX_MESSAGE_LENGTH) return;
+    setForm((p) => ({ ...p, [key]: value }));
+    setErrors((p) => ({ ...p, [key]: "" }));
+  };
 
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [sortedEnquiries]);
+  // 🧩 Validation
+  const validateAll = () => {
+    const e = {};
+    if (!form.message.trim()) e.message = "Message required";
+    setErrors(e);
+    return Object.keys(e).length === 0;
+  };
+
+  // 🚀 Submit enquiry
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateAll()) return alert("Please fix the errors.");
+    if (!user) return alert("Login required to submit a message.");
+
+    setLoading(true);
+    try {
+      // Send confirmation email Cloud Function
+      await axios.post(
+        "https://us-central1-ujaas-aroma.cloudfunctions.net/sendContactFormConfirmation",
+        { formDetails: { ...form, userId: user.uid } }
+      );
+
+      // Add to Firestore via Redux thunk
+      await dispatch(
+        submitEnquiry({
+          userId: user.uid,
+          name: form.name.trim(),
+          email: form.email.trim(),
+          phone: form.phone.trim(),
+          message: form.message.trim(),
+        })
+      );
+
+      setForm((p) => ({ ...p, message: "" }));
+      setAlertMessage(true);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to send message.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const isFormValid =
+    form.message.trim();
 
   return (
     <motion.div
@@ -213,8 +134,8 @@ export default function CustomerCare() {
       </div>
 
       <div className="customer-care-card">
-        {/* --- Contact Form --- */}
-        <form onSubmit={handleSubmit} noValidate className="ccform position-relative">
+        {/* --- Form --- */}
+        <form onSubmit={handleSubmit} className="ccform position-relative">
           {loading && (
             <div className="loader-div d-flex flex-column justify-content-center align-items-center">
               <div className="loader"></div>
@@ -223,10 +144,11 @@ export default function CustomerCare() {
           )}
           {alertMessage && (
             <Alert variant="success" className="d-flex justify-content-between">
-              Your message has been sent. We'll get back to you soon!{" "}
+              Your message has been sent!{" "}
               <i className="bi bi-x-lg" onClick={() => setAlertMessage(false)}></i>
             </Alert>
           )}
+
           <label>Message</label>
           <textarea
             rows="8"
@@ -240,19 +162,15 @@ export default function CustomerCare() {
           </div>
 
           <div className="button-row">
-            <button
-              type="submit"
-              disabled={!isFormValid || loading}
-              className="send-btn"
-            >
+            <button type="submit" disabled={!isFormValid || loading} className="send-btn">
               {loading ? "Sending..." : "Send Message"}
             </button>
           </div>
         </form>
 
-        {/* ---- Enquiry History Table ---- */}
+        {/* --- Enquiries Table --- */}
         <div className="enquiry-list">
-          {fetchingEnquiries ? (
+          {status === "loading" ? (
             <div className="loader-div d-flex flex-column justify-content-center align-items-center">
               <div className="loader"></div>
               <div className="fetching-loader"></div>
@@ -288,7 +206,6 @@ export default function CustomerCare() {
                         hour: "2-digit",
                         minute: "2-digit",
                       });
-
                       const hasReply = !!enq.adminReply;
                       const shortPreview =
                         enq.message.length > 20
@@ -314,7 +231,6 @@ export default function CustomerCare() {
                               </span>
                             </td>
                           </tr>
-
                           <AnimatePresence>
                             {expandedId === enq.id && (
                               <motion.tr
@@ -344,8 +260,8 @@ export default function CustomerCare() {
                                         <small className="msg-time">
                                           {enq.adminReplyAt
                                             ? `Replied on ${new Date(
-                                              enq.adminReplyAt.seconds * 1000
-                                            ).toLocaleDateString()}`
+                                                enq.adminReplyAt.seconds * 1000
+                                              ).toLocaleDateString()}`
                                             : ""}
                                         </small>
                                       </div>
@@ -366,7 +282,6 @@ export default function CustomerCare() {
                 </motion.table>
               </AnimatePresence>
 
-              {/* 🌟 Pagination Component */}
               {totalPages > 1 && (
                 <motion.div
                   className="d-flex justify-content-center mt-3"

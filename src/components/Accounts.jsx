@@ -11,6 +11,7 @@ import "./styles/AccountSkeleton.css";
 import MyOrders from "./MyOrders";
 import CustomerCare from "./CustomerCare";
 import Wishlist from "./Wishlist";
+import ShippingAddresses from "./shippingAddresses";
 
 export default function Accounts() {
   const { user } = useSelector((state) => state.user);
@@ -128,7 +129,7 @@ export default function Accounts() {
           </ul>
         </div>
       </div>
-      {link === "my-orders" ? <MyOrders /> : link === "ccare" ? <CustomerCare /> : link === "wishlist" ? <Wishlist /> : ''}
+      {link === "my-orders" ? <MyOrders /> : link === "ccare" ? <CustomerCare /> : link === "saddresses" ? <ShippingAddresses /> : link === "wishlist" ? <Wishlist /> : ''}
     </motion.div>
   );
 }

@@ -2,6 +2,10 @@ import { configureStore } from "@reduxjs/toolkit";
 import productsReducer from "../features/productsSlice";
 import cartWishlistReducer from "../features/cartWishlistSlice";
 import userReducer from "../features/userSlice";
+import ordersReducer from "../features/ordersSlice";
+import enquiriesReducer from "../features/enquiriesSlice";
+import shippingAddressesReducer from "../features/shippingSlice";
+
 
 const persistedCartWishlist = (() => {
   try {
@@ -19,6 +23,9 @@ export const store = configureStore({
     user: userReducer,
     products: productsReducer,
     cartWishlist: cartWishlistReducer,
+    orders: ordersReducer,
+    enquiries: enquiriesReducer,
+    shippingAddresses: shippingAddressesReducer,
   },
   preloadedState: persistedCartWishlist
     ? { cartWishlist: persistedCartWishlist }

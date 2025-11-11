@@ -1,128 +1,75 @@
 // src/pages/MyOrders.jsx
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-import { getApp } from "firebase/app";
-import { getStorage, ref, getDownloadURL } from "firebase/storage";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Modal, Button, Image, Pagination } from "react-bootstrap";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import { listenToUserOrders, clearOrders } from "../features/ordersSlice";
 import "./styles/Accounts.css";
 
 export default function MyOrders() {
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
-  const db = getFirestore(getApp());
-  const storage = getStorage(getApp());
+  const { list: orders, status } = useSelector((state) => state.orders);
 
-  const [orders, setOrders] = useState([]);
-  const [filteredOrders, setFilteredOrders] = useState([]);
-  const [sortConfig, setSortConfig] = useState({ key: "date", direction: "desc" });
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(true);
-
-  // 🧾 Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
+  // 🧩 Start real-time listener when user logs in
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const ordersRef = collection(db, "successOrders");
-        const q = query(ordersRef, where("userId", "==", user.uid));
-        const orderSnap = await getDocs(q);
-        const orderList = [];
-
-        for (const d of orderSnap.docs) {
-          const orderData = d.data();
-          let invoiceUrl = "#";
-
-          if (orderData.invoiceUrl) {
-            try {
-              const fileRef = ref(storage, orderData.invoiceUrl);
-              invoiceUrl = await getDownloadURL(fileRef);
-            } catch (e) {
-              console.warn("Invoice URL fetch failed:", e.message);
-            }
-          }
-
-          orderList.push({
-            id: d.id,
-            ...orderData,
-            invoiceUrl,
-          });
-        }
-
-        setOrders(orderList);
-        setFilteredOrders(orderList);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
+    if (user?.uid) {
+      dispatch(listenToUserOrders(user.uid));
+    }
+    return () => {
+      dispatch(clearOrders()); // stop listening on unmount / logout
     };
-    fetchData();
-  }, [user]);
+  }, [user, dispatch]);
 
-  const handleFilterChange = (value) => {
-    setFilterStatus(value);
-    setCurrentPage(1);
-    if (value === "all") setFilteredOrders(orders);
-    else setFilteredOrders(orders.filter((o) => o?.status === value));
-  };
+  const filteredOrders = useMemo(() => {
+    if (filterStatus === "all") return orders;
+    return orders.filter((o) => o?.status === filterStatus);
+  }, [orders, filterStatus]);
 
   const sortedOrders = useMemo(() => {
     const sorted = [...filteredOrders];
-    if (sortConfig.key) {
-      sorted.sort((a, b) => {
-        const valA = new Date(a.createdAt?.seconds * 1000);
-        const valB = new Date(b.createdAt?.seconds * 1000);
-        return sortConfig.direction === "asc" ? valA - valB : valB - valA;
-      });
-    }
+    sorted.sort((a, b) => {
+      const valA = new Date(a.createdAt?.seconds * 1000 || 0);
+      const valB = new Date(b.createdAt?.seconds * 1000 || 0);
+      return valB - valA;
+    });
     return sorted;
-  }, [filteredOrders, sortConfig]);
+  }, [filteredOrders]);
 
   const totalPages = Math.ceil(sortedOrders.length / itemsPerPage);
-
-  const currentItems = useMemo(() => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    return sortedOrders.slice(startIndex, startIndex + itemsPerPage);
-  }, [sortedOrders, currentPage]);
+  const currentItems = sortedOrders.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const openOrderDetails = (order) => {
     setSelectedOrder(order);
     setShowModal(true);
   };
 
-  if (loading) {
+  if (status === "loading" || status === "idle") {
     return (
       <div className="profile-skeleton-container">
         <div className="profile-skeleton-orders">
           <div className="skeleton skeleton-title" />
           <div className="skeleton-tab-container">
-            <div className="skeleton skeleton-tab" />
-            <div className="skeleton skeleton-tab" />
-            <div className="skeleton skeleton-tab" />
-            <div className="skeleton skeleton-tab" />
+            {[...Array(4)].map((_, i) => (
+              <div key={i} className="skeleton skeleton-tab" />
+            ))}
           </div>
           <div className="skeleton-table">
             {[1, 2].map((row) => (
               <div key={row} className="skeleton-table-row">
-                <div className="skeleton skeleton-col short" />
-                <div className="skeleton skeleton-col medium" />
-                <div className="skeleton skeleton-col short" />
-                <div className="skeleton skeleton-col short" />
-                <div className="skeleton skeleton-col short" />
-                <div className="skeleton skeleton-col medium" />
-                <div className="skeleton skeleton-col icon" />
+                {[...Array(7)].map((_, i) => (
+                  <div key={i} className="skeleton skeleton-col short" />
+                ))}
               </div>
             ))}
           </div>
@@ -138,55 +85,31 @@ export default function MyOrders() {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
     >
-      {/* ---- Orders Table ---- */}
       <div className="d-flex flex-column justify-content-between align-items-start mb-1">
         <h3>My Orders</h3>
-        {orders.length > 0 &&
+        {orders.length > 0 && (
           <div className="sorted-buttons d-flex align-items-center justify-content-end">
-            <Button
-              variant={filterStatus === "all" ? "dark" : "light"}
-              onClick={() => handleFilterChange("all")}
-            >
-              <text style={{ color: filterStatus === "all" ? "#00ff00" : "#FF3131" }}>
-                ⬤
-              </text>{" "}
-              All Orders
-            </Button>
-            <Button
-              variant={filterStatus === "processing" ? "dark" : "light"}
-              onClick={() => handleFilterChange("processing")}
-            >
-              <text
-                style={{ color: filterStatus === "processing" ? "#00ff00" : "#FF3131" }}
+            {["all", "processing", "delivered", "cancelled"].map((status) => (
+              <Button
+                key={status}
+                variant={filterStatus === status ? "dark" : "light"}
+                onClick={() => setFilterStatus(status)}
+                className="me-2"
               >
-                ⬤
-              </text>{" "}
-              Processing
-            </Button>
-            <Button
-              variant={filterStatus === "delivered" ? "dark" : "light"}
-              onClick={() => handleFilterChange("delivered")}
-            >
-              <text
-                style={{ color: filterStatus === "delivered" ? "#00ff00" : "#FF3131" }}
-              >
-                ⬤
-              </text>{" "}
-              Delivered
-            </Button>
-            <Button
-              variant={filterStatus === "cancelled" ? "dark" : "light"}
-              onClick={() => handleFilterChange("cancelled")}
-            >
-              <text
-                style={{ color: filterStatus === "cancelled" ? "#00ff00" : "#FF3131" }}
-              >
-                ⬤
-              </text>{" "}
-              Cancelled
-            </Button>
+                <text
+                  style={{
+                    color: filterStatus === status ? "#00ff00" : "#FF3131",
+                  }}
+                >
+                  ⬤
+                </text>{" "}
+                {status === "all"
+                  ? "All Orders"
+                  : status.charAt(0).toUpperCase() + status.slice(1)}
+              </Button>
+            ))}
           </div>
-        }
+        )}
       </div>
 
       {sortedOrders.length === 0 ? (
@@ -204,7 +127,7 @@ export default function MyOrders() {
             >
               <thead>
                 <tr>
-                  <th>Order ID</th>
+                  <th style={{paddingLeft:30}}>Order ID</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Payment</th>
@@ -231,17 +154,18 @@ export default function MyOrders() {
                       onClick={() => openOrderDetails(order)}
                       style={{ cursor: "pointer" }}
                     >
-                      <td>{order.orderNumber || "—"}</td>
+                      <td style={{paddingLeft:30}}>{order.orderNumber || "—"}</td>
                       <td>{formattedDate}</td>
                       <td>{formattedTime}</td>
                       <td>
                         <span
-                          className={`status-chip ${order.payment?.status === "success"
-                            ? "delivered"
-                            : order.payment?.status === "failed"
+                          className={`status-chip ${
+                            order.payment?.status === "success"
+                              ? "delivered"
+                              : order.payment?.status === "failed"
                               ? "cancelled"
                               : "pending"
-                            }`}
+                          }`}
                         >
                           {order.payment?.status || "pending"}
                         </span>
@@ -250,12 +174,13 @@ export default function MyOrders() {
                       <td>{order.cartItems?.length || 0}</td>
                       <td>
                         <span
-                          className={`status-chip ${fulfillment === "delivered"
-                            ? "delivered"
-                            : fulfillment === "cancelled"
+                          className={`status-chip ${
+                            fulfillment === "delivered"
+                              ? "delivered"
+                              : fulfillment === "cancelled"
                               ? "cancelled"
                               : "processing"
-                            }`}
+                          }`}
                         >
                           {fulfillment}
                         </span>
@@ -267,7 +192,6 @@ export default function MyOrders() {
             </motion.table>
           </AnimatePresence>
 
-          {/* 🌟 Pagination */}
           {totalPages > 1 && (
             <motion.div
               className="d-flex justify-content-center mt-3"
@@ -307,7 +231,6 @@ export default function MyOrders() {
         </div>
       )}
 
-      {/* ---- Order Details Modal ---- */}
       {selectedOrder && (
         <Modal
           show={showModal}
@@ -328,18 +251,18 @@ export default function MyOrders() {
                   Date: {selectedOrder.orderDate}
                 </span>
                 <span
-                  className={`status-chip ${selectedOrder.shipping?.status === "delivered"
-                    ? "delivered"
-                    : selectedOrder.shipping?.status === "cancelled"
+                  className={`status-chip ${
+                    selectedOrder.shipping?.status === "delivered"
+                      ? "delivered"
+                      : selectedOrder.shipping?.status === "cancelled"
                       ? "cancelled"
                       : "pending"
-                    }`}
+                  }`}
                 >
                   {selectedOrder.shipping?.status || "processing"}
                 </span>
               </div>
 
-              {/* Items */}
               <div className="order-items-modal mb-3">
                 {selectedOrder.cartItems?.map((item, i) => (
                   <div
@@ -374,7 +297,6 @@ export default function MyOrders() {
                 ))}
               </div>
 
-              {/* Totals */}
               <div className="order-summary mt-3">
                 <p>
                   <strong>Subtotal:</strong> ₹{selectedOrder.subtotal || "—"}
