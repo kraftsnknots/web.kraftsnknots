@@ -1,9 +1,13 @@
 // src/pages/Accounts.jsx
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Button, Modal, Form, Image } from "react-bootstrap";
+import Cropper from "react-easy-crop";
+import getCroppedImg from "../utils/cropImage"; // 👈 helper (next step)
+import Swal from "sweetalert2";
+
 import { logoutUser } from "../features/userSlice";
 import {
   listenToUserProfile,
@@ -26,14 +30,18 @@ export default function Accounts() {
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [editForm, setEditForm] = useState({ name: "", phone: "" });
-  const [newPhotoFile, setNewPhotoFile] = useState(null);
-  const [previewPhoto, setPreviewPhoto] = useState(null);
   const [saving, setSaving] = useState(false);
 
+  // Cropper state
+  const [imageSrc, setImageSrc] = useState(null);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [croppedBlob, setCroppedBlob] = useState(null);
+  const [showCropper, setShowCropper] = useState(false);
+
   useEffect(() => {
-    if (user?.uid) {
-      dispatch(listenToUserProfile(user.uid));
-    }
+    if (user?.uid) dispatch(listenToUserProfile(user.uid));
     return () => dispatch(clearProfile());
   }, [user, dispatch]);
 
@@ -47,15 +55,35 @@ export default function Accounts() {
       name: profile.name || "",
       phone: profile.phone || "",
     });
-    setPreviewPhoto(profile.photoURL || null);
     setShowEditModal(true);
   };
 
-  const handlePhotoChange = (e) => {
+  const onCropComplete = useCallback((_, croppedPixels) => {
+    setCroppedAreaPixels(croppedPixels);
+  }, []);
+
+  // 📸 Load image and open cropper
+  const handlePhotoSelect = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setNewPhotoFile(file);
-      setPreviewPhoto(URL.createObjectURL(file));
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImageSrc(reader.result);
+      setShowCropper(true);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  // ✅ Crop and create blob
+  const handleCropSave = async () => {
+    try {
+      const { file } = await getCroppedImg(imageSrc, croppedAreaPixels);
+      setCroppedBlob(file);
+      setShowCropper(false);
+      Swal.fire("Success", "Photo cropped successfully!", "success");
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "Failed to crop photo", "error");
     }
   };
 
@@ -68,12 +96,13 @@ export default function Accounts() {
           uid: user.uid,
           name: editForm.name.trim(),
           phone: editForm.phone.trim(),
-          newPhotoFile,
+          croppedBlob,
         })
       );
+      Swal.fire("Updated!", "Profile updated successfully.", "success");
       setShowEditModal(false);
     } catch (err) {
-      console.error(err);
+      Swal.fire("Error", "Failed to update profile.", "error");
     } finally {
       setSaving(false);
     }
@@ -127,40 +156,24 @@ export default function Accounts() {
               </span>
             )}
           </div>
-          <Button
-            className="profile-edit-btn"
-            variant="link"
-            onClick={openEditModal}
-          >
+          <Button className="profile-edit-btn" variant="link" onClick={openEditModal}>
             <i className="bi bi-pencil"></i>
           </Button>
         </div>
 
-        {/* ---- Sidebar Menu ---- */}
+        {/* ---- Sidebar ---- */}
         <div className="profile-sidebar">
           <ul className="profile-menu">
-            <li
-              className={`menu-item ${link === "my-orders" && "active"}`}
-              onClick={() => setLink("my-orders")}
-            >
+            <li className={`menu-item ${link === "my-orders" && "active"}`} onClick={() => setLink("my-orders")}>
               <i className="bi bi-file-earmark-text"></i> My Orders
             </li>
-            <li
-              className={`menu-item ${link === "ccare" && "active"}`}
-              onClick={() => setLink("ccare")}
-            >
+            <li className={`menu-item ${link === "ccare" && "active"}`} onClick={() => setLink("ccare")}>
               <i className="bi bi-headset"></i> Customer Care
             </li>
-            <li
-              className={`menu-item ${link === "saddresses" && "active"}`}
-              onClick={() => setLink("saddresses")}
-            >
+            <li className={`menu-item ${link === "saddresses" && "active"}`} onClick={() => setLink("saddresses")}>
               <i className="bi bi-pin-map"></i> Addresses
             </li>
-            <li
-              className={`menu-item ${link === "wishlist" && "active"}`}
-              onClick={() => setLink("wishlist")}
-            >
+            <li className={`menu-item ${link === "wishlist" && "active"}`} onClick={() => setLink("wishlist")}>
               <i className="bi bi-heart"></i> Wishlist
             </li>
             <li className="menu-item logout" onClick={handleLogout}>
@@ -170,7 +183,7 @@ export default function Accounts() {
         </div>
       </div>
 
-      {/* ---- Dynamic Page ---- */}
+      {/* ---- Dynamic Section ---- */}
       {link === "my-orders" ? (
         <MyOrders />
       ) : link === "ccare" ? (
@@ -184,13 +197,7 @@ export default function Accounts() {
       )}
 
       {/* ---- Edit Profile Modal ---- */}
-      <Modal
-        show={showEditModal}
-        onHide={() => setShowEditModal(false)}
-        centered
-        size="md"
-        backdrop="static"
-      >
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered size="md">
         <Modal.Header closeButton>
           <Modal.Title>Edit Profile</Modal.Title>
         </Modal.Header>
@@ -199,44 +206,31 @@ export default function Accounts() {
             <div className="d-flex flex-column align-items-center mb-3">
               <Image
                 src={
-                  previewPhoto ||
-                  profile.photoURL ||
-                  "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+                  croppedBlob
+                    ? URL.createObjectURL(croppedBlob)
+                    : profile.photoURL ||
+                      "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
                 }
-                roundedCircle
-                width={150}
-                className="mb-2 "
+                width={200}
+                height={200}
+                className="mb-2"
               />
-              <Form.Label className="text-muted small">
-                Change Profile Picture
-              </Form.Label>
-              <Form.Control
-                type="file"
-                accept="image/*"
-                onChange={handlePhotoChange}
-                style={{ maxWidth: 250 }}
-              />
+              <Form.Control type="file" accept="image/*" onChange={handlePhotoSelect} />
             </div>
-
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="text"
                 value={editForm.name}
-                onChange={(e) =>
-                  setEditForm((p) => ({ ...p, name: e.target.value }))
-                }
+                onChange={(e) => setEditForm({ ...editForm, name: e.target.value })}
               />
             </Form.Group>
-
             <Form.Group className="mb-3">
               <Form.Label>Phone</Form.Label>
               <Form.Control
                 type="text"
                 value={editForm.phone}
-                onChange={(e) =>
-                  setEditForm((p) => ({ ...p, phone: e.target.value }))
-                }
+                onChange={(e) => setEditForm({ ...editForm, phone: e.target.value })}
               />
             </Form.Group>
           </Form>
@@ -247,6 +241,37 @@ export default function Accounts() {
           </Button>
           <Button variant="dark" disabled={saving} onClick={handleSaveProfile}>
             {saving ? "Saving..." : "Save Changes"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+      {/* ---- Cropper Modal ---- */}
+      <Modal show={showCropper} onHide={() => setShowCropper(false)} centered size="lg">
+        <Modal.Header closeButton>
+          <Modal.Title>Crop Your Photo</Modal.Title>
+        </Modal.Header>
+        <Modal.Body style={{ height: 400, position: "relative" }}>
+          {imageSrc && (
+            <Cropper
+              image={imageSrc}
+              crop={crop}
+              zoom={zoom}
+              aspect={1}
+              // cropShape="round"
+              cropShape="rect"
+              showGrid={false}
+              onCropChange={setCrop}
+              onZoomChange={setZoom}
+              onCropComplete={onCropComplete}
+            />
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowCropper(false)}>
+            Cancel
+          </Button>
+          <Button variant="dark" onClick={handleCropSave}>
+            Crop & Save
           </Button>
         </Modal.Footer>
       </Modal>

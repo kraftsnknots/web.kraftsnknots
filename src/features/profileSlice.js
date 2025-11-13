@@ -41,37 +41,47 @@ export const listenToUserProfile = createAsyncThunk(
   }
 );
 
-// 🔹 Update user profile (Firestore + optional photo)
 export const updateUserProfile = createAsyncThunk(
   "profile/updateUserProfile",
-  async ({ uid, name, phone, newPhotoFile }, { rejectWithValue }) => {
+  async ({ uid, name, phone, croppedBlob }, { rejectWithValue }) => {
     try {
+      console.log("🧩 updateUserProfile called with:", { uid, name, phone, croppedBlob });
+
       const db = getFirestore(getApp());
       const storage = getStorage(getApp());
       const userRef = doc(db, "users", uid);
-      let photoURL = null;
-
-      // 📸 Upload photo if provided
-      if (newPhotoFile) {
-        const fileRef = ref(storage, `profilePhotos/${uid}.jpg`);
-        await uploadBytes(fileRef, newPhotoFile);
-        photoURL = await getDownloadURL(fileRef);
-      }
 
       const updateData = {};
       if (name) updateData.name = name;
       if (phone) updateData.phone = phone;
-      if (photoURL) updateData.photoURL = photoURL;
 
+      if (croppedBlob) {
+        // in updateUserProfile thunk
+        const fileRef = ref(storage, `userPictures/${uid}/profile.jpg`);
+        await uploadBytes(fileRef, croppedBlob);
+        const photoURL = await getDownloadURL(fileRef);
+
+        updateData.photoURL = photoURL;
+      }
+
+      if (Object.keys(updateData).length === 0) {
+        console.warn("⚠️ No fields to update!");
+        return { skip: true };
+      }
+
+      console.log("🔥 Updating Firestore:", uid, updateData);
       await updateDoc(userRef, updateData);
+      console.log("✅ Firestore update successful!");
 
-      return { ...updateData };
+      return updateData;
     } catch (err) {
-      console.error("Update profile error:", err);
+      console.error("❌ Update error:", err);
       return rejectWithValue(err.message);
     }
   }
 );
+
+
 
 const profileSlice = createSlice({
   name: "profile",

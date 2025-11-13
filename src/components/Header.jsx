@@ -126,7 +126,7 @@ export default function Header({ bg }) {
           </span>
 
           {/* 🔍 Search */}
-          <span>
+          <span style={{visibility:'hidden'}}>
             <IoSearch className="icon" title="Search" />
           </span>
 

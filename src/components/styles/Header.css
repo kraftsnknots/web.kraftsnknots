@@ -48,7 +48,7 @@
     width: 33.3%;
     height: 100%;
 }
-
+ 
 /* Left Nav Links */
 .nav-link-custom {
     color: #000 !important;
@@ -152,7 +152,6 @@
 
 .account-dropdown {
     position: relative;
-    cursor: pointer;
     background: #000;
 }
 
@@ -167,14 +166,16 @@
     right: 20px;
     top: 35px;
     text-align: center;
+    font-weight: normal;
 }
 .accdropdown>p:first-child {
     border-bottom: 5px solid #eee;
     padding: 10px 0;
-    cursor: not-allowed;
+    cursor: none;
 }
 .accdropdown>p:first-child:hover{
     color: #000;
+    font-weight: normal;
 }
 
 .accdropdown>p {
@@ -183,6 +184,7 @@
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    cursor: pointer;
 }
 
 .accdropdown>p:last-child{
@@ -200,6 +202,7 @@
     height: 25px;
     border-radius: 20%;
     object-fit: contain;
+    cursor: pointer;
 }
 
 /* Responsive Adjustments */
