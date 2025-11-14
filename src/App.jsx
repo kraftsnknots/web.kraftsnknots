@@ -14,6 +14,7 @@ import AuthPage from './pages/AuthPage';
 import './App.css'
 import "./components/styles/UjaasLoader.css";
 import AccountPage from './pages/AccountPage';
+import Checkout from './pages/Checkout';
 
 function App() {
   const dispatch = useDispatch();
@@ -34,6 +35,7 @@ function App() {
         {/* Protected routes */}
         <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
         <Route path="/add" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
       </Routes>
     </Router>
   )

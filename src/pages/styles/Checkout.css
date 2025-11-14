@@ -1,0 +1,346 @@
+/* ===================================================================
+   GLOBAL PAGE LAYOUT
+=================================================================== */
+.checkout-page {
+  max-width: 1280px;
+  margin: auto;
+  padding-bottom: 80px;
+  font-family: "Inter", sans-serif;
+  color: #222;
+}
+
+.checkout-title {
+  font-size: 2.6rem;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+}
+
+.checkout-subtitle {
+  color: #6e6e6e;
+  margin-top: 6px;
+  font-size: 1.05rem;
+}
+
+/* ===================================================================
+   ELEGANT CARD
+=================================================================== */
+.elegant-card {
+  border: none !important;
+  border-radius: 22px;
+  padding: 26px;
+  background: #ffffff;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
+  transition: 0.25s ease-in-out;
+}
+
+.elegant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.09);
+}
+
+/* ===================================================================
+   SECTION TITLE
+=================================================================== */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+}
+
+/* ===================================================================
+   ADDRESS SELECTION
+=================================================================== */
+.address-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 15px 18px;
+  background: #fafafa;
+  border: 1.5px solid #e6e6e6;
+  border-radius: 14px;
+  margin-bottom: 14px;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+
+.address-item:hover {
+  background: #f3f3f3;
+  border-color: #bdbdbd;
+}
+
+.address-item.active {
+  background: linear-gradient(145deg, #ffffff, #f8f8f8);
+  border-color: #000;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+.address-radio input {
+  width: 18px;
+  height: 18px;
+  accent-color: #000;
+  cursor: pointer;
+}
+
+.address-details {
+  margin-left: 15px;
+}
+
+.address-text {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* ===================================================================
+   SHIPPING OPTIONS
+=================================================================== */
+.shipping-option {
+  display: flex;
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  border-radius: 14px;
+  background: #fafafa;
+  border: 1.5px solid #e2e2e2;
+  transition: 0.25s ease;
+  cursor: pointer;
+}
+
+.shipping-option:hover {
+  background: #f3f3f3;
+  border-color: #c9c9c9;
+}
+
+.shipping-option.active {
+  border-color: #000;
+  background: #fff;
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.07);
+}
+
+.shipping-radio input {
+  width: 18px;
+  height: 18px;
+  accent-color: #000;
+}
+
+/* ===================================================================
+   SPECIAL NOTES
+=================================================================== */
+textarea.form-control {
+  border-radius: 14px;
+  border: 1px solid #ddd !important;
+  background: #fafafa;
+  padding: 14px;
+  resize: none;
+}
+
+/* ===================================================================
+   ORDER SUMMARY
+=================================================================== */
+.order-summary-card {
+  border-radius: 26px;
+}
+
+.summary-item {
+  display: flex;
+  gap: 15px;
+  padding: 16px 0;
+  border-bottom: 1px dashed #e7e7e7;
+}
+
+.summary-item:last-child {
+  border-bottom: none;
+}
+
+.summary-img {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #f6f6f6;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+}
+
+.summary-info .summary-price {
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+/* ===================================================================
+   DISCOUNT INPUT
+=================================================================== */
+.discount-row {
+  color: green;
+}
+
+.pay-btn {
+  padding: 12px 0 !important;
+  font-size: 1.1rem !important;
+  font-weight: 600 !important;
+}
+
+/* ===================================================================
+   TOTAL ROWS
+=================================================================== */
+.summary-row {
+  display: flex;
+  justify-content: space-between;
+  margin: 6px 0;
+}
+
+.total-row {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-top: 14px;
+}
+
+/* ===================================================================
+   OVERLAY LOADING UI
+=================================================================== */
+.checkout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.checkout-overlay-inner {
+  background: #fff;
+  padding: 40px 60px;
+  border-radius: 22px;
+  text-align: center;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* ===================================================================
+   ADD NEW ADDRESS BUTTON
+=================================================================== */
+.add-link {
+  color: #000 !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+  transition: 0.3s ease;
+}
+
+.add-link:hover {
+  opacity: 0.7;
+}
+
+/* ===================================================================
+   TERMS CHECK
+=================================================================== */
+.terms-check input {
+  width: 18px;
+  height: 18px;
+  accent-color: #000;
+}
+
+/* ===================================================================
+   MODAL STYLING
+=================================================================== */
+.modal-content {
+  border-radius: 24px !important;
+}
+
+.modal-body input {
+  border-radius: 12px !important;
+  padding: 12px !important;
+  background: #fafafa;
+}
+
+
+/* ===================================================================
+   STATUS PAGES (SUCCESS / FAILURE)
+=================================================================== */
+.status-card {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.status-icon {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  margin: 0 auto 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.status-icon-inner {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.6rem;
+  color: #fff;
+}
+
+/* Success state */
+.status-icon.success {
+  background: radial-gradient(circle at 30% 0, #a1f0c4, #16a34a);
+  box-shadow: 0 10px 30px rgba(22, 163, 74, 0.35);
+}
+.status-icon.success .status-icon-inner {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Failure state */
+.status-icon.failure {
+  background: radial-gradient(circle at 30% 0, #fecaca, #ef4444);
+  box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
+}
+.status-icon.failure .status-icon-inner {
+  background: rgba(0, 0, 0, 0.12);
+}
+
+.status-title {
+  font-size: 1.9rem;
+  font-weight: 700;
+  letter-spacing: -0.4px;
+}
+
+.status-subtitle {
+  font-size: 0.98rem;
+  color: #666;
+}
+
+.status-details {
+  border-radius: 16px;
+  background: #fafafa;
+  padding: 14px 18px;
+  text-align: left;
+}
+
+.status-row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.93rem;
+  padding: 6px 0;
+  border-bottom: 1px dashed #e1e1e1;
+}
+
+.status-row:last-child {
+  border-bottom: none;
+}
+
+.status-mono {
+  font-family: "SF Mono", "Consolas", monospace;
+  font-size: 0.85rem;
+}
+
+/* On small screens */
+@media (max-width: 576px) {
+  .status-card {
+    padding: 22px 18px !important;
+  }
+
+  .status-title {
+    font-size: 1.6rem;
+  }
+}
