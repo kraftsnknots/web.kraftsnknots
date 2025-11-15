@@ -54,7 +54,7 @@ export default function PaymentSuccess() {
               <Button
                 variant="dark"
                 className="rounded-pill px-4"
-                onClick={() => navigate("/my-orders")}
+                onClick={() => navigate("/account")}
               >
                 View My Orders
               </Button>

@@ -16,7 +16,7 @@ export default function MyOrders() {
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  const itemsPerPage = 7;
 
   // 🧩 Start real-time listener when user logs in
   useEffect(() => {

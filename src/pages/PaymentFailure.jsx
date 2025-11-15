@@ -54,7 +54,7 @@ export default function PaymentFailure() {
               <Button
                 variant="outline-secondary"
                 className="rounded-pill px-4"
-                onClick={() => navigate("/cart")}
+                onClick={() => navigate("/checkout")}
               >
                 Back to Cart
               </Button>

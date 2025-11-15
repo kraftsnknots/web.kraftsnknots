@@ -1,50 +1,222 @@
 /* ===================================================================
    GLOBAL PAGE LAYOUT
+   Modern clay UI – use "Outfit" or similar modern font
 =================================================================== */
-.checkout-page {
-  max-width: 1280px;
-  margin: auto;
-  padding-bottom: 80px;
-  font-family: "Inter", sans-serif;
-  color: #222;
+.checkout-page,
+.checkout-empty-page {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-bottom: 64px;
+  font-family: "Outfit", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  color: #1f2933;
+  border-radius: 12px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 .checkout-title {
-  font-size: 2.6rem;
-  font-weight: 700;
-  letter-spacing: -0.8px;
+  font-size: 2.1rem;
+  font-weight: 650;
+  letter-spacing: -0.03em;
 }
 
 .checkout-subtitle {
-  color: #6e6e6e;
-  margin-top: 6px;
-  font-size: 1.05rem;
+  color: #6b7280;
+  margin-top: 4px;
+  font-size: 0.98rem;
+}
+
+/* Slightly tighter alert */
+.checkout-alert {
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+/* Layout tuning */
+.checkout-layout-row {
+  align-items: flex-start;
 }
 
 /* ===================================================================
-   ELEGANT CARD
+   ELEGANT CARD / CLAY STYLE
 =================================================================== */
 .elegant-card {
   border: none !important;
-  border-radius: 22px;
-  padding: 26px;
-  background: #ffffff;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.07);
-  transition: 0.25s ease-in-out;
+  border-radius: 20px;
+  padding: 20px;
+  background: radial-gradient(circle at top left, #ffffff, #f8f7f6);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.08),
+    0 0 0 1px rgba(148, 163, 184, 0.12);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
 }
 
 .elegant-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 18px 55px rgba(0, 0, 0, 0.09);
+  transform: translateY(-1px);
+  box-shadow:
+    0 22px 50px rgba(15, 23, 42, 0.12),
+    0 0 0 1px rgba(148, 163, 184, 0.18);
+}
+
+.main-step-card {
+  padding: 18px 20px;
+}
+
+.section-block {
+  margin: 18px;
 }
 
 /* ===================================================================
-   SECTION TITLE
+   SECTION TITLES / TEXT
 =================================================================== */
 .section-title {
-  font-size: 1.2rem;
-  font-weight: 700;
-  margin-bottom: 15px;
+  font-size: 1.02rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  letter-spacing: 0.02em;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ===================================================================
+   INPUTS / TEXTAREAS (compact)
+=================================================================== */
+.compact-input {
+  border-radius: 11px !important;
+  border: 1px solid #d1d5db !important;
+  padding: 8px 10px !important;
+  font-size: 0.9rem !important;
+  background: #fbfbfb;
+}
+
+.compact-input:focus {
+  border-color: #111827 !important;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12);
+  background: #ffffff;
+}
+
+.compact-textarea {
+  border-radius: 14px !important;
+  border: 1px solid #d1d5db !important;
+  background: #fbfbfb;
+  padding: 10px 12px !important;
+  font-size: 0.9rem !important;
+  resize: none;
+}
+
+/* ===================================================================
+   STEPPER
+=================================================================== */
+.checkout-stepper {
+  display: flex;
+  align-items: center;
+  column-gap: 12px;
+  margin: 18px;
+}
+
+.step-pill {
+  border: none;
+  background: #eef1f6;
+  border-radius: 999px;
+  padding: 6px 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: 0.18s ease;
+}
+
+.step-pill:disabled {
+  cursor: default;
+}
+
+.step-pill.active {
+  background: #111827;
+  color: #f9fafb;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.35);
+}
+
+.step-index {
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  background: rgba(15, 23, 42, 0.08);
+}
+
+.step-pill.active .step-index {
+  background: rgba(15, 23, 42, 0.5);
+}
+
+.step-label {
+  text-transform: none;
+}
+
+.step-connector {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, #d1d5db, #e5e7eb);
+}
+
+/* ===================================================================
+   SLIDING PANELS
+=================================================================== */
+.step-panels-wrapper {
+  overflow: hidden;
+  position: relative;
+}
+
+.step-panels-inner {
+  display: flex;
+  width: 200%;
+  transition: transform 0.35s ease;
+}
+
+.step-panels-wrapper.step-1 .step-panels-inner {
+  transform: translateX(0%);
+}
+
+.step-panels-wrapper.step-2 .step-panels-inner {
+  transform: translateX(-50%);
+}
+
+.step-panel {
+  width: 50%;
+  padding-right: 8px;
+}
+
+.step-footer {
+  margin: 18px;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Buttons in steps */
+.step-primary-btn {
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.92rem;
+  font-weight: 500;
+}
+
+.step-secondary-btn {
+  border-radius: 999px;
+  padding: 8px 18px;
+  font-size: 0.9rem;
 }
 
 /* ===================================================================
@@ -53,40 +225,53 @@
 .address-item {
   display: flex;
   align-items: flex-start;
-  padding: 15px 18px;
-  background: #fafafa;
-  border: 1.5px solid #e6e6e6;
+  padding: 10px 12px;
+  background: #f7f7fb;
+  border: 4px solid #e5e7eb;
   border-radius: 14px;
-  margin-bottom: 14px;
+  margin-bottom: 10px;
   cursor: pointer;
-  transition: 0.25s ease;
+  transition: 0.2s ease;
 }
 
 .address-item:hover {
-  background: #f3f3f3;
-  border-color: #bdbdbd;
+  background: #f1f3fa;
+  border-color: #d1d5db;
 }
 
 .address-item.active {
-  background: linear-gradient(145deg, #ffffff, #f8f8f8);
-  border-color: #000;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+  background: radial-gradient(circle at top left, #ffffff, #eef2ff);
+  border-color: #111827;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
 }
 
 .address-radio input {
-  width: 18px;
-  height: 18px;
-  accent-color: #000;
+  width: 16px;
+  height: 16px;
+  accent-color: #111827;
   cursor: pointer;
 }
 
 .address-details {
-  margin-left: 15px;
+  margin-left: 12px;
 }
 
 .address-text {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.88rem;
+  color: #4b5563;
+}
+
+/* Add new link */
+.add-link {
+  color: #111827 !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  font-size: 0.85rem;
+  padding-right: 0;
+}
+
+.add-link:hover {
+  opacity: 0.7;
 }
 
 /* ===================================================================
@@ -94,55 +279,58 @@
 =================================================================== */
 .shipping-option {
   display: flex;
-  padding: 14px 16px;
-  margin-bottom: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  margin-bottom: 8px;
   border-radius: 14px;
-  background: #fafafa;
-  border: 1.5px solid #e2e2e2;
-  transition: 0.25s ease;
+  background: #f7f7fb;
+  border: 4px solid #e5e7eb;
+  transition: 0.2s ease;
   cursor: pointer;
+  gap: 10px;
+  width: 45%;
 }
 
 .shipping-option:hover {
-  background: #f3f3f3;
-  border-color: #c9c9c9;
+  background: #f1f3fa;
+  border-color: #d1d5db;
 }
 
 .shipping-option.active {
-  border-color: #000;
-  background: #fff;
-  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.07);
+  border-color: #111827;
+  background: #ffffff;
+  box-shadow: 0 8px 18px rgba(15, 23, 42, 0.12);
 }
 
 .shipping-radio input {
+  width: 16px;
+  height: 16px;
+  accent-color: #111827;
+}
+
+
+/* ===================================================================
+   TERMS CHECK
+=================================================================== */
+.terms-check input {
   width: 18px;
   height: 18px;
-  accent-color: #000;
+  accent-color: #111827;
+  margin-right: 8px;
 }
 
 /* ===================================================================
-   SPECIAL NOTES
-=================================================================== */
-textarea.form-control {
-  border-radius: 14px;
-  border: 1px solid #ddd !important;
-  background: #fafafa;
-  padding: 14px;
-  resize: none;
-}
-
-/* ===================================================================
-   ORDER SUMMARY
+   ORDER SUMMARY (RIGHT CARD)
 =================================================================== */
 .order-summary-card {
-  border-radius: 26px;
+  border-radius: 22px;
 }
 
 .summary-item {
   display: flex;
-  gap: 15px;
-  padding: 16px 0;
-  border-bottom: 1px dashed #e7e7e7;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed #e5e7eb;
 }
 
 .summary-item:last-child {
@@ -150,45 +338,85 @@ textarea.form-control {
 }
 
 .summary-img {
-  width: 70px;
-  height: 70px;
-  border-radius: 12px;
+  width: 62px;
+  height: 62px;
+  border-radius: 16px;
   object-fit: cover;
-  background: #f6f6f6;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+  background: #f3f4f6;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.12);
+}
+
+.summary-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .summary-info .summary-price {
   font-weight: 600;
   margin-top: 4px;
+  font-size: 0.92rem;
 }
 
-/* ===================================================================
-   DISCOUNT INPUT
-=================================================================== */
-.discount-row {
-  color: green;
+/* Coupon display */
+.coupon-chip {
+  border-radius: 16px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, #fef3c7, #fdf6e3);
+  border: 1px solid #fbbf24;
+  font-size: 0.86rem;
 }
 
-.pay-btn {
-  padding: 12px 0 !important;
-  font-size: 1.1rem !important;
-  font-weight: 600 !important;
+.coupon-code {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
 }
 
-/* ===================================================================
-   TOTAL ROWS
-=================================================================== */
+.coupon-meta {
+  color: #92400e;
+}
+
+.coupon-subtext {
+  color: #b45309;
+  font-size: 0.78rem;
+  margin-top: 2px;
+}
+
+.coupon-hint {
+  font-size: 0.82rem;
+  color: #6b7280;
+}
+
+/* Totals */
 .summary-row {
   display: flex;
   justify-content: space-between;
-  margin: 6px 0;
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+.discount-row {
+  color: #059669;
 }
 
 .total-row {
-  font-size: 1.4rem;
-  font-weight: 700;
-  margin-top: 14px;
+  font-size: 1.1rem;
+  font-weight: 650;
+  margin-top: 10px;
+}
+
+/* Pay & back buttons */
+.pay-btn {
+  padding: 10px 0 !important;
+  font-size: 0.98rem !important;
+  font-weight: 600 !important;
+}
+
+.back-cart-btn {
+  padding: 8px 0 !important;
+  font-size: 0.9rem !important;
 }
 
 /* ===================================================================
@@ -197,7 +425,7 @@ textarea.form-control {
 .checkout-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(248, 250, 252, 0.92);
   backdrop-filter: blur(6px);
   z-index: 9999;
   display: flex;
@@ -206,52 +434,62 @@ textarea.form-control {
 }
 
 .checkout-overlay-inner {
-  background: #fff;
-  padding: 40px 60px;
-  border-radius: 22px;
+  background: #ffffff;
+  padding: 26px 36px;
+  border-radius: 20px;
   text-align: center;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-}
-
-/* ===================================================================
-   ADD NEW ADDRESS BUTTON
-=================================================================== */
-.add-link {
-  color: #000 !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-  transition: 0.3s ease;
-}
-
-.add-link:hover {
-  opacity: 0.7;
-}
-
-/* ===================================================================
-   TERMS CHECK
-=================================================================== */
-.terms-check input {
-  width: 18px;
-  height: 18px;
-  accent-color: #000;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.28);
 }
 
 /* ===================================================================
    MODAL STYLING
 =================================================================== */
 .modal-content {
-  border-radius: 24px !important;
+  border-radius: 22px !important;
+  border: none !important;
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.16),
+    0 0 0 1px rgba(148, 163, 184, 0.18);
 }
 
 .modal-body input {
   border-radius: 12px !important;
-  padding: 12px !important;
+  padding: 10px !important;
   background: #fafafa;
 }
 
+/* ===================================================================
+   REVIEW BLOCK (STEP 2)
+=================================================================== */
+.review-block {
+  border-radius: 14px;
+  background: #f9fafb;
+  padding: 12px 14px;
+  font-size: 0.88rem;
+}
+
+.review-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 5px 0;
+  border-bottom: 1px dashed #e5e7eb;
+}
+
+.review-row:last-child {
+  border-bottom: none;
+}
+
+.review-row span:first-child {
+  color: #6b7280;
+}
+
+.review-row span:last-child {
+  text-align: right;
+}
 
 /* ===================================================================
-   STATUS PAGES (SUCCESS / FAILURE)
+   STATUS PAGES (SUCCESS / FAILURE) – kept, slight tweaks
 =================================================================== */
 .status-card {
   max-width: 560px;
@@ -281,7 +519,7 @@ textarea.form-control {
   color: #fff;
 }
 
-/* Success state */
+/* Success */
 .status-icon.success {
   background: radial-gradient(circle at 30% 0, #a1f0c4, #16a34a);
   box-shadow: 0 10px 30px rgba(22, 163, 74, 0.35);
@@ -290,7 +528,7 @@ textarea.form-control {
   background: rgba(0, 0, 0, 0.1);
 }
 
-/* Failure state */
+/* Failure */
 .status-icon.failure {
   background: radial-gradient(circle at 30% 0, #fecaca, #ef4444);
   box-shadow: 0 10px 30px rgba(239, 68, 68, 0.35);
@@ -300,19 +538,19 @@ textarea.form-control {
 }
 
 .status-title {
-  font-size: 1.9rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  letter-spacing: -0.4px;
+  letter-spacing: -0.04em;
 }
 
 .status-subtitle {
-  font-size: 0.98rem;
-  color: #666;
+  font-size: 0.95rem;
+  color: #6b7280;
 }
 
 .status-details {
   border-radius: 16px;
-  background: #fafafa;
+  background: #f9fafb;
   padding: 14px 18px;
   text-align: left;
 }
@@ -320,7 +558,7 @@ textarea.form-control {
 .status-row {
   display: flex;
   justify-content: space-between;
-  font-size: 0.93rem;
+  font-size: 0.9rem;
   padding: 6px 0;
   border-bottom: 1px dashed #e1e1e1;
 }
@@ -334,13 +572,37 @@ textarea.form-control {
   font-size: 0.85rem;
 }
 
-/* On small screens */
-@media (max-width: 576px) {
-  .status-card {
-    padding: 22px 18px !important;
+/* ===================================================================
+   RESPONSIVE
+=================================================================== */
+@media (max-width: 991px) {
+  .step-panel {
+    width: 100%;
   }
 
-  .status-title {
-    font-size: 1.6rem;
+  .step-panels-inner {
+    width: 200%;
+  }
+
+  .step-panels-wrapper.step-2 .step-panels-inner {
+    transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 768px) {
+  .checkout-page {
+    padding-inline: 12px;
+  }
+
+  .main-step-card {
+    margin-bottom: 12px;
+  }
+
+  .order-summary-card {
+    padding: 16px 16px;
+  }
+
+  .checkout-title {
+    font-size: 1.8rem;
   }
 }

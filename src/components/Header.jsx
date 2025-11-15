@@ -126,7 +126,7 @@ export default function Header({ bg }) {
           </span>
 
           {/* 🔍 Search */}
-          <span style={{visibility:'hidden'}}>
+          <span style={{ visibility: 'hidden' }}>
             <IoSearch className="icon" title="Search" />
           </span>
 
@@ -183,9 +183,14 @@ export default function Header({ bg }) {
                   />
                   <div className="cart-item-details flex-grow-1">
                     <h6 className="mb-0 d-flex justify-content-between align-items-center">{item.title} <i className="bi bi-x-circle " onClick={() => dispatch(removeFromCart(item.id))}></i></h6>
-                    <small>₹ {item.discountPrice} X {item.quantity} = {item.discountPrice * item.quantity}</small>
+                    {item.discountPrice ?
+                      <small> <small style={{ color: 'red', textDecorationLine: 'line-through' }}>₹ {item.price}</small> ₹ {item.discountPrice} X {item.quantity} = {item.discountPrice * item.quantity}</small>
+                      :
+                      <small>₹ {item.price} X {item.quantity} = {item.price * item.quantity}</small>
+                    }
+
                   </div>
-                  
+
                 </div>
               ))}
 
@@ -194,7 +199,16 @@ export default function Header({ bg }) {
                 <strong>Total:</strong>
                 <strong>₹{total.toFixed(2)}</strong>
               </div>
-              <div className="mt-3 d-flex justify-content-end">
+              <div className="pt-3 mt-3 d-flex justify-content-between">
+                <button
+                  className="btn btn-dark"
+                  onClick={() => {
+                    setShowCart(false);
+                    navigate("/cart");
+                  }}
+                >
+                  View Cart
+                </button>
                 <button
                   className="btn btn-dark"
                   onClick={() => {

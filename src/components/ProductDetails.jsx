@@ -204,7 +204,7 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
                 </Button>
               </div>
               <Button
-                variant={inCart ? "dark" : "dark"}
+                variant="dark"
                 onClick={handleCart}
               >
                 {inCart ? <>

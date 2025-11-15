@@ -15,6 +15,9 @@ import './App.css'
 import "./components/styles/UjaasLoader.css";
 import AccountPage from './pages/AccountPage';
 import Checkout from './pages/Checkout';
+import PaymentFailure from './pages/PaymentFailure';
+import PaymentSuccess from './pages/PaymentSuccess';
+import CartPage from './pages/CartPage';
 
 function App() {
   const dispatch = useDispatch();
@@ -31,11 +34,14 @@ function App() {
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/product/:productId" element={<ProductDetailsPage />} />
         <Route path="/auth" element={<AuthPage />} />
+        <Route path="/cart" element={<CartPage />} />
 
         {/* Protected routes */}
         <Route path="/account" element={<ProtectedRoute><AccountPage /></ProtectedRoute>} />
         <Route path="/add" element={<ProtectedRoute><AddProduct /></ProtectedRoute>} />
         <Route path="/checkout" element={<ProtectedRoute><Checkout /></ProtectedRoute>} />
+        <Route path="/checkout/failure" element={<ProtectedRoute><PaymentFailure /></ProtectedRoute>} />
+        <Route path="/checkout/success" element={<ProtectedRoute><PaymentSuccess /></ProtectedRoute>} />
       </Routes>
     </Router>
   )
