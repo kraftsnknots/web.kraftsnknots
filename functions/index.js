@@ -709,14 +709,14 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                     </html>`;
 
             await transporter.sendMail({
-                from: `"Ujaas Aroma App" <${config.smtpContactForm.auth.user}>`,
-                to: "mobileapp_contact_form@ujaasaroma.com",
+                from: `"Ujaas Aroma" <${config.smtpContactForm.auth.user}>`,
+                to: "contact_form@ujaasaroma.com",
                 subject: `📩 New Contact Message from ${formDetails.name}`,
                 html: htmlAdminBody,
             });
 
             await transporter.sendMail({
-                from: `"Ujaas Aroma App" <${config.smtpContactForm.auth.user}>`,
+                from: `"Ujaas Aroma" <${config.smtpContactForm.auth.user}>`,
                 to: formDetails.email,
                 subject: `We received your message, ${formDetails.name}`,
                 html: htmlUserBody,

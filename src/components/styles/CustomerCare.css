@@ -233,6 +233,12 @@
   border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
+.status-chip.replied {
+  background-color: rgba(34, 197, 94, 0.15);
+  color: #16a34a;
+  border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
 /* 📜 Expanded Message Section */
 .expanded-message-cell {
   background: #f9f9f9;
@@ -251,6 +257,7 @@
 .admin-reply {
   margin-bottom: 18px;
 }
+
 
 .msg-label {
   font-weight: 600;
@@ -275,7 +282,6 @@
   color: #fff;
   align-self: flex-start;
   border: 1px solid #000;
-
   width: 52%;
 }
 
@@ -284,6 +290,8 @@
   color: #111;
   align-self: flex-end;
   border: 1px solid #b6efb6;
+  text-align: right;
+
 }
 
 .msg-time {

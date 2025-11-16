@@ -14,15 +14,21 @@ import { getApp } from "firebase/app";
 
 let unsubscribeEnquiries = null;
 
-// 🔹 Real-time listener
+/* -------------------------------------------------------
+   🔥 REAL-TIME LISTENER — Filter by EMAIL, not userId
+-------------------------------------------------------- */
 export const listenToUserEnquiries = createAsyncThunk(
   "enquiries/listenToUserEnquiries",
-  async (userId, { dispatch, rejectWithValue }) => {
+  async (userEmail, { dispatch, rejectWithValue }) => {
     try {
+      if (!userEmail) {
+        return rejectWithValue("No authenticated email provided");
+      }
+
       const db = getFirestore(getApp());
       const q = query(
-        collection(db, "mobileAppContactFormQueries"),
-        where("userId", "==", userId),
+        collection(db, "contactFormQueries"),
+        where("email", "==", userEmail),
         where("deleted", "==", 0),
         orderBy("createdAt", "desc")
       );
@@ -52,23 +58,28 @@ export const listenToUserEnquiries = createAsyncThunk(
   }
 );
 
-// 🔹 Submit new enquiry
+/* -------------------------------------------------------
+   🔥 SUBMIT ENQUIRY — Anyone can submit (no login required)
+-------------------------------------------------------- */
 export const submitEnquiry = createAsyncThunk(
   "enquiries/submitEnquiry",
-  async ({ userId, name, email, phone, message }, { rejectWithValue }) => {
+  async ({ name, email, phone, message, sentFrom }, { rejectWithValue }) => {
     try {
       const db = getFirestore(getApp());
+
       const formDetails = {
-        userId,
-        name,
-        email,
-        phone,
-        message,
+        name: name.trim(),
+        email: email.trim(),
+        phone: phone.trim(),
+        message: message.trim(),
+        sentFrom: sentFrom || "Website",
         deleted: 0,
+        status: 'pending',
         createdAt: serverTimestamp(),
       };
 
-      await addDoc(collection(db, "mobileAppContactFormQueries"), formDetails);
+      await addDoc(collection(db, "contactFormQueries"), formDetails);
+
       return { success: true };
     } catch (err) {
       console.error("Submit enquiry failed:", err);
@@ -77,6 +88,9 @@ export const submitEnquiry = createAsyncThunk(
   }
 );
 
+/* -------------------------------------------------------
+   🔥 SLICE
+-------------------------------------------------------- */
 const enquiriesSlice = createSlice({
   name: "enquiries",
   initialState: {
@@ -98,6 +112,7 @@ const enquiriesSlice = createSlice({
       state.list = [];
       state.status = "idle";
       state.error = null;
+
       if (unsubscribeEnquiries) {
         unsubscribeEnquiries();
         unsubscribeEnquiries = null;
@@ -116,6 +131,7 @@ const enquiriesSlice = createSlice({
         state.status = "error";
         state.error = action.payload;
       })
+
       .addCase(submitEnquiry.pending, (state) => {
         state.status = "submitting";
       })

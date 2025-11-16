@@ -28,25 +28,25 @@ export default function CustomerCare() {
   const [alertMessage, setAlertMessage] = useState(false);
   const [expandedId, setExpandedId] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-
+  const user = useSelector((state) => state.user.user);
   const itemsPerPage = 7;
-  const user = auth.currentUser;
 
-  // 🧠 Prefill user info
   useEffect(() => {
-    const u = auth.currentUser;
-    if (!u) return;
-    setForm((f) => ({
+    if (!user) return;
+
+    setForm(f => ({
       ...f,
-      name: u.displayName || "",
-      email: u.email || "",
+      name: user.name || "",
+      email: user.email || "",
+      phone: user.phone || "",
     }));
-  }, [auth]);
+  }, [user]);
+
 
   // 🔁 Start realtime listener
   useEffect(() => {
     if (user?.uid) {
-      dispatch(listenToUserEnquiries(user.uid));
+      dispatch(listenToUserEnquiries(user.email));
     }
     return () => {
       dispatch(clearEnquiries());
@@ -100,10 +100,11 @@ export default function CustomerCare() {
       // Add to Firestore via Redux thunk
       await dispatch(
         submitEnquiry({
-          userId: user.uid,
           name: form.name.trim(),
           email: form.email.trim(),
           phone: form.phone.trim(),
+          sentFrom: 'Website with Authorization',
+          deleted: 0,
           message: form.message.trim(),
         })
       );
@@ -190,6 +191,7 @@ export default function CustomerCare() {
                 >
                   <thead>
                     <tr>
+                      <th><i class="bi bi-send-check-fill"></i></th>
                       <th>Date</th>
                       <th>Time</th>
                       <th>Preview</th>
@@ -201,10 +203,15 @@ export default function CustomerCare() {
                       const date = enq.createdAt?.seconds
                         ? new Date(enq.createdAt.seconds * 1000)
                         : new Date();
-                      const formattedDate = date.toLocaleDateString();
-                      const formattedTime = date.toLocaleTimeString([], {
+                      const formattedDate = date.toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "2-digit",
+                        year: "numeric",
+                      });
+                      const formattedTime = date.toLocaleTimeString("en-US", {
                         hour: "2-digit",
                         minute: "2-digit",
+                        hour12: true,
                       });
                       const hasReply = !!enq.adminReply;
                       const shortPreview =
@@ -220,14 +227,21 @@ export default function CustomerCare() {
                               setExpandedId(expandedId === enq.id ? null : enq.id)
                             }
                           >
+                            <td>
+                              {enq.sentFrom === 'app' ?
+                                <i class="bi bi-phone" style={{ fontSize: 20 }}></i>
+                                :
+                                <i class="bi bi-globe" style={{ fontSize: 20 }}></i>
+                              }
+                            </td>
                             <td>{formattedDate}</td>
                             <td>{formattedTime}</td>
                             <td>{shortPreview}</td>
                             <td>
                               <span
-                                className={`status-chip ${hasReply ? "delivered" : "pending"}`}
+                                className={`status-chip ${enq.status === 'replied' ? "replied" : "pending"}`}
                               >
-                                {hasReply ? "replied" : "pending"}
+                                {enq.status === 'replied' ? "replied" : "pending"}
                               </span>
                             </td>
                           </tr>
@@ -239,9 +253,9 @@ export default function CustomerCare() {
                                 exit={{ opacity: 0, height: 0 }}
                                 transition={{ duration: 0.3 }}
                               >
-                                <td colSpan="4" className="expanded-message-cell">
+                                <td colSpan="12" className="expanded-message-cell">
                                   <div className="expanded-message">
-                                    <div className="user-message">
+                                    <div className="user-message d-flex flex-column align-items-start justify-content-start">
                                       <p className="msg-label">You said:</p>
                                       <div className="msg-bubble user-bubble">
                                         {enq.message}
@@ -252,18 +266,33 @@ export default function CustomerCare() {
                                     </div>
 
                                     {hasReply ? (
-                                      <div className="admin-reply">
-                                        <p className="msg-label">Support replied:</p>
+                                      <div className="admin-reply d-flex flex-column align-items-end justify-content-start">
+                                        <p className="msg-label d-flex justify-content-end">Support replied:</p>
                                         <div className="msg-bubble admin-bubble">
                                           {enq.adminReply}
                                         </div>
-                                        <small className="msg-time">
+                                        <small className="msg-time d-flex justify-content-end">
                                           {enq.adminReplyAt
-                                            ? `Replied on ${new Date(
-                                                enq.adminReplyAt.seconds * 1000
-                                              ).toLocaleDateString()}`
+                                            ? (() => {
+                                              const dateObj = new Date(enq.adminReplyAt.seconds * 1000);
+
+                                              const formattedDate = dateObj.toLocaleDateString("en-US", {
+                                                month: "short",
+                                                day: "2-digit",
+                                                year: "numeric",
+                                              });
+
+                                              const formattedTime = dateObj.toLocaleTimeString("en-US", {
+                                                hour: "2-digit",
+                                                minute: "2-digit",
+                                                hour12: true,
+                                              });
+
+                                              return `Replied on ${formattedDate} at ${formattedTime}`;
+                                            })()
                                             : ""}
                                         </small>
+
                                       </div>
                                     ) : (
                                       <div className="no-reply-msg">

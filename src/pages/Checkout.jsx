@@ -418,7 +418,7 @@ export default function Checkout() {
                             status: "success",
                         },
                         status: "processing",
-                        source: "website",
+                        sentFrom: "Website",
                         createdAt: serverTimestamp(),
                         updatedAt: serverTimestamp(),
                     };
@@ -493,6 +493,7 @@ export default function Checkout() {
                                 error: "User closed the payment window",
                             },
                             status: "failed",
+                            sentFrom: "Website",
                             createdAt: serverTimestamp(),
                             updatedAt: serverTimestamp(),
                         };
@@ -574,10 +575,10 @@ export default function Checkout() {
             <Container className="checkout-page py-4">
                 {/* OVERLAY LOADER */}
                 {loading && (
-                    <div className="loader-div d-flex flex-column justify-content-center align-items-center" style={{height:'100%'}}>
+                    <div className="loader-div d-flex flex-column justify-content-center align-items-center" style={{ height: '100%' }}>
                         <div className="loader"></div>
                         <div className="processing-loader"></div>
-                        <div className="spin-loader" style={{width:500}}></div>
+                        <div className="spin-loader" style={{ width: 500 }}></div>
                     </div>
                 )}
 
