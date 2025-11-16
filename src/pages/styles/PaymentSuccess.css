@@ -1,0 +1,113 @@
+.ps-container {
+  font-family: "Inter", system-ui, sans-serif;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.ps-card {
+  border: none;
+  border-radius: 24px;
+  background: #ffffff;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+.ps-success-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: rgba(22,163,74,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ps-success-inner {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #16a34a;
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ps-title {
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.ps-subtitle {
+  color: #666;
+  font-size: 14px;
+}
+
+.ps-section-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.ps-box {
+  background: #fafafa;
+  border-radius: 14px;
+  padding: 16px;
+  border: 1px solid #e8e8e8;
+}
+
+.ps-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 0;
+  font-size: 15px;
+}
+
+.ps-bold {
+  font-weight: 700;
+}
+
+.ps-mono {
+  font-family: "SF Mono", Menlo, monospace;
+  font-size: 13px;
+}
+
+.ps-address {
+  font-size: 13px;
+  color: #666;
+  margin-top: 4px;
+}
+
+.ps-item-row {
+  border-bottom: 1px dashed #e2e2e2;
+}
+
+.ps-options {
+  font-size: 12px;
+  color: #777;
+}
+
+.ps-discount {
+  color: #10b981;
+}
+
+.ps-total {
+  font-size: 18px;
+  font-weight: 700;
+  margin-top: 6px;
+}
+
+.ps-btn-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.ps-btn {
+  padding: 12px 0;
+  border-radius: 50px;
+  font-weight: 600;
+}

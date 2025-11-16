@@ -53,145 +53,150 @@ exports.createRazorpayOrder = functions.https.onRequest(async (req, res) => {
 // 🔹 2.1 PDF Generation Utility
 // ======================================================
 async function generatePDFBuffer(orderDetails) {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const doc = new PDFDocument({ margin: 50, size: 'A4' });
-      const buffers = [];
+    return new Promise(async (resolve, reject) => {
+        try {
+            const doc = new PDFDocument({ margin: 50, size: 'A4' });
+            const buffers = [];
 
-      doc.on("data", buffers.push.bind(buffers));
-      doc.on("end", () => resolve(Buffer.concat(buffers)));
+            doc.on("data", buffers.push.bind(buffers));
+            doc.on("end", () => resolve(Buffer.concat(buffers)));
 
-      // ✅ Fetch the logo image as a buffer
-      const logoUrl =
-        "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a";
-      const logoRes = await fetch(logoUrl);
-      const logoBuffer = Buffer.from(await logoRes.arrayBuffer());
+            // ✅ Fetch the logo image as a buffer
+            const logoUrl =
+                "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a";
+            const logoRes = await fetch(logoUrl);
+            const logoBuffer = Buffer.from(await logoRes.arrayBuffer());
 
-      // === HEADER ===
-      doc.fontSize(35).font("Helvetica-Bold").text("INVOICE", 50, 75, { align: "left" });
-      doc.image(logoBuffer, 400, 50, { width: 170, align: "right" });
-      doc.moveDown(2);
+            // === HEADER ===
+            doc.fontSize(35).font("Helvetica-Bold").text("INVOICE", 50, 75, { align: "left" });
+            doc.image(logoBuffer, 400, 50, { width: 170, align: "right" });
+            doc.moveDown(2);
 
-      // Formatting Date
-      const formattedDate = new Intl.DateTimeFormat('en-US', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      }).format(new Date(orderDetails.orderDate || new Date()));
+            // Formatting Date
+            const formattedDate = new Intl.DateTimeFormat('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            }).format(new Date(orderDetails.orderDate || new Date()));
 
-      // === DATE & ADDRESSES ===
-      const yStart = 170;
-      doc.fontSize(10).font("Helvetica-Bold").text("Date:", 50, yStart);
-      doc.font("Helvetica").text(formattedDate, 80, yStart);
-      doc.fontSize(10).font("Helvetica-Bold").text("Order No.", 450, yStart);
-      doc.fontSize(10).font("Helvetica").text(`${orderDetails.orderNumber}`, 500, yStart);
-      doc.moveDown();
+            // === DATE & ADDRESSES ===
+            const yStart = 170;
+            doc.fontSize(10).font("Helvetica-Bold").text("Date:", 50, yStart);
+            doc.font("Helvetica").text(formattedDate, 80, yStart);
+            doc.fontSize(10).font("Helvetica-Bold").text("Order No.", 450, yStart);
+            doc.fontSize(10).font("Helvetica").text(`${orderDetails.orderNumber}`, 500, yStart);
+            doc.moveDown();
 
-      doc.font("Helvetica-Bold").text("Billed to:", 50, 230);
-      const customer = orderDetails.customerInfo || {};
-      doc.font("Helvetica").text(`${customer.name || ""}`, 50, 245);
-      doc.text(`${customer.shipping_address.address || ""}, ${customer.shipping_address.city}`, 50, 260);
-      doc.text(`${customer.shipping_address.state || ""}, ${customer.shipping_address.postalCode}, ${customer.shipping_address.country}`, 50, 275);
-      doc.text(`${customer.email || ""}`, 50, 290);
+            doc.font("Helvetica-Bold").text("Billed to:", 50, 230);
+            const customer = orderDetails.customerInfo || {};
+            doc.font("Helvetica").text(`${customer.name || ""}`, 50, 245);
+            doc.text(`${customer.shipping_address.address || ""}, ${customer.shipping_address.city}`, 50, 260);
+            doc.text(`${customer.shipping_address.state || ""}, ${customer.shipping_address.postalCode}, ${customer.shipping_address.country}`, 50, 275);
+            doc.text(`${customer.email || ""}`, 50, 290);
 
-      doc.font("Helvetica-Bold").text("From:", 350, 230);
-      doc.font("Helvetica").text("Ujaas Aroma", 350, 245);
-      doc.text("124-D, Ittina Abha, Munnekolal, Bengaluru", 350, 260);
-      doc.text("Karnataka, 560037, India", 350, 275);
-      doc.text("info@ujaasaroma.com", 350, 290);
+            doc.font("Helvetica-Bold").text("From:", 350, 230);
+            doc.font("Helvetica").text("Ujaas Aroma", 350, 245);
+            doc.text("124-D, Ittina Abha, Munnekolal, Bengaluru", 350, 260);
+            doc.text("Karnataka, 560037, India", 350, 275);
+            doc.text("info@ujaasaroma.com", 350, 290);
 
-      // === TABLE HEAD ===
-      const tableTop = 320;
-      doc.moveTo(50, tableTop).lineTo(550, tableTop).strokeColor("#999999").stroke();
-      doc.font("Helvetica-Bold");
-      doc.text("Item", 50, tableTop + 10);
-      doc.text("Qty", 280, tableTop + 10, { width: 50, align: "right" });
-      doc.text("Price", 360, tableTop + 10, { width: 80, align: "right" });
-      doc.text("Amount", 460, tableTop + 10, { width: 80, align: "right" });
-      doc.moveTo(50, tableTop + 25).lineTo(550, tableTop + 25).strokeColor("#999").stroke();
+            // === TABLE HEAD ===
+            const tableTop = 320;
+            doc.moveTo(50, tableTop).lineTo(550, tableTop).strokeColor("#999999").stroke();
+            doc.font("Helvetica-Bold");
+            doc.text("Item", 50, tableTop + 10);
+            doc.text("Qty", 280, tableTop + 10, { width: 50, align: "right" });
+            doc.text("Price", 360, tableTop + 10, { width: 80, align: "right" });
+            doc.text("Amount", 460, tableTop + 10, { width: 80, align: "right" });
+            doc.moveTo(50, tableTop + 25).lineTo(550, tableTop + 25).strokeColor("#999").stroke();
 
-      // === ITEMS ===
-      let y = tableTop + 35;
-      const items = orderDetails.cartItems || [];
-      doc.font("Helvetica");
-      items.forEach((item) => {
-        const amount = item.price * item.quantity;
-        doc.text(item.title, 50, y);
-        doc.text(item.quantity.toString(), 300, y, { width: 30, align: "right" });
-        doc.text(`${item.price.toFixed(2)}`, 360, y, { width: 80, align: "right" });
-        doc.text(`${amount.toFixed(2)}`, 460, y, { width: 80, align: "right" });
-        y += 20;
-      });
-      doc.moveTo(50, y).lineTo(550, y).strokeColor("#999").stroke();
+            // === ITEMS ===
+            let y = tableTop + 35;
+            const items = orderDetails.cartItems || [];
+            doc.font("Helvetica");
+            items.forEach((item) => {
+                const amount = item.price * item.quantity;
+                doc.text(item.title, 50, y);
+                doc.text(item.quantity.toString(), 300, y, { width: 30, align: "right" });
+                doc.text(`${item.price.toFixed(2)}`, 360, y, { width: 80, align: "right" });
+                doc.text(`${amount.toFixed(2)}`, 460, y, { width: 80, align: "right" });
+                y += 20;
+            });
+            doc.moveTo(50, y).lineTo(550, y).strokeColor("#999").stroke();
+            // === SUBTOTAL ===
+            y += 10;
+            const tbd = orderDetails.totalBeforeDiscount;
+            const subtotal = orderDetails.subtotal;
+            const tax = orderDetails.tax;
+            const shipping = orderDetails.shipping.shippingCost
+            const discount = orderDetails.discountValue
+            const total = subtotal + tax + shipping;
 
-      // === SUBTOTAL ===
-      y += 10;
-      const subtotal = orderDetails.subtotal;
-      const tax = orderDetails.tax;
-      const shipping = orderDetails.shipping.shippingCost
-      const discount = orderDetails.discountValue
-      const ttotal = subtotal + tax + shipping;
-      const total = ttotal - discount;
-      doc.font('Helvetica');
-      doc.text("Subtotal", 360, y, { width: 80, align: "right" });
-      doc.text(`${subtotal.toFixed(2)}`, 460, y, { width: 80, align: "right" });
-      y += 15;
-      doc.font('Helvetica');
-      doc.text("GST", 360, y, { width: 80, align: "right" });
-      doc.text(`${tax.toFixed(2)}`, 460, y, { width: 80, align: "right" });
-      y += 15;
-      doc.font('Helvetica');
-      doc.text("Shipping", 360, y, { width: 80, align: "right" });
-      doc.text(`${shipping.toFixed(2)}`, 460, y, { width: 80, align: "right" });
+            doc.font('Helvetica');
+            doc.text("Total Amount", 360, y, { width: 80, align: "right" });
+            doc.text(`${tbd.toFixed(2)}`, 460, y, { width: 80, align: "right" });
+            doc.moveTo(50, y += 15).lineTo(550, y += 15).strokeColor("#999").stroke();
 
-      if (orderDetails.discountCode !== null) {
-        y += 15;
-        doc.font('Helvetica');
-        doc.text(`Discount (${orderDetails.discountCode})`, 360, y, { width: 80, align: "right" });
-        doc.text(`- ${discount.toFixed(2)}`, 460, y, { width: 80, align: "right" });
-      }
+            if (orderDetails.discountCode !== null) {
+                y += 15;
+                doc.font('Helvetica').fillColor('#16A34A');
+                doc.text(`Coupon (${orderDetails.discountCode})`, 360, y, { width: 80, align: "right" });
+                doc.text(`- ${discount.toFixed(2)}`, 460, y, { width: 80, align: "right" }).fillColor('#000000');
+            }
+            y += 15;
+            doc.font('Helvetica');
+            doc.text("Subtotal", 360, y, { width: 80, align: "right" });
+            doc.text(`${subtotal.toFixed(2)}`, 460, y, { width: 80, align: "right" });
+            y += 15;
+            doc.font('Helvetica');
+            doc.text("GST", 360, y, { width: 80, align: "right" });
+            doc.text(`${tax.toFixed(2)}`, 460, y, { width: 80, align: "right" });
+            y += 15;
+            doc.font('Helvetica');
+            doc.text("Shipping", 360, y, { width: 80, align: "right" });
+            doc.text(`${shipping.toFixed(2)}`, 460, y, { width: 80, align: "right" });
 
-      // === TOTAL ===
-      y += 30;
-      doc.registerFont('NotoSansBold', './NotoSansMono-Bold.ttf');
-      doc.font('NotoSansBold');
-      doc.text("Total", 360, y, { width: 80, align: "right" });
-      doc.text(`₹ ${total.toFixed(2)}`, 460, y, { width: 80, align: "right" });
+            // === TOTAL ===
+            y += 30;
+            doc.registerFont('NotoSansBold', './NotoSansMono-Bold.ttf');
+            doc.font('NotoSansBold');
+            doc.text("Total", 360, y, { width: 80, align: "right" });
+            doc.text(`₹ ${total.toFixed(2)}`, 460, y, { width: 80, align: "right" });
 
-      y -= 50
-      // === PAYMENT DETAILS ===
-      doc.fontSize(10).font("Helvetica").text("Payment Status:", 50, y);
-      doc.font("Helvetica").text(orderDetails.payment.status, 150, y);
-      y += 15;
-      doc.fontSize(10).font("Helvetica").text("Reference No.:", 50, y);
-      doc.font("Helvetica").text(orderDetails.payment.razorpay_order_id, 150, y);
-      y = 550;
-      doc.font("Helvetica-Bold").text("Note:", 50, y);
-      doc.font("Helvetica").text("Thank you for shopping with us!", 90, y);
+            y -= 50
+            // === PAYMENT DETAILS ===
+            doc.fontSize(10).font("Helvetica").text("Payment Status:", 50, y);
+            doc.font("Helvetica").text(orderDetails.payment.status, 150, y);
+            y += 15;
+            doc.fontSize(10).font("Helvetica").text("Reference No.:", 50, y);
+            doc.font("Helvetica").text(orderDetails.payment.razorpay_order_id, 150, y);
+            y = 550;
+            doc.font("Helvetica-Bold").text("Note:", 50, y);
+            doc.font("Helvetica").text("Thank you for shopping with us!", 90, y);
 
 
-      // ✅ Fetch the logo image as a buffer
-      const bottomImg =
-        "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/extra_required_images%2FScreenshot%202025-10-12%20at%2012.25.09%E2%80%AFPM.png?alt=media&token=80bd1de4-7e01-418f-807e-ff4a087d9a26";
-      const bottomImgRes = await fetch(bottomImg);
-      const bottomImgBuffer = Buffer.from(await bottomImgRes.arrayBuffer());
+            // ✅ Fetch the logo image as a buffer
+            const bottomImg =
+                "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/extra_required_images%2FScreenshot%202025-10-12%20at%2012.25.09%E2%80%AFPM.png?alt=media&token=80bd1de4-7e01-418f-807e-ff4a087d9a26";
+            const bottomImgRes = await fetch(bottomImg);
+            const bottomImgBuffer = Buffer.from(await bottomImgRes.arrayBuffer());
 
-      // === FOOTER (curve) ===
-      const footerY = 620;
-      doc.save();
-      doc.image(bottomImgBuffer, 0, footerY, { width: 600 });
-      doc.restore();
+            // === FOOTER (curve) ===
+            const footerY = 620;
+            doc.save();
+            doc.image(bottomImgBuffer, 0, footerY, { width: 600 });
+            doc.restore();
 
-      // doc.fontSize(9).fillColor("#666").text("© Ujaas Aroma — Wellness for your senses", 0, 770, {
-      //   align: "center",
-      //   width: 600,
-      // });
+            // doc.fontSize(9).fillColor("#666").text("© Ujaas Aroma — Wellness for your senses", 0, 770, {
+            //   align: "center",
+            //   width: 600,
+            // });
 
-      doc.end();
-    } catch (err) {
-      reject(err);
-    }
-  });
+            doc.end();
+        } catch (err) {
+            reject(err);
+        }
+    });
 }
 
 
@@ -267,10 +272,15 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
             // ✅ Build Elegant HTML Email
             let discountHtml = '';
             if (orderDetails.discountCode !== null) {
-                discountHtml = `<tr>
-          <td style="text-align: right; padding: 4px;"><strong>Discount (${orderDetails.discountCode}):</strong></td>
-          <td style="text-align: right; padding: 4px;">₹ - ${orderDetails.discountValue.toFixed(2)}</td>
-        </tr>`
+                discountHtml = `
+                <tr>
+                    <td style="text-align: right; padding: 4px;"><strong>Total Before Discount:</strong></td>
+                    <td style="text-align: right; padding: 4px;">₹ ${orderDetails.totalBeforeDiscount.toFixed(2)}</td>
+                </tr>
+                <tr>
+                    <td style="text-align: right; padding: 4px; color: green;"><strong>Coupon (${orderDetails.discountCode}):</strong></td>
+                    <td style="text-align: right; padding: 4px; color: green;">₹ - ${orderDetails.discountValue.toFixed(2)}</td>
+                </tr>`
             }
             let customerNotes = '';
             if (orderDetails.customerInfo.notes) {
@@ -329,6 +339,8 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
 
                         
                         <table style="width: 100%; margin-top: 15px; color: #333; border-collapse: collapse;">
+                        
+                        ${discountHtml}
                         <tr>
                         <td style="text-align: right; padding: 4px;"><strong>Subtotal:</strong></td>
                         <td style="text-align: right; padding: 4px;">₹ ${orderDetails.subtotal.toFixed(2)}</td>
@@ -341,7 +353,6 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
                         <td style="text-align: right; padding: 4px;"><strong>Shipping:</strong></td>
                         <td style="text-align: right; padding: 4px;">₹ ${orderDetails.shipping.shippingCost.toFixed(2)}</td>
                         </tr>
-                        ${discountHtml}
                         <tr>
                         <td style="text-align: right; padding: 8px 4px; font-size: 18px; color: #000;"><strong>Total:</strong></td>
                         <td style="text-align: right; padding: 8px 4px; font-size: 18px; color: #000;">₹ ${orderDetails.total.toFixed(2)}</td>

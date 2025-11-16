@@ -403,6 +403,7 @@ export default function Checkout() {
                             options: item.options || [],
                             image: item.images?.[0] || null,
                         })),
+                        totalBeforeDiscount,
                         subtotal,
                         shipping: {
                             shippingType: selectedShippingType,
@@ -419,6 +420,7 @@ export default function Checkout() {
                         status: "processing",
                         source: "website",
                         createdAt: serverTimestamp(),
+                        updatedAt: serverTimestamp(),
                     };
 
                     try {
@@ -475,6 +477,7 @@ export default function Checkout() {
                                 options: item.options || [],
                                 image: item.images?.[0] || null,
                             })),
+                            totalBeforeDiscount,
                             subtotal,
                             shipping: {
                                 shippingType: selectedShippingType,
@@ -491,6 +494,7 @@ export default function Checkout() {
                             },
                             status: "failed",
                             createdAt: serverTimestamp(),
+                            updatedAt: serverTimestamp(),
                         };
 
                         await setDoc(doc(db, "failedOrders", orderNumber), failedOrder);
@@ -570,11 +574,10 @@ export default function Checkout() {
             <Container className="checkout-page py-4">
                 {/* OVERLAY LOADER */}
                 {loading && (
-                    <div className="checkout-overlay">
-                        <div className="checkout-overlay-inner">
-                            <Spinner animation="border" variant="dark" />
-                            <p className="mt-3 fw-medium">Processing your payment…</p>
-                        </div>
+                    <div className="loader-div d-flex flex-column justify-content-center align-items-center" style={{height:'100%'}}>
+                        <div className="loader"></div>
+                        <div className="processing-loader"></div>
+                        <div className="spin-loader" style={{width:500}}></div>
                     </div>
                 )}
 
@@ -910,35 +913,35 @@ export default function Checkout() {
                                 </div>
                             ))}
 
-                            <hr />
+
 
                             {/* COUPON INFO (READ-ONLY FROM REDUX) */}
-                            {appliedCoupon ? (
-                                <div className="coupon-chip mb-3">
-                                    <div className="coupon-code">Coupon Code: {appliedCoupon.code}</div>
-                                    <div className="coupon-meta">
-                                        {appliedCoupon.name} ·{" "}
-                                        {appliedCoupon.type === "Percentage"
-                                            ? `${appliedCoupon.value}% off`
-                                            : `₹${appliedCoupon.value} off`}
+                            {appliedCoupon && (
+                                <>
+                                    <hr />
+                                    <div className="coupon-chip mb-3">
+                                        <div className="coupon-code">Coupon Code: {appliedCoupon.code}</div>
+                                        <div className="coupon-meta">
+                                            {appliedCoupon.name} ·{" "}
+                                            {appliedCoupon.type === "Percentage"
+                                                ? `${appliedCoupon.value}% off`
+                                                : `₹${appliedCoupon.value} off`}
+                                        </div>
+                                        <div className="coupon-subtext">
+                                            Applied from your cart. To change it, go back to cart.
+                                        </div>
                                     </div>
-                                    <div className="coupon-subtext">
-                                        Applied from your cart. To change it, go back to cart.
-                                    </div>
-                                </div>
-                            ) : (
-                                <div className="coupon-hint mb-3">
-                                    No discount applied. You can add a coupon on the cart page.
-                                </div>
+                                    <hr />
+                                </>
                             )}
 
-                            <hr />
-
                             {/* TOTALS */}
-                            <div className="summary-row">
-                                <span>Subtotal</span>
-                                <span>₹ {subtotal.toFixed(2)}</span>
-                            </div>
+                            {discountAmount > 0 && (
+                                <div className="summary-row">
+                                    <span>Total Before Discount</span>
+                                    <span>₹ {totalBeforeDiscount.toFixed(2)}</span>
+                                </div>
+                            )}
 
                             {discountAmount > 0 && (
                                 <div className="summary-row discount-row">
@@ -946,6 +949,11 @@ export default function Checkout() {
                                     <span>- ₹{discountAmount.toFixed(2)}</span>
                                 </div>
                             )}
+                            <div className="summary-row">
+                                <span>Subtotal</span>
+                                <span>₹ {subtotal.toFixed(2)}</span>
+                            </div>
+
 
                             <div className="summary-row">
                                 <span>GST (12%)</span>
@@ -969,15 +977,15 @@ export default function Checkout() {
                                 onClick={handlePayNow}
                             >
                                 Pay ₹ {total.toFixed(2)}
-                            </Button>
+                            </Button> */}
 
                             <Button
-                                variant="outline-dark"
+                                variant="dark"
                                 className="w-100 rounded-pill mt-3 back-cart-btn"
                                 onClick={() => navigate("/cart")}
                             >
                                 Back to cart
-                            </Button> */}
+                            </Button>
                         </Card>
                     </Col>
                 </Row>

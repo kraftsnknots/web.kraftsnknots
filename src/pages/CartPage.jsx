@@ -238,7 +238,7 @@ export default function CartPage() {
                                     {appliedCoupon.name} (
                                     {appliedCoupon.type === "Percentage"
                                         ? `${appliedCoupon.value}% off`
-                                        : `$${appliedCoupon.value} off`}
+                                        : ` ₹ ${appliedCoupon.value} off`}
                                     )
                                 </p>
                             )}
@@ -253,14 +253,14 @@ export default function CartPage() {
                                 <div className="cart-total-row">
                                     <div className="cart-total-label">SUBTOTAL</div>
                                     <div className="cart-total-value">
-                                        ${subtotal.toFixed(2)}
+                                         ₹ {subtotal.toFixed(2)}
                                     </div>
                                 </div>
 
                                 {discountAmount > 0 && (
                                     <div className="cart-total-row">
                                         <div className="cart-total-label">DISCOUNT ({appliedCoupon.code})</div>
-                                        <div className="cart-total-value">−${discountAmount.toFixed(2)}</div>
+                                        <div className="cart-total-value">− ₹ {discountAmount.toFixed(2)}</div>
                                     </div>
                                 )}
 
@@ -268,7 +268,7 @@ export default function CartPage() {
                                 <div className="cart-total-row">
                                     <div className="cart-total-label">TOTAL</div>
                                     <div className="cart-total-value">
-                                        ${total.toFixed(2)}
+                                         ₹ {total.toFixed(2)}
                                     </div>
                                 </div>
                             </div>

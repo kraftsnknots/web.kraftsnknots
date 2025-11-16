@@ -142,7 +142,7 @@ export default function ShippingAddresses() {
       <div className="d-flex flex-column justify-content-between align-items-start mb-1">
         <h3>My Shipping Addresses</h3>
         {addresses.length > 0 && (
-          <div className="sorted-buttons d-flex align-items-center justify-content-end">
+          <div className="address-sorted-buttons d-flex align-items-center justify-content-end">
             <Button
               variant={filterStatus === "all" ? "dark" : "light"}
               onClick={() => setFilterStatus("all")}
@@ -201,15 +201,16 @@ export default function ShippingAddresses() {
                     <td>
                       <Button
                         size="sm"
-                        variant="outline-dark"
-                        className="me-2"
+                        variant="dark"
+                        className="me-2 address-btns"
                         onClick={() => openEditModal(addr)}
                       >
                         Edit
                       </Button>
                       <Button
                         size="sm"
-                        variant="outline-danger"
+                        variant="danger"
+                        className="address-btns"
                         onClick={() => handleDelete(addr.id)}
                       >
                         Delete

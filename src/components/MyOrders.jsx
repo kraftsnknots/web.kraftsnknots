@@ -2,20 +2,39 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { Modal, Button, Image, Pagination } from "react-bootstrap";
+import {
+  Modal,
+  Button,
+  Image,
+  Pagination,
+  DropdownButton,
+  Dropdown,
+  Spinner,
+} from "react-bootstrap";
 import { IoDocumentTextOutline } from "react-icons/io5";
+import Swal from "sweetalert2";
+
 import { listenToUserOrders, clearOrders } from "../features/ordersSlice";
+
+// Firebase
+import { getApp } from "firebase/app";
+import { getFirestore, doc, updateDoc } from "firebase/firestore";
+
 import "./styles/Accounts.css";
+
+const db = getFirestore(getApp());
 
 export default function MyOrders() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { list: orders, status } = useSelector((state) => state.orders);
+  
 
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
   const itemsPerPage = 7;
 
   // 🧩 Start real-time listener when user logs in
@@ -24,9 +43,20 @@ export default function MyOrders() {
       dispatch(listenToUserOrders(user.uid));
     }
     return () => {
-      dispatch(clearOrders()); // stop listening on unmount / logout
+      dispatch(clearOrders());
     };
   }, [user, dispatch]);
+
+  // 🔄 Keep modal order in sync with latest Redux orders (after status change)
+  useEffect(() => {
+    if (!selectedOrder) return;
+    const updated = orders.find(
+      (o) => o.orderNumber === selectedOrder.orderNumber
+    );
+    if (updated && updated.status !== selectedOrder.status) {
+      setSelectedOrder(updated);
+    }
+  }, [orders, selectedOrder]);
 
   const filteredOrders = useMemo(() => {
     if (filterStatus === "all") return orders;
@@ -54,6 +84,9 @@ export default function MyOrders() {
     setShowModal(true);
   };
 
+
+
+  // 🦴 Loading skeleton
   if (status === "loading" || status === "idle") {
     return (
       <div className="profile-skeleton-container">
@@ -87,25 +120,26 @@ export default function MyOrders() {
     >
       <div className="d-flex flex-column justify-content-between align-items-start mb-1">
         <h3>My Orders</h3>
+
         {orders.length > 0 && (
           <div className="sorted-buttons d-flex align-items-center justify-content-end">
-            {["all", "processing", "delivered", "cancelled"].map((status) => (
+            {["all", "processing", "delivered", "cancelled"].map((statusKey) => (
               <Button
-                key={status}
-                variant={filterStatus === status ? "dark" : "light"}
-                onClick={() => setFilterStatus(status)}
+                key={statusKey}
+                variant={filterStatus === statusKey ? "dark" : "light"}
+                onClick={() => setFilterStatus(statusKey)}
                 className="me-2"
               >
-                <text
+                <span
                   style={{
-                    color: filterStatus === status ? "#00ff00" : "#FF3131",
+                    color: filterStatus === statusKey ? "#00ff00" : "#FF3131",
                   }}
                 >
                   ⬤
-                </text>{" "}
-                {status === "all"
+                </span>{" "}
+                {statusKey === "all"
                   ? "All Orders"
-                  : status.charAt(0).toUpperCase() + status.slice(1)}
+                  : statusKey.charAt(0).toUpperCase() + statusKey.slice(1)}
               </Button>
             ))}
           </div>
@@ -127,7 +161,7 @@ export default function MyOrders() {
             >
               <thead>
                 <tr>
-                  <th style={{paddingLeft:30}}>Order ID</th>
+                  <th style={{ paddingLeft: 30 }}>Order ID</th>
                   <th>Date</th>
                   <th>Time</th>
                   <th>Payment</th>
@@ -136,17 +170,18 @@ export default function MyOrders() {
                   <th>Fulfillment</th>
                 </tr>
               </thead>
+
               <tbody>
                 {currentItems.map((order) => {
                   const date = order.createdAt?.seconds
                     ? new Date(order.createdAt.seconds * 1000)
                     : new Date(`${order.orderDate}T00:00:00`);
+
                   const formattedDate = date.toLocaleDateString();
                   const formattedTime = date.toLocaleTimeString([], {
                     hour: "2-digit",
                     minute: "2-digit",
                   });
-                  const fulfillment = order.shipping?.status || "processing";
 
                   return (
                     <tr
@@ -154,35 +189,38 @@ export default function MyOrders() {
                       onClick={() => openOrderDetails(order)}
                       style={{ cursor: "pointer" }}
                     >
-                      <td style={{paddingLeft:30}}>{order.orderNumber || "—"}</td>
+                      <td style={{ paddingLeft: 30 }}>{order.orderNumber || "—"}</td>
                       <td>{formattedDate}</td>
                       <td>{formattedTime}</td>
+
+                      {/* Payment status chip */}
                       <td>
                         <span
-                          className={`status-chip ${
-                            order.payment?.status === "success"
+                          className={`status-chip ${order.payment?.status === "success"
                               ? "delivered"
                               : order.payment?.status === "failed"
-                              ? "cancelled"
-                              : "pending"
-                          }`}
+                                ? "cancelled"
+                                : "pending"
+                            }`}
                         >
                           {order.payment?.status || "pending"}
                         </span>
                       </td>
+
                       <td>₹{order.total?.toFixed(2) || "—"}</td>
                       <td>{order.cartItems?.length || 0}</td>
+
+                      {/* Fulfillment: admin sees dropdown, user sees chip */}
                       <td>
                         <span
-                          className={`status-chip ${
-                            fulfillment === "delivered"
+                          className={`status-chip ${order.status === "delivered"
                               ? "delivered"
-                              : fulfillment === "cancelled"
-                              ? "cancelled"
-                              : "processing"
-                          }`}
+                              : order.status === "cancelled"
+                                ? "cancelled"
+                                : "pending"
+                            }`}
                         >
-                          {fulfillment}
+                          {order.status || "processing"}
                         </span>
                       </td>
                     </tr>
@@ -193,12 +231,7 @@ export default function MyOrders() {
           </AnimatePresence>
 
           {totalPages > 1 && (
-            <motion.div
-              className="d-flex justify-content-center mt-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
-            >
+            <div className="d-flex justify-content-center mt-3">
               <Pagination>
                 <Pagination.First
                   disabled={currentPage === 1}
@@ -206,7 +239,9 @@ export default function MyOrders() {
                 />
                 <Pagination.Prev
                   disabled={currentPage === 1}
-                  onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.max(p - 1, 1))
+                  }
                 />
                 {Array.from({ length: totalPages }, (_, i) => (
                   <Pagination.Item
@@ -219,18 +254,21 @@ export default function MyOrders() {
                 ))}
                 <Pagination.Next
                   disabled={currentPage === totalPages}
-                  onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
+                  onClick={() =>
+                    setCurrentPage((p) => Math.min(p + 1, totalPages))
+                  }
                 />
                 <Pagination.Last
                   disabled={currentPage === totalPages}
                   onClick={() => setCurrentPage(totalPages)}
                 />
               </Pagination>
-            </motion.div>
+            </div>
           )}
         </div>
       )}
 
+      {/* ORDER DETAILS MODAL */}
       {selectedOrder && (
         <Modal
           show={showModal}
@@ -251,15 +289,14 @@ export default function MyOrders() {
                   Date: {selectedOrder.orderDate}
                 </span>
                 <span
-                  className={`status-chip ${
-                    selectedOrder.shipping?.status === "delivered"
+                  className={`status-chip ${selectedOrder.status === "delivered"
                       ? "delivered"
-                      : selectedOrder.shipping?.status === "cancelled"
-                      ? "cancelled"
-                      : "pending"
-                  }`}
+                      : selectedOrder.status === "cancelled"
+                        ? "cancelled"
+                        : "pending"
+                    }`}
                 >
-                  {selectedOrder.shipping?.status || "processing"}
+                  {selectedOrder.status || "processing"}
                 </span>
               </div>
 
@@ -299,10 +336,11 @@ export default function MyOrders() {
 
               <div className="order-summary mt-3">
                 <p>
-                  <strong>Subtotal:</strong> ₹{selectedOrder.subtotal || "—"}
+                  <strong>Subtotal:</strong> ₹
+                  {selectedOrder.subtotal ?? "—"}
                 </p>
                 <p>
-                  <strong>Tax:</strong> ₹{selectedOrder.tax || "—"}
+                  <strong>Tax:</strong> ₹{selectedOrder.tax?.toFixed(2) ?? "—"}
                 </p>
                 <p>
                   <strong>Total:</strong>{" "}
@@ -312,9 +350,10 @@ export default function MyOrders() {
                 </p>
               </div>
 
-              <div className="d-flex justify-content-end">
+              <div className="sorted-buttons d-flex justify-content-end">
                 {selectedOrder.invoiceUrl && (
                   <Button
+                    style={{ width: 150 }}
                     variant="dark"
                     onClick={() =>
                       window.open(selectedOrder.invoiceUrl, "_blank")
