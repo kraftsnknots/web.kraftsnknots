@@ -135,7 +135,7 @@ export default function Header({ bg }) {
             {user?.uid && (
               <div className="account-dropdown">
                 <Image
-                  src={profile.photoURL || "/default-profile.png"}
+                  src={profile.photoURL}
                   className="display-pic"
                   onClick={() => setAccDropDown(!accDropDown)}
                 />

@@ -135,7 +135,8 @@ async function generatePDFBuffer(orderDetails) {
             doc.font('Helvetica');
             doc.text("Total Amount", 360, y, { width: 80, align: "right" });
             doc.text(`${tbd.toFixed(2)}`, 460, y, { width: 80, align: "right" });
-            doc.moveTo(50, y += 15).lineTo(550, y += 15).strokeColor("#999").stroke();
+            y += 15;
+            doc.moveTo(50, y).lineTo(550, y).strokeColor("#999").stroke();
 
             if (orderDetails.discountCode !== null) {
                 y += 15;
