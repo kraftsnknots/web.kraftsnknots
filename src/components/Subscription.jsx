@@ -4,8 +4,8 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import "./styles/Subscription.css";
 
-const candleImg =
-  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2FmainPageCandle3.png?alt=media&token=fb5a812b-3b70-464d-a07d-990ca7d6e9b5";
+const flowerImg =
+  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2FlogoLeft.png?alt=media&token=94ae79f6-2288-4b01-99a3-b660fee0a22b";
 
 export default function Subscription() {
   return (
@@ -14,16 +14,16 @@ export default function Subscription() {
         {/* 🕯 Left Candle Image */}
         <Col md={5} className="d-flex justify-content-center align-items-center">
           <div className="image-circle">
-            <img src={candleImg} alt="Candle" className="candle-image" />
+            <img src={flowerImg} alt="FlowerLogo" className="candle-image" />
             <div className="candle-image-circle"></div>
           </div>
         </Col>
 
         {/* ✉️ Right Side Text + Form */}
         <Col md={6} className="d-flex flex-column justify-content-center">
-          <h2 className="subscription-title">Join Our Candle Community</h2>
+          <h2 className="subscription-title">Join Our Krafts Community</h2>
           <p className="subscription-subtext">
-            Get exclusive offers, new scent updates, and peaceful vibes in your inbox.
+            Get exclusive offers, new updates, and peaceful vibes in your inbox.
           </p>
 
           <Form className="subscription-form d-flex flex-column flex-sm-row align-items-center justify-content-start mt-4">

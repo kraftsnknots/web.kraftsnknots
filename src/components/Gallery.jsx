@@ -16,7 +16,7 @@ export default function Gallery() {
   };
 
   return (
-    <div className="m-0 p-4 w-100 d-flex flex-column justify-content-center align-items-center">
+    <div className="m-0 p-4 w-100 d-flex flex-column justify-content-center align-items-center root-bg">
       {/* Title */}
       <Row>
         <Col className="p-3 text-center">

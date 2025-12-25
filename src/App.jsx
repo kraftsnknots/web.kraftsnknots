@@ -12,7 +12,7 @@ import ProductDetailsPage from './pages/ProductsDetailsPage';
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthPage from './pages/AuthPage';
 import './App.css'
-import "./components/styles/UjaasLoader.css";
+import "./components/styles/KraftsnKnotsLoader.css";
 import AccountPage from './pages/AccountPage';
 import Checkout from './pages/Checkout';
 import PaymentFailure from './pages/PaymentFailure';
@@ -26,7 +26,7 @@ function App() {
     dispatch(listenToAuthChanges());
   }, [dispatch]);
   return (
-    <Router basename="/UjaasAromaWeb">
+    <Router basename="/kraftsnknots">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/shop" element={<ShopPage />} />

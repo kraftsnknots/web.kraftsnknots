@@ -6,7 +6,7 @@ import Accounts from "../components/Accounts";
 export default function AccountPage() {
     return (
         <>
-            <Header bg="#f9fafc" />
+            <Header />
             <Reveal><Accounts /></Reveal>
             <Reveal><Footer /></Reveal>
         </>

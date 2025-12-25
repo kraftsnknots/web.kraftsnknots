@@ -120,8 +120,8 @@ export default function CartPage() {
     };
 
     return (<>
-        <Header bg="linear-gradient(180deg, #f5f1f0, #fff)" />
-        <div className="cart-page">
+        <Header />
+        <div className="cart-page root-bg">
             <div className="cart-container">
                 <h2 className="cart-title">Shopping Cart</h2>
 

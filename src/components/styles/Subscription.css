@@ -5,7 +5,7 @@
   padding: 100px 50px;
   overflow: hidden;
   position: relative;
-  border: 20px groove #eee;
+  border: 20px groove #f9d5e3;
 }
 
 .subscription-banner::before {
@@ -27,7 +27,7 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  box-shadow: 0 0 25px rgba(255, 191, 0, 0.2);
+  box-shadow: 0 0 25px rgba(249, 211, 226, 0.2);
 }
 
 .candle-image-circle {
@@ -35,13 +35,12 @@
   width: 90%;
   height: 90%;
   border-radius: 50%;
-  border: 10px groove #ffb800;
+  border: 10px groove #f9d5e3;
   animation: spinBorder 5s linear infinite;
 }
 
 .candle-image {
-  width: 85%;
-  height: 85%;
+  width: 75%;
   object-fit: contain;
   transition: transform 3s ease;
   z-index: 9;
@@ -58,7 +57,7 @@
 }
 
 .image-circle:hover .candle-image {
-  transform: scale(2.2);
+  transform: scale(2.0);
 }
 
 /* ✨ Right Content */
@@ -67,11 +66,11 @@
   font-size: 2.2rem;
   font-weight: 700;
   letter-spacing: 1px;
-  color: #fff;
+  color: #f9d5e3;
 }
 
 .subscription-subtext {
-  color: #ccc;
+  color: #f9d5e3;
   font-size: 1rem;
   margin-top: 10px;
   max-width: 480px;
@@ -90,7 +89,7 @@
   padding: 15px 20px!important;
   font-size: 1rem!important;
   border: none!important;
-  border-bottom: 1px solid #ffb800!important;
+  border-bottom: 1px solid #f9d5e3!important;
   border-radius: 0!important;
   background-color: transparent!important;
   color: #fff!important;
@@ -102,12 +101,12 @@
 }
 
 .subscription-input:focus {
-  border-color: #ffb800!important;
+  border-color: #f9d5e3!important;
   outline: none!important;
 }
 
 .subscription-btn {
-  background: #ffb800!important;
+  background: #f9d5e3!important;
   border: none!important;
   color: #000!important;
   font-weight: 700!important;
@@ -121,7 +120,7 @@
 }
 
 .subscription-btn:hover {
-  background: #ffc832!important;
+  background: #ea8c8e!important;
   transform: translateY(-2px)!important;
 }
 
@@ -144,8 +143,8 @@
   }
 
   .subscription-btn {
-    margin-left: 0;
-    margin-top: 12px;
-    width: 100%;
+    margin-left: 0!important;
+    margin-top: 12px!important;
+    width: 50%!important;
   }
 }

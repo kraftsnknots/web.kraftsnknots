@@ -8,14 +8,17 @@ import {
   FaYoutube,
 } from "react-icons/fa";
 import "./styles/Footer.css";
+import { useNavigate } from "react-router-dom";
+import { Image } from "react-bootstrap";
 
 const logoUrl =
-  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo-shadow.png?alt=media&token=14434b83-1c6b-4b1a-9df9-07745b330edd";
+  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b";
 
 export default function Footer() {
+  const navigate = useNavigate();
   return (
     <footer
-      className="text-light footer-container"
+      className="color-pink"
       style={{
         backgroundColor: "#000",
         fontFamily: '"Work Sans", sans-serif',
@@ -24,25 +27,17 @@ export default function Footer() {
     >
 
       {/* Footer Content */}
-      <Container fluid className="m-0 pt-5 d-flex flex-column align-items-center" style={{ borderTop: '10px groove #eee' }}>
+      <Container fluid className="m-0 pt-5 d-flex flex-column align-items-center">
+        <div className="main-logo-class d-flex justify-content-center align-items-center">
+          <Image src={logoUrl} alt="Ujaas Aroma" className="main-logo-bottom" />
+        </div>
         {/* Newsletter Section */}
-        <Row style={{ paddingBottom: 5, borderBottom: '1px solid #333', marginBottom: 25, width: '100%' }}>
+        <Row style={{ paddingBottom: 5, borderBottom: '1px solid #333', margin: '25px 0', width: '100%' }}>
           <Col lg={12}>
             <div
               className="d-flex flex-column align-items-center justify-content-center">
-              <h5
-                className="mb-4"
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "400",
-                  letterSpacing: "3px",
-                }}
-              >
-                FOLLOW US & SUBSCRIBE
-              </h5>
-              <Form className="d-flex justify-content-between align-items-center gap-3 mb-4" style={{
-                borderBottom: "1px solid #fff", width: '60%'
-              }}>
+              
+              <Form className="d-flex justify-content-between align-items-center gap-3 mb-4 footer-subscripton">
                 <Form.Control
                   type="email"
                   placeholder="Enter your e-mail address here"
@@ -61,12 +56,12 @@ export default function Footer() {
                   type="submit"
                   style={{
                     backgroundColor: "transparent",
-                    border: "none",
                     color: "#fff",
                     fontSize: "13px",
                     fontWeight: "600",
                     letterSpacing: "1.5px",
-                    padding: "10px 0"
+                    padding: "10px 0",
+                    width: 200,
                   }}
                 >
                   SEND
@@ -76,9 +71,9 @@ export default function Footer() {
           </Col>
         </Row>
 
-        <Row style={{ width: '70%', marginLeft: 160 }}>
+        <Row className="footer-bottom-row">
           {/* Contact Column */}
-          <Col lg={3} md={6} className="mb-4">
+          <Col lg={3} md={6} className="mb-4 color-pink">
             <h6
               className="mb-4"
               style={{
@@ -89,16 +84,16 @@ export default function Footer() {
             >
               CONTACT
             </h6>
-            <div style={{ fontSize: "13px", lineHeight: "2.1" }}>
-              <p className="mb-2">🗺️: Bengaluru, Karnataka, India</p>
-              <p className="mb-2">📞: +91 96855-58919</p>
-              <p className="mb-2">📧: support@ujaasaroma.com</p>
-              <p className="mb-2">🌐: www.ujaasaroma.com/contact</p>
+            <div style={{ fontSize: "13px", lineHeight: "2.1" }} className="mobile-md-3">
+              <p className="mb-2">🗺️: Amritsar, Punjab, India</p>
+              <p className="mb-2">📞: +91 98558-62831</p>
+              <p className="mb-2">📧: support@kraftsnknots.com</p>
+              <p className="mb-2" onClick={() => navigate("/contact")}>🌐: Contact Us</p>
             </div>
           </Col>
 
           {/* Services Column */}
-          <Col lg={3} md={6} className="mb-4">
+          <Col lg={3} md={6} className="mb-4 color-pink">
             <h6
               className="mb-4"
               style={{
@@ -110,13 +105,13 @@ export default function Footer() {
               SERVICES
             </h6>
             <ul
-              className="list-unstyled"
+              className="list-unstyled mobile-md-3"
               style={{ fontSize: "13px", lineHeight: "2" }}
             >
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -127,7 +122,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -138,7 +133,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -149,7 +144,7 @@ export default function Footer() {
               <li className="mb-0">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -161,7 +156,7 @@ export default function Footer() {
           </Col>
 
           {/* Orders Column */}
-          <Col lg={3} md={6} className="mb-4">
+          <Col lg={3} md={6} className="mb-4 color-pink">
             <h6
               className="mb-4"
               style={{
@@ -173,13 +168,13 @@ export default function Footer() {
               ORDERS
             </h6>
             <ul
-              className="list-unstyled"
+              className="list-unstyled mobile-md-3"
               style={{ fontSize: "13px", lineHeight: "2" }}
             >
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -190,7 +185,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -201,7 +196,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -212,7 +207,7 @@ export default function Footer() {
               <li className="mb-0">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -224,7 +219,7 @@ export default function Footer() {
           </Col>
 
           {/* Most Popular Column */}
-          <Col lg={3} md={6} className="mb-4">
+          <Col lg={3} md={6} className="mb-4 color-pink">
             <h6
               className="mb-4"
               style={{
@@ -236,13 +231,13 @@ export default function Footer() {
               MOST POPULAR
             </h6>
             <ul
-              className="list-unstyled"
+              className="list-unstyled mobile-md-3"
               style={{ fontSize: "13px", lineHeight: "2" }}
             >
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -253,7 +248,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -264,7 +259,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -275,7 +270,7 @@ export default function Footer() {
               <li className="mb-0">
                 <a
                   href="#"
-                  className="text-light text-decoration-none"
+                  className="color-pink text-decoration-none"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -290,7 +285,7 @@ export default function Footer() {
         {/* Social Icons */}
         <div className="d-flex justify-content-center gap-4 mb-2">
           <a
-            href="https://www.instagram.com/ujaasaroma"
+            href="https://www.instagram.com/thekraftsnknots"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
@@ -304,7 +299,7 @@ export default function Footer() {
             <FaInstagram />
           </a>
           <a
-            href="https://youtube.com/@ujaasaroma"
+            href="https://youtube.com/@thekraftsnknots"
             className="text-light"
             target="_blank"
             rel="noopener noreferrer"
@@ -322,7 +317,7 @@ export default function Footer() {
           className="mb-0"
           style={{ fontSize: "11px", opacity: "0.7" }}
         >
-          © 2025. All rights reserved.
+          © 2026. All rights reserved by Rudra Enterprises.
         </p>
 
       </Container>

@@ -4,13 +4,13 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCU28rDOzHnMzfDS4z36iT6x5gckDxgZzY",
-    authDomain: "ujaas-aroma.firebaseapp.com",
-    projectId: "ujaas-aroma",
-    storageBucket: "ujaas-aroma.firebasestorage.app",
-    messagingSenderId: "1006780633968",
-    appId: "1:1006780633968:web:ac0a6da25c0aebf87935b5",
-    measurementId: "G-89GJELF98M"
+    apiKey: "AIzaSyCAG9rGNmG_IK0Pgmr0Yhop4zL83Q_32Mo",
+    authDomain: "kraftsnknots-921a0.firebaseapp.com",
+    projectId: "kraftsnknots-921a0",
+    storageBucket: "kraftsnknots-921a0.firebasestorage.app",
+    messagingSenderId: "566392222908",
+    appId: "1:566392222908:web:9232182df7666eed3f4cb9",
+    measurementId: "G-ZD2BFRMN24"
 };
 
 // Initialize only once

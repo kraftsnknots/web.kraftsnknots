@@ -112,14 +112,14 @@ export default function Contact() {
         <div className="contact-info">
           <h2 className="section-title">Get in Touch</h2>
           <p className="intro-text">
-            We’d love to hear from you! Whether you have questions about our handcrafted scented candles,
+            We’d love to hear from you! Whether you have questions about our unique collection,
             need help with an order, or want to collaborate, we’re here.
           </p>
 
           <div className="support-block">
             <h4>Support</h4>
-            <a href="mailto:support@ujaasaroma.com" className="email-link">
-              support@ujaasaroma.com
+            <a href="mailto:support@kraftsnknots.com" className="email-link">
+              support@kraftsnknots.com
             </a>
           </div>
 
@@ -128,26 +128,26 @@ export default function Contact() {
           <div className="location-block">
             <h2 className="section-title">Our Location</h2>
             <p className="intro-text">
-              Based in Bengaluru, India — crafting artisanal scented candles with love.
+              Based in Amritsar, India — crafting artisanal scented candles with love.
             </p>
 
             <div className="location-details">
               <div>
                 <h4>Address</h4>
-                <p>Bellandur, Bengaluru, Karnataka, India</p>
+                <p>Model Town, Amristar, Punjab, India</p>
 
                 <h4>Hours</h4>
-                <p>7 AM – 11 PM (Daily)</p>
+                <p>7 AM – 11 PM </p>
               </div>
 
               <div>
                 <h4>Contact</h4>
                 <a href="mailto:support@ujaasaroma.com" className="email-link">
-                  support@ujaasaroma.com
+                  support@kraftsnknots.com
                 </a>
 
                 <h4>Open</h4>
-                <p>Daily</p>
+                <p>7 Days in a Week</p>
               </div>
             </div>
           </div>

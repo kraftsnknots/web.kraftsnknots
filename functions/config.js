@@ -9,7 +9,7 @@ module.exports = {
     port: 465,
     secure: true,
     auth: {
-      user: "orders@ujaasaroma.com",
+      user: "orders@kraftsnknots.com",
       pass: "Sonalika@1995", // ⚠️ keep safe
     },
   },
@@ -18,17 +18,12 @@ module.exports = {
     port: 465,
     secure: true,
     auth: {
-      user: "support@ujaasaroma.com",
+      user: "support@kraftsnknots.com",
       pass: "Sonalika@1995", // ⚠️ keep safe
     },
   },
 };
 
-// gmail: {
-//   email: "ujaasaroma@gmail.com",
-//     // ⚠️ Use App Password (not your Gmail password)
-//     password: "njzn hjud mlcp hkcq",
-//   },
 
 
 

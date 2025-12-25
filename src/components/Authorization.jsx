@@ -115,7 +115,7 @@ export default function Authorization({ lastPage }) {
             >
               <div className="auth-header">
                 <h2>Welcome Back 👋</h2>
-                <p>Sign in to continue exploring our candle collection.</p>
+                <p>Sign in to continue exploring our unique and adorable collection.</p>
               </div>
 
               <form onSubmit={handleLogin}>
@@ -207,7 +207,7 @@ export default function Authorization({ lastPage }) {
         >
           <div className="auth-header">
             <h2>Create Account ✨</h2>
-            <p>Join our candle community and start shopping today!</p>
+            <p>Join our community and start shopping today!</p>
           </div>
 
           <form onSubmit={handleSignup}>

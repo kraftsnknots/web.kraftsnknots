@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { DropdownButton, Image, Offcanvas, Modal, Button } from "react-bootstrap";
-import { IoHeartOutline, IoBagOutline, IoSearch } from "react-icons/io5";
+import { IoHeartOutline, IoBagOutline, IoMenuOutline } from "react-icons/io5";
 import { getFirestore, doc, getDoc } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { Link, useNavigate } from "react-router-dom";
@@ -13,9 +13,11 @@ import {
 import "./styles/Header.css";
 
 const logoUrl =
-  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a";
+  // "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b";
+  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo2.png?alt=media&token=87352b73-8e7f-4f37-96ae-bcc24be6177c";
 
 export default function Header({ bg }) {
+
   const [showCart, setShowCart] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
   const [accDropDown, setAccDropDown] = useState(false);
@@ -28,6 +30,7 @@ export default function Header({ bg }) {
 
   const { user } = useSelector((state) => state.user);
   const { cart, wishlist } = useSelector((state) => state.cartWishlist);
+  const [showMenu, setShowMenu] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const db = getFirestore(getApp());
@@ -63,7 +66,7 @@ export default function Header({ bg }) {
       {/* 🔹 Top Black Bar */}
       <div className="top-bar">
         <div className="top-bar-content">
-          <span className="email">support@ujaasaroma.com</span>
+          <span className="email">support@kraftsnknots.com</span>
           <span className="promo">free shipping on orders over ₹2500</span>
 
           {user ? (
@@ -79,84 +82,111 @@ export default function Header({ bg }) {
         </div>
       </div>
 
-      {/* 🔹 Main Navbar */}
-      <div
-        className="main-navbar m-0 d-flex align-items-center justify-content-between"
-        style={{ background: bg }}
-      >
-        {/* Left Nav Links */}
-        <div className="d-flex align-items-center justify-content-end column-gap-5 nav-left">
-          <Link to="/" className="nav-link-custom">
-            HOME
-          </Link>
-          <Link to="/shop" className="nav-link-custom">
-            SHOP
-          </Link>
-          <Link to="/about" className="nav-link-custom">
-            ABOUT US
-          </Link>
-          <Link to="/contact" className="nav-link-custom">
-            CONTACT
-          </Link>
-        </div>
+      {/* ================= MAIN NAVBAR ================= */}
+      <div className="main-navbar m-0 d-flex align-items-center justify-content-between">
+
+        {/* ☰ Hamburger (Mobile Only) */}
+        <Button
+          variant="link"
+          className="d-md-none p-0 text-dark"
+          onClick={() => setShowMenu(true)}
+        >
+          <IoMenuOutline size={30} />
+        </Button>
 
         {/* Center Logo */}
-        <div className="main-logo-class d-flex justify-content-center align-items-center">
+        <div className="main-logo-class d-flex align-items-center">
           <Link to="/">
             <Image src={logoUrl} alt="Ujaas Aroma" className="main-logo" />
           </Link>
         </div>
 
-        {/* Right Icons */}
-        <div className="d-flex align-items-center justify-content-center column-gap-3 nav-icons">
+        {/* Left Nav Links */}
+        <div className="align-items-center justify-content-start column-gap-5 nav-left">
+          <Link to="/" className="nav-link-custom"> HOME </Link>
+          <Link to="/shop" className="nav-link-custom"> SHOP </Link>
+          <Link to="/about" className="nav-link-custom"> ABOUT US </Link>
+          <Link to="/contact" className="nav-link-custom"> CONTACT </Link>
+
           {/* ❤️ Wishlist */}
-          <span onClick={() => setShowWishlist(true)} style={{ cursor: "pointer" }}>
+          <Link onClick={() => setShowWishlist(true)} style={{ cursor: "pointer", color: '#ea8c8e', textDecorationLine: 'none' }}>
             <IoHeartOutline className="icon" title="Wishlist" />
             <small>({wishlist.length})</small>
-          </span>
-
+          </Link>
           {/* 🛍 Cart */}
-          <span>
-            <IoBagOutline
-              className="icon"
-              title="Cart"
-              onClick={() => setShowCart(true)}
-            />
+          <Link style={{ cursor: "pointer", color: '#ea8c8e', textDecorationLine: 'none' }}>
+            <IoBagOutline className="icon" title="Cart" onClick={() => setShowCart(true)} />
             <small>({cart.length})</small>
-          </span>
-
-          {/* 🔍 Search */}
-          <span style={{ visibility: 'hidden' }}>
-            <IoSearch className="icon" title="Search" />
-          </span>
-
+          </Link>
           {/* 👤 Profile */}
-          <span>
-            {user?.uid && (
-              <div className="account-dropdown">
-                <Image
-                  src={profile.photoURL}
-                  className="display-pic"
-                  onClick={() => setAccDropDown(!accDropDown)}
-                />
-                {accDropDown && (
-                  <div className="accdropdown">
-                    <p>
-                      <strong>Hey! {profile.name}</strong>
-                    </p>
-                    <p onClick={() => navigate("/account")}>
-                      <small>My Account</small>
-                    </p>
-                    <p onClick={handleLogout}>
-                      <small>Sign Out</small>
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
+          <span> {user?.uid && (<div className="account-dropdown">
+            <Image src={profile.photoURL} className="display-pic" onClick={() => setAccDropDown(!accDropDown)} />
+            {accDropDown &&
+              (<div className="accdropdown">
+                <p> <strong>Hey! {profile.name}</strong> </p>
+                <p onClick={() => navigate("/account")}> <small>My Account</small> </p>
+                <p onClick={handleLogout}> <small>Sign Out</small> </p>
+              </div>)}
+          </div>)}
           </span>
         </div>
       </div>
+
+      {/* ================= MOBILE OFFCANVAS MENU ================= */}
+      <Offcanvas
+        show={showMenu}
+        onHide={() => setShowMenu(false)}
+        placement="start"
+      >
+        <Offcanvas.Header closeButton>
+          <Offcanvas.Title>
+            <Image src={logoUrl} height={40} />
+          </Offcanvas.Title>
+        </Offcanvas.Header>
+
+        <Offcanvas.Body className="d-flex flex-column gap-3">
+
+          <Link to="/" onClick={() => setShowMenu(false)} className="mobile-link">HOME</Link>
+          <Link to="/shop" onClick={() => setShowMenu(false)} className="mobile-link">SHOP</Link>
+          <Link to="/about" onClick={() => setShowMenu(false)} className="mobile-link">ABOUT US</Link>
+          <Link to="/contact" onClick={() => setShowMenu(false)} className="mobile-link">CONTACT</Link>
+
+          <hr />
+
+          <div
+            className="mobile-link"
+            onClick={() => {
+              setShowWishlist(true);
+              setShowMenu(false);
+            }}
+          >
+            ❤️ Wishlist ({wishlist.length})
+          </div>
+
+          <div
+            className="mobile-link"
+            onClick={() => {
+              setShowCart(true);
+              setShowMenu(false);
+            }}
+          >
+            🛍 Cart ({cart.length})
+          </div>
+
+          {user?.uid && (
+            <>
+              <hr />
+              <div className="mobile-link" onClick={() => navigate("/account")}>
+                👤 My Account
+              </div>
+              <div className="mobile-link" onClick={handleLogout}>
+                🚪 Sign Out
+              </div>
+            </>
+          )}
+        </Offcanvas.Body>
+      </Offcanvas>
+
 
       {/* 🛍 CART Offcanvas */}
       <Offcanvas show={showCart} onHide={() => setShowCart(false)} placement="end">
@@ -167,41 +197,43 @@ export default function Header({ bg }) {
           {cart.length === 0 ? (
             <p>Your bag is empty 🛒</p>
           ) : (
-            <div className="cart-items-list">
-              {cart.map((item) => (
-                <div key={item.id} className="cart-item d-flex align-items-center mb-3">
-                  <img
-                    src={item.images}
-                    alt={item.title}
-                    className="cart-item-img me-3"
-                    style={{
-                      width: 60,
-                      height: 60,
-                      objectFit: "contain",
-                      borderRadius: 8,
-                    }}
-                  />
-                  <div className="cart-item-details flex-grow-1">
-                    <h6 className="mb-0 d-flex justify-content-between align-items-center">{item.title} <i className="bi bi-x-circle " onClick={() => dispatch(removeFromCart(item.id))}></i></h6>
-                    {item.discountPrice ?
-                      <small> <small style={{ color: 'red', textDecorationLine: 'line-through' }}>₹ {item.price}</small> ₹ {item.discountPrice} X {item.quantity} = {item.discountPrice * item.quantity}</small>
-                      :
-                      <small>₹ {item.price} X {item.quantity} = {item.price * item.quantity}</small>
-                    }
+            <div className="cart-items-list d-flex flex-column justify-content-between h-100">
+              <div>
+                {cart.map((item) => (
+                  <div key={item.id} className="cart-item d-flex align-items-center mb-3">
+                    <img
+                      src={item.images}
+                      alt={item.title}
+                      className="cart-item-img me-3"
+                      style={{
+                        width: 60,
+                        height: 60,
+                        objectFit: "contain",
+                        borderRadius: 8,
+                      }}
+                    />
+                    <div className="cart-item-details flex-grow-1">
+                      <h6 className="mb-0 d-flex justify-content-between align-items-center">{item.title} <i className="bi bi-x-circle " onClick={() => dispatch(removeFromCart(item.id))}></i></h6>
+                      {item.discountPrice ?
+                        <small> <small style={{ color: 'red', textDecorationLine: 'line-through' }}>₹ {item.price}</small> ₹ {item.discountPrice} X {item.quantity} = {item.discountPrice * item.quantity}</small>
+                        :
+                        <small>₹ {item.price} X {item.quantity} = {item.price * item.quantity}</small>
+                      }
+
+                    </div>
 
                   </div>
+                ))}
 
+                <hr />
+                <div className="d-flex justify-content-between">
+                  <strong>Total:</strong>
+                  <strong>₹{total.toFixed(2)}</strong>
                 </div>
-              ))}
-
-              <hr />
-              <div className="d-flex justify-content-between">
-                <strong>Total:</strong>
-                <strong>₹{total.toFixed(2)}</strong>
               </div>
-              <div className="pt-3 mt-3 d-flex justify-content-between">
+              <div className="pt-3 mt-3 d-flex justify-content-between align-items-center">
                 <button
-                  className="btn btn-dark"
+                  className="btn"
                   onClick={() => {
                     setShowCart(false);
                     navigate("/cart");
@@ -210,7 +242,7 @@ export default function Header({ bg }) {
                   View Cart
                 </button>
                 <button
-                  className="btn btn-dark"
+                  className="btn"
                   onClick={() => {
                     setShowCart(false);
                     navigate("/checkout");

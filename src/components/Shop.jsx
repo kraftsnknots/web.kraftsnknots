@@ -90,7 +90,7 @@ export default function Shop() {
                       <p className="product-name fw-bold">{product.title}</p>
                       <p className="product-subtitle fw-bold">{product.subtitle}</p>
                       <p className="product-price">
-                        <span>
+                        <span className="mb-3">
                           {product.discountPrice ? (
                             <>
                               <span className="old-price me-2">
@@ -106,7 +106,6 @@ export default function Shop() {
                             </span>
                           )}
                         </span>
-                        {/* <Button variant="light" className=" product-cart" onClick={() => dispatch(addToCart(product))}>🛒</Button> */}
                       </p>
                     </div>
                   </div>

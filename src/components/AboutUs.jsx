@@ -1,9 +1,7 @@
 import React from "react";
 import "./styles/AboutUs.css";
 import { Link } from "react-router-dom";
-
-const candleImage =
-  "https://assets.zyrosite.com/cdn-cgi/image/format=auto,w=1440,h=1430,fit=crop/mnl4XxlxxBH1206z/whatsapp-image-2025-08-27-at-15.31.46_e02c6c13-YX4jO6Jwa9U6wRzN.jpg";
+import ringImage from "../assets/images/text-img3.jpg";
 
 export default function AboutUs() {
   return (
@@ -12,10 +10,10 @@ export default function AboutUs() {
       <section className="about-hero">
         <div className="about-hero-text">
           <h2>Welcome to</h2>
-          <h1>Ujaas Aroma</h1>
+          <h1>Krafts & Knots</h1>
           <p>
-            Explore our lovingly handcrafted scented candles made in Bengaluru,
-            India. We provide a wide range of shapes, sizes, and fragrances
+            Explore our lovingly handcrafted fully customized items made in Amritsar,
+            India. We provide a wide range of collection of gifts
             suitable for any occasion.
           </p>
           <Link to="/shop" className="primary-btn">Let's take a look at the products</Link>
@@ -23,16 +21,16 @@ export default function AboutUs() {
 
         <div className="about-hero-image">
           <div className="image-container">
-            <img src={candleImage} alt="Scented candles" />
+            <img src={ringImage} alt="Scented candles" />
             <div className="stats-card">
               <div>
-                <h3>150+</h3>
-                <p>Customer already approved</p>
+                <h3>900+</h3>
+                <p>Customers been served</p>
               </div>
               <div className="divider"></div>
               <div>
-                <h3>15</h3>
-                <p>Handmade wicks with love</p>
+                <h3>5700+</h3>
+                <p>Orders crafted with love</p>
               </div>
             </div>
           </div>
@@ -44,16 +42,16 @@ export default function AboutUs() {
         <div className="location-text">
           <h2>Location</h2>
           <p>
-            Situated in Bengaluru, India, Ujaas Aroma focuses on crafting
-            artisanal scented candles, addressing various customer tastes and
+            Situated in Amritsar, India, Krafts & Knots focuses on bringing
+            unique ideas to life to make you special occasion more special, addressing various customer tastes and
             custom requests.
           </p>
 
           <div className="location-details">
             <p>
-              <strong>Ujaas Aroma</strong>
+              <strong>Krafts & Knots</strong>
               <br />
-              Bengaluru, Karnataka, India
+              Amritsar, Punjab, India
             </p>
             <p>
               <strong>Working Hours</strong>
@@ -66,7 +64,7 @@ export default function AboutUs() {
         <div className="location-map">
           <iframe
             title="map"
-            src="https://www.google.com/maps?q=Bellandur,Bengaluru,India&z=14&output=embed"
+            src="https://www.google.com/maps?q=Model Town,Amritsar,India&z=14&output=embed"
             allowFullScreen
             loading="lazy"
           ></iframe>

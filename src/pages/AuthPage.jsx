@@ -9,11 +9,11 @@ export default function AuthPage() {
     const location = useLocation();
     const from = location.state?.from?.pathname || "/account";
 
-    
-    
+
+
     return (
         <>
-            <Header bg="#e8f1ff" />
+            <Header />
             <Reveal><Authorization lastPage={from} /></Reveal>
             <Reveal><Footer /></Reveal>
         </>

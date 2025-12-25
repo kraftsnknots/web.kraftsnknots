@@ -1,3 +1,32 @@
+@font-face {
+  font-family: 'Letterhead';
+  src: url('./assets/fonts/Letterhead.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Corisiva';
+  src: url('./assets/fonts/MTCORSVA.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Topheader';
+  src: url('./assets/fonts/SCRIPTBL.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%) !important;
+}
+
+body {
+  background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%) !important;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -11,6 +40,18 @@
 
 .logo.react:hover {
   filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+.color-pink {
+  color: #ea8c8e !important;
+}
+
+.root-bg {
+  background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%);
+}
+
+.root-bg-black {
+  background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(249, 211, 226, 1) 100%);
 }
 
 @keyframes logo-spin {
@@ -47,10 +88,16 @@
   color: black !important;
 }
 
-.offcanvas{
-  width: 25%!important;
-  padding: 10px!important;
+.offcanvas {
+  width: 25% !important;
+  padding: 10px !important;
   margin: 25px;
   border-radius: 25px;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset!important;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset !important;
+}
+
+@media screen and (max-width: 900px) {
+  .offcanvas {
+    width: 90% !important;
+  }
 }

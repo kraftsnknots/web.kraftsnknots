@@ -1,23 +1,4 @@
 import React, { useState } from "react";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { getFirestore, collection, addDoc, serverTimestamp } from "firebase/firestore";
-import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCU28rDOzHnMzfDS4z36iT6x5gckDxgZzY",
-    authDomain: "ujaas-aroma.firebaseapp.com",
-    projectId: "ujaas-aroma",
-    storageBucket: "ujaas-aroma.firebasestorage.app",
-    messagingSenderId: "1006780633968",
-    appId: "1:1006780633968:web:ac0a6da25c0aebf87935b5",
-    measurementId: "G-89GJELF98M"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const storage = getStorage(app);
-const db = getFirestore(app);
-
 
 export default function AddProductWebForm() {
     const [title, setTitle] = useState("");

@@ -15,10 +15,10 @@ export default function Section3() {
             >
                 {/* First Image Card */} 
                 <div className="image-card">
-                    <Image src={textimg1} className="background-img" />
+                    <Image src={textimg1} className="background-img"/> 
                     <div className="overlay-content">
-                        <p className="small-text">UNIQUE SHAPES & SCENTS</p>
-                        <h2>Explore Our Candles</h2>
+                        <p className="small-text">UNIQUE & ADORABLE DESIGNS</p>
+                        <h2>Explore Our Collection</h2>
                         <Link to="/shop" className="shop-btn shop-btn2">
                             Shop Now
                         </Link>
@@ -29,8 +29,8 @@ export default function Section3() {
                 <div className="image-card">
                     <Image src={textimg2} className="background-img" />
                     <div className="overlay-content">
-                        <p className="small-text">CUSTOM CANDLE ORDERS</p>
-                        <h2>Personalized Scented Candles</h2>
+                        <p className="small-text">CUSTOMIZED GIFT ORDERS</p>
+                        <h2>Personalized Decorated Collection</h2>
                         <Link to="/shop" className="shop-btn">
                             Order Yours
                         </Link>

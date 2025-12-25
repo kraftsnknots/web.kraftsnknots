@@ -42,13 +42,15 @@
 }
 
 .video-text h1 {
-    font-size: 4rem;
+    font-size: 3rem;
     font-weight: bold;
+    /* font-family: Georgia, 'Times New Roman', Times, serif; */
 }
 
 .video-text p {
-    font-size: 1rem;
+    font-size: 1.5rem;
     margin-top: 10px;
+    font-family: 'Topheader';
 }
 
 .main-btn {
@@ -61,13 +63,14 @@
     cursor: pointer;
     transition: background-color 0.3s ease;
     border-radius: 30px !important;
+    text-decoration: none!important;
     font-weight: 600 !important;
 }
 
 .main-btn:hover {
-    background-color: #fff !important;
+    background-color: #f9d3e2 !important;
     /* Darker on hover */
-    color: #000 !important;
+    color: #fff !important;
 }
 
 @media screen and (max-width: 500px) {

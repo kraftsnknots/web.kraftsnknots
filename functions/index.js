@@ -63,7 +63,7 @@ async function generatePDFBuffer(orderDetails) {
 
             // ✅ Fetch the logo image as a buffer
             const logoUrl =
-                "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a";
+                "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b";
             const logoRes = await fetch(logoUrl);
             const logoBuffer = Buffer.from(await logoRes.arrayBuffer());
 
@@ -95,10 +95,10 @@ async function generatePDFBuffer(orderDetails) {
             doc.text(`${customer.email || ""}`, 50, 290);
 
             doc.font("Helvetica-Bold").text("From:", 350, 230);
-            doc.font("Helvetica").text("Ujaas Aroma", 350, 245);
+            doc.font("Helvetica").text("Krafts & Knots", 350, 245);
             doc.text("124-D, Ittina Abha, Munnekolal, Bengaluru", 350, 260);
             doc.text("Karnataka, 560037, India", 350, 275);
-            doc.text("info@ujaasaroma.com", 350, 290);
+            doc.text("support@kraftsnknots.com", 350, 290);
 
             // === TABLE HEAD ===
             const tableTop = 320;
@@ -188,7 +188,7 @@ async function generatePDFBuffer(orderDetails) {
             doc.image(bottomImgBuffer, 0, footerY, { width: 600 });
             doc.restore();
 
-            // doc.fontSize(9).fillColor("#666").text("© Ujaas Aroma — Wellness for your senses", 0, 770, {
+            // doc.fontSize(9).fillColor("#666").text("© Krafts & Knots — Wellness for your senses", 0, 770, {
             //   align: "center",
             //   width: 600,
             // });
@@ -300,8 +300,8 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
                     <!-- Header -->
                     <div style="text-align: center; padding: 20px 20px;">
                         <img 
-                        src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" 
-                        alt="Ujaas Aroma Logo" 
+                        src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b" 
+                        alt="Krafts & Knots Logo" 
                         style="width: 250px; height: auto; margin-bottom: 10px;"
                         />
                         <p style="color: #888;">Thank you for your order!</p>
@@ -362,9 +362,9 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
 
                         ${customerNotes}
                         <p style="margin-top: 35px; color: #666; font-size: 14px; line-height: 1.6; text-align: justify">
-                        We hope your Ujaas Aroma experience inspires tranquility and elegance in every moment.  
-                        For personalized assistance or to share your thoughts, please connect with us by visiting <a href="https://ujaasaroma.com/contact" style="color: #d17b49; text-decoration: none;">www.ujaasaroma.com/contact</a>.
-                        or at support@ujaasaroma.com
+                        We hope your Krafts & Knots experience inspires tranquility and elegance in every moment.  
+                        For personalized assistance or to share your thoughts, please connect with us by visiting <a href="https://kraftsnknots.com/contact" style="color: #d17b49; text-decoration: none;">www.kraftsnknots.com/contact</a>.
+                        or at support@kraftsnknots.com
                         </p>
 
                         <p style="margin-top: 15px; color: #666; font-size: 14px; line-height: 1.6; text-align: justify">
@@ -375,7 +375,7 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
                     <!-- Footer -->
                     <div style="background-color: #f9f4ef; background-image: url('https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/extra_required_images%2Fbg-beige.png?alt=media&token=bce13ebc-283d-43b7-8bbd-171df2d73dbd'); background-repeat: repeat; background-size: contain; text-align: center; padding: 20px;">
                         <p style="color: #777; font-size: 13px; margin: 0;">
-                        © ${new Date().getFullYear()} Ujaas Aroma · All rights reserved
+                        © ${new Date().getFullYear()} Krafts & Knots · All rights reserved
                         </p>
                         <p style="color: #aaa; font-size: 12px; margin-top: 6px;">
                         Crafted with love 💛 for natural living
@@ -386,9 +386,9 @@ exports.sendOrderConfirmation = onRequest({ region: "us-central1" }, async (req,
                 `;
 
             const mailOptions = {
-                from: `"Ujaas Aroma" <${config.smtpOrder.auth.user}>`,
+                from: `"Krafts & Knots" <${config.smtpOrder.auth.user}>`,
                 to: orderDetails.customerInfo.email,
-                subject: `Your Ujaas Aroma Order ${orderDetails.orderNumber} Confirmation`,
+                subject: `Your Krafts & Knots Order ${orderDetails.orderNumber} Confirmation`,
                 html: htmlBody,
             };
 
@@ -427,7 +427,7 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                     <html>
                     <head>
                     <meta charset="UTF-8">
-                    <title>New Contact Message - Ujaas Aroma</title>
+                    <title>New Contact Message - Krafts & Knots</title>
                     <style>
                         body {
                         background: #f7f9fa;
@@ -520,7 +520,7 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                     <body>
                     <div class="container">
                         <div class="header">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" alt="Ujaas Aroma Logo">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b" alt="Krafts & Knots Logo">
                         <h1>Hi, Administrator</h1>
                         <p>We have an incoming contact message for you.<br>
                         See the details below.</p>
@@ -554,12 +554,12 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                         </div>
 
                         <div class="footer">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" alt="Ujaas Aroma Logo">
-                        <span class="company">Ujaas Aroma</span>
-                        <div class="tagline">Crafted with love 💛 for natural living</div>
+                        <img src="hhttps://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b" alt="Krafts & Knots Logo">
+                        <span class="company">Krafts & Knots</span>
+                        <div class="tagline">Crafted with love 💛 to make special ocassions more special.</div>
                         <div>
-                            <span class="contact">Email: <a href="mailto:support@ujaasaroma.com">support@ujaasaroma.com</a></span> |
-                            <span class="contact">Website: <a href="https://www.ujaasaroma.com" target="_blank">www.ujaasaroma.com</a></span>
+                            <span class="contact">Email: <a href="mailto:support@kraftsnknots.com">support@kraftsnknots.com</a></span> |
+                            <span class="contact">Website: <a href="https://www.kraftsnknots.com" target="_blank">www.kraftsnknots.com</a></span>
                         </div>
                         </div>
                     </div>
@@ -572,7 +572,7 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                     <html>
                     <head>
                     <meta charset="UTF-8">
-                    <title>New Contact Message - Ujaas Aroma</title>
+                    <title>New Contact Message - Krafts & Knots</title>
                     <style>
                         body {
                         background: #f7f9fa;
@@ -664,7 +664,7 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                     <body>
                     <div class="container">
                         <div class="header">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" alt="Ujaas Aroma Logo">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" alt="Krafts & Knots Logo">
                         <h1>Hello, ${formDetails.name}</h1>
                         <p>We have received your message. Our team will get back to you within 24-48 hours.<br>
                         See below the details of your Query.</p>
@@ -698,11 +698,11 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                         </div>
 
                         <div class="footer">
-                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" alt="Ujaas Aroma Logo">
+                        <img src="https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Flogo2.png?alt=media&token=192d3c40-2147-4053-b692-30db63606a9a" alt="Krafts & Knots Logo">
                         <div class="tagline">Crafted with love 💛 for natural living</div>
                         <div>
-                            <span class="contact">Email: <a href="mailto:support@ujaasaroma.com">support@ujaasaroma.com</a></span> |
-                            <span class="contact">Website: <a href="https://www.ujaasaroma.com" target="_blank">www.ujaasaroma.com</a></span>
+                            <span class="contact">Email: <a href="mailto:support@kraftsnknots.com">support@kraftsnknots.com</a></span> |
+                            <span class="contact">Website: <a href="https://www.kraftsnknots.com" target="_blank">www.kraftsnknots.com</a></span>
                         </div>
                         </div>
                     </div>
@@ -710,14 +710,14 @@ exports.sendContactFormConfirmation = onRequest({ region: "us-central1" }, async
                     </html>`;
 
             await transporter.sendMail({
-                from: `"Ujaas Aroma" <${config.smtpContactForm.auth.user}>`,
-                to: "contact_form@ujaasaroma.com",
+                from: `"Krafts & Knots" <${config.smtpContactForm.auth.user}>`,
+                to: "support@kraftsnknots.com",
                 subject: `📩 New Contact Message from ${formDetails.name}`,
                 html: htmlAdminBody,
             });
 
             await transporter.sendMail({
-                from: `"Ujaas Aroma" <${config.smtpContactForm.auth.user}>`,
+                from: `"Krafts & Knots" <${config.smtpContactForm.auth.user}>`,
                 to: formDetails.email,
                 subject: `We received your message, ${formDetails.name}`,
                 html: htmlUserBody,

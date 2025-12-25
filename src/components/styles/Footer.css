@@ -1,3 +1,29 @@
-.footer-subscription::placeholder{
-  color: #a7a7a7!important;
+.footer-subscription::placeholder {
+  color: #a7a7a7 !important;
+}
+
+.footer-bottom-row {
+  width: 70% !important;
+  margin-left: 160px !important;
+}
+
+.footer-subscripton {
+  border-bottom: 5px groove #ea8c8e;
+  width: 60%;
+}
+
+@media screen and (max-width: 600px) {
+  .footer-bottom-row {
+    width: 100% !important;
+    margin-left: 0 !important;
+  }
+
+  .footer-subscripton {
+    width: 100%;
+  }
+
+  .mobile-md-3{
+    margin-left: 50px!important;
+  }
+
 }
