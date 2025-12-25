@@ -49,9 +49,8 @@
 }
 
 .main-image img {
-  width: 450px;
-  height: 450px;
-  object-fit: center;
+  height: 100%;
+  object-fit: cover;
   border-radius: 10px;
 }
 
