@@ -110,9 +110,9 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
 
   const handleCart = () => {
     if (!product) return;
-    inCart
-      ? `${dispatch(removeFromCart(product.id))} ${shopCartAdded(false)} ${shopCartRemoved(true)}`
-      : `${dispatch(addToCart({ ...product, quantity }))} ${shopCartAdded(true)} ${shopCartRemoved(false)}`
+    dispatch(addToCart({ ...product, quantity }));
+    shopCartAdded(true);
+    // shopCartRemoved(false)
   };
 
   const handleWishlist = () => {
@@ -183,7 +183,8 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
         <div className="details">
           <h1 className="title">{product.title}</h1>
           <h3 className="subtitle">{product.subtitle}</h3>
-          <p className="price">₹{product.price || product.options?.[0]?.price}</p>
+          {/* {product.discountPrice ? } */}
+          <p className="price"><small className="line-through danger">₹{product.price || product.options?.[0]?.price}</small> ₹{product.discountPrice || product.options?.[0]?.price}</p>
 
           <div className="description">
             <p>
@@ -207,15 +208,11 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
                 variant="dark"
                 onClick={handleCart}
               >
-                {inCart ? <>
-                  Added <i className="bi bi-cart-dash"></i>
-                </> : <>
-                  Add to Cart <i className="bi bi-cart-plus"></i>
-                </>}
+                {inCart ? <i className="bi bi-cart-dash"></i> : <i className="bi bi-cart-plus"></i>}
               </Button>
             </div>
 
-            <span classN ame="wishlist" onClick={handleWishlist}>
+            <span className="wishlist" onClick={handleWishlist}>
               {inWishlist ? <i className="bi bi-hearts filled-heart"></i> : <i className="bi bi-suit-heart empty-heart"></i>}
             </span>
           </div>

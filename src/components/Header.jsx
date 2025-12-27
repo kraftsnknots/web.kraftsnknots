@@ -57,7 +57,7 @@ export default function Header({ bg }) {
 
   // 🧮 Cart total
   const total = cart.reduce(
-    (sum, i) => sum + (i.price || 0) * (i.quantity || 1),
+    (sum, i) => sum + (i.discountPrice || i.price) * (i.quantity || 1),
     0
   );
 
