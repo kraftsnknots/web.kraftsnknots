@@ -207,7 +207,8 @@
 .display-pic {
     width: 25px;
     height: 25px;
-    border-radius: 20%;
+    background-color: #000;
+    border-radius: 50%;
     object-fit: contain;
     cursor: pointer;
 }

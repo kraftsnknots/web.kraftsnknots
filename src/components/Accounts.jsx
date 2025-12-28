@@ -7,6 +7,7 @@ import { Button, Modal, Form, Image } from "react-bootstrap";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "../utils/cropImage"; // 👈 helper (next step)
 import Swal from "sweetalert2";
+import dummy from "../assets/images/dummy_profile_picture.png"
 
 import { logoutUser } from "../features/userSlice";
 import {
@@ -29,7 +30,7 @@ export default function Accounts() {
   const [link, setLink] = useState("my-orders");
 
   const [showEditModal, setShowEditModal] = useState(false);
-  const [editForm, setEditForm] = useState({ name: "", phone: "" });
+  const [editForm, setEditForm] = useState({ name: "", phone: "", removePhoto: false });
   const [saving, setSaving] = useState(false);
 
   // Cropper state
@@ -97,8 +98,10 @@ export default function Accounts() {
           name: editForm.name.trim(),
           phone: editForm.phone.trim(),
           croppedBlob,
+          removePhoto: editForm.removePhoto, // 👈
         })
       );
+
       Swal.fire("Updated!", "Profile updated successfully.", "success");
       setShowEditModal(false);
     } catch (err) {
@@ -123,6 +126,20 @@ export default function Accounts() {
     );
   }
 
+  const handleDeletePhoto = () => {
+    setCroppedBlob(null);
+    setImageSrc(null);
+
+    // Mark intent to delete existing photo
+    setEditForm((prev) => ({
+      ...prev,
+      removePhoto: true,
+    }));
+
+    Swal.fire("Removed", "Profile photo will be removed after saving.", "info");
+  };
+
+
   return (
     <motion.div
       className="profile-layout"
@@ -136,8 +153,7 @@ export default function Accounts() {
           <div className="profile-image-section">
             <img
               src={
-                profile.photoURL ||
-                "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
+                profile.photoURL || dummy
               }
               alt="Profile"
               className="profile-avatar"
@@ -204,18 +220,29 @@ export default function Accounts() {
         <Modal.Body>
           <Form>
             <div className="d-flex flex-column align-items-center mb-3">
-              <Image
-                src={
-                  croppedBlob
-                    ? URL.createObjectURL(croppedBlob)
-                    : profile.photoURL ||
-                      "https://cdn-icons-png.flaticon.com/512/1077/1077012.png"
-                }
-                width={200}
-                height={200}
-                className="mb-2"
+              <div className="position-relative d-flex flex-column justify-content-start align-item-center gap-0 mb-3">
+                <Image
+                  src={
+                    croppedBlob
+                      ? URL.createObjectURL(croppedBlob)
+                      : profile.photoURL || dummy
+                  }
+                  // width={200}
+                  height={200}
+                  className="edit-image"
+                />
+                {(profile.photoURL || croppedBlob) && (
+                  <Button variant="danger" onClick={handleDeletePhoto} className="edit-delete-btn">Delete</Button>
+                )}
+              </div>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handlePhotoSelect}
               />
-              <Form.Control type="file" accept="image/*" onChange={handlePhotoSelect} />
+
+
+
             </div>
             <Form.Group className="mb-3">
               <Form.Label>Name</Form.Label>

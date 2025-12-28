@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { DropdownButton, Image, Offcanvas, Modal, Button } from "react-bootstrap";
 import { IoHeartOutline, IoBagOutline, IoMenuOutline } from "react-icons/io5";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, onSnapshot } from "firebase/firestore";
 import { getApp } from "firebase/app";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../features/userSlice";
+import dummy from "../assets/images/dummy_profile_picture.png"
 import {
   removeFromCart,
   removeFromWishlist,
@@ -13,8 +14,8 @@ import {
 import "./styles/Header.css";
 
 const logoUrl =
-  // "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo.png?alt=media&token=6564bb71-757f-46d5-b0b5-a8f22e13280b";
-  "https://firebasestorage.googleapis.com/v0/b/ujaas-aroma.firebasestorage.app/o/logos%2Fknklogo2.png?alt=media&token=87352b73-8e7f-4f37-96ae-bcc24be6177c";
+  "https://firebasestorage.googleapis.com/v0/b/kraftsnknots-921a0.firebasestorage.app/o/logos%2Fknklogo2.png?alt=media&token=e3ba6239-845d-4d11-9976-120790ca53e3";
+// "https://firebasestorage.googleapis.com/v0/b/kraftsnknots-921a0.firebasestorage.app/o/logos%2Fknklogo4.png?alt=media&token=59b74f21-e205-4bf3-8df4-2f21ce57a5b7";
 
 export default function Header({ bg }) {
 
@@ -37,18 +38,26 @@ export default function Header({ bg }) {
 
   // 🧾 Fetch user profile
   useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        if (!user?.uid) return;
-        const ref = doc(db, "users", user.uid);
-        const snap = await getDoc(ref);
-        if (snap.exists()) setProfile(snap.data());
-      } catch (e) {
-        console.error("Profile fetch error:", e);
+    if (!user?.uid) return;
+
+    const ref = doc(db, "users", user.uid);
+
+    const unsubscribe = onSnapshot(
+      ref,
+      (snap) => {
+        if (snap.exists()) {
+          setProfile(snap.data());
+        }
+      },
+      (error) => {
+        console.error("Profile realtime error:", error);
       }
-    };
-    fetchUser();
-  }, [user, db]);
+    );
+
+    // 🔥 VERY IMPORTANT: cleanup listener
+    return () => unsubscribe();
+  }, [user?.uid]);
+
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -97,7 +106,7 @@ export default function Header({ bg }) {
         {/* Center Logo */}
         <div className="main-logo-class d-flex align-items-center">
           <Link to="/">
-            <Image src={logoUrl} alt="Ujaas Aroma" className="main-logo" />
+            <Image src={logoUrl} alt="Krafts & Knots" className="main-logo" />
           </Link>
         </div>
 
@@ -120,7 +129,7 @@ export default function Header({ bg }) {
           </Link>
           {/* 👤 Profile */}
           <span> {user?.uid && (<div className="account-dropdown">
-            <Image src={profile.photoURL} className="display-pic" onClick={() => setAccDropDown(!accDropDown)} />
+            <Image src={profile.photoURL || dummy} className="display-pic" onClick={() => setAccDropDown(!accDropDown)} />
             {accDropDown &&
               (<div className="accdropdown">
                 <p> <strong>Hey! {profile.name}</strong> </p>

@@ -3,12 +3,19 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   getFirestore,
   doc,
-  getDoc,
   onSnapshot,
   updateDoc,
+  deleteField
 } from "firebase/firestore";
-import { getApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getApp } from "firebase/app"; import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  deleteObject
+} from "firebase/storage";
+
+
 
 let unsubscribeProfile = null;
 
@@ -43,7 +50,8 @@ export const listenToUserProfile = createAsyncThunk(
 
 export const updateUserProfile = createAsyncThunk(
   "profile/updateUserProfile",
-  async ({ uid, name, phone, croppedBlob }, { rejectWithValue }) => {
+  async ({ uid, name, phone, croppedBlob, removePhoto }, { rejectWithValue }) => {
+
     try {
       console.log("🧩 updateUserProfile called with:", { uid, name, phone, croppedBlob });
 
@@ -55,14 +63,34 @@ export const updateUserProfile = createAsyncThunk(
       if (name) updateData.name = name;
       if (phone) updateData.phone = phone;
 
+      // ==========================
+      // 🗑 DELETE PROFILE PHOTO
+      // ==========================
+      if (removePhoto === true) {
+        const fileRef = ref(storage, `userPictures/${uid}/profile.jpg`);
+
+        try {
+          await deleteObject(fileRef);
+          console.log("🗑 Profile photo deleted from storage");
+        } catch (err) {
+          console.warn("⚠️ No existing photo to delete");
+        }
+
+        // Remove photoURL from Firestore
+        updateData.photoURL = "";
+      }
+
+      // ==========================
+      // 📸 UPLOAD NEW PROFILE PHOTO
+      // ==========================
       if (croppedBlob) {
-        // in updateUserProfile thunk
         const fileRef = ref(storage, `userPictures/${uid}/profile.jpg`);
         await uploadBytes(fileRef, croppedBlob);
         const photoURL = await getDownloadURL(fileRef);
 
         updateData.photoURL = photoURL;
       }
+
 
       if (Object.keys(updateData).length === 0) {
         console.warn("⚠️ No fields to update!");

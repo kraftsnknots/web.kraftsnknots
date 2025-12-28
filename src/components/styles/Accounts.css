@@ -71,7 +71,7 @@
   color: red;
 }
 
-.profile-avatar { 
+.profile-avatar {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -383,6 +383,7 @@
   width: 100%;
   column-gap: 10px;
 }
+
 .address-sorted-buttons>button {
   border-radius: 120px;
   font-size: 13px;
@@ -394,9 +395,10 @@
   text-transform: none;
   letter-spacing: normal;
 }
-.address-btns{
-  font-size: 12px!important;
-  text-transform: capitalize!important;
+
+.address-btns {
+  font-size: 12px !important;
+  text-transform: capitalize !important;
 }
 
 .sorted-buttons>button>text {
@@ -528,4 +530,24 @@
   .orders-card {
     width: 90%;
   }
+}
+
+.edit-delete-btn {
+  color: #000 !important;
+  font-weight: 600 !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important;
+  border-top: 0!important;
+}
+.edit-delete-btn:hover{
+  color: #fff!important;
+}
+
+.edit-image {
+  border: 1px groove #6c757d;
+  border-bottom: 0;
+  border-top-left-radius: 10px !important;
+  border-top-right-radius: 10px !important;
 }
