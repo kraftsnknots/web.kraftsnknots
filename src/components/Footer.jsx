@@ -29,7 +29,7 @@ export default function Footer() {
       {/* Footer Content */}
       <Container fluid className="m-0 pt-5 d-flex flex-column align-items-center">
         <div className="main-logo-class d-flex justify-content-center align-items-center">
-          <Image src={logoUrl} alt="Ujaas Aroma" className="main-logo-bottom" />
+          <Image src={logoUrl} alt="Krafts & Knots" className="main-logo-bottom" />
         </div>
         {/* Newsletter Section */}
         <Row style={{ paddingBottom: 5, borderBottom: '1px solid #333', margin: '25px 0', width: '100%' }}>
@@ -42,6 +42,7 @@ export default function Footer() {
                   type="email"
                   placeholder="Enter your e-mail address here"
                   className="footer-subscription"
+                  required
                   style={{
                     maxWidth: "100%",
                     backgroundColor: "transparent",
@@ -56,12 +57,12 @@ export default function Footer() {
                   type="submit"
                   style={{
                     backgroundColor: "transparent",
-                    color: "#fff",
                     fontSize: "13px",
                     fontWeight: "600",
                     letterSpacing: "1.5px",
                     padding: "10px 0",
                     width: 200,
+                    textAlign:'end'
                   }}
                 >
                   SEND

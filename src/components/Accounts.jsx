@@ -161,14 +161,14 @@ export default function Accounts() {
           </div>
           <div className="profile-details-section">
             <span className="profile-email">
-              <i className="bi bi-person"></i>: {profile.name}
+              <i className="bi bi-person"></i><span>:</span> {profile.name}
             </span>
             <span className="profile-email">
-              <i className="bi bi-envelope"></i>: {profile.email}
+              <i className="bi bi-envelope"></i><span>:</span> {profile.email}
             </span>
             {profile.phone && (
               <span className="profile-phone">
-                <i className="bi bi-telephone"></i>: {profile.phone}
+                <i className="bi bi-telephone"></i><span>:</span> {profile.phone}
               </span>
             )}
           </div>
@@ -181,19 +181,19 @@ export default function Accounts() {
         <div className="profile-sidebar">
           <ul className="profile-menu">
             <li className={`menu-item ${link === "my-orders" && "active"}`} onClick={() => setLink("my-orders")}>
-              <i className="bi bi-file-earmark-text"></i> My Orders
+              <i className="bi bi-file-earmark-text"></i> <span><text>My</text> Orders</span>
             </li>
             <li className={`menu-item ${link === "ccare" && "active"}`} onClick={() => setLink("ccare")}>
-              <i className="bi bi-headset"></i> Customer Care
+              <i className="bi bi-headset"></i> <span>Contact <text>Us</text></span>
             </li>
             <li className={`menu-item ${link === "saddresses" && "active"}`} onClick={() => setLink("saddresses")}>
-              <i className="bi bi-pin-map"></i> Addresses
+              <i className="bi bi-pin-map"></i> <span>Addresses</span>
             </li>
             <li className={`menu-item ${link === "wishlist" && "active"}`} onClick={() => setLink("wishlist")}>
-              <i className="bi bi-heart"></i> Wishlist
+              <i className="bi bi-heart"></i> <span>Wishlist</span>
             </li>
             <li className="menu-item logout" onClick={handleLogout}>
-              <i className="bi bi-box-arrow-right"></i> Logout
+              <i className="bi bi-box-arrow-right"></i> <span>Logout</span>
             </li>
           </ul>
         </div>

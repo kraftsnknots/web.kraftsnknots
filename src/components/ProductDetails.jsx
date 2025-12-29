@@ -189,7 +189,7 @@ export default function ProductDetails({ productId, shopCartAdded, shopCartRemov
             <p className="price"><small>₹{product.price || product.options?.[0]?.price}</small></p>
           }
           <div className="description">
-            <p>
+            <p> 
               {product.description ||
                 "This beautifully handcrafted candle adds warmth and charm to any space. Perfect for gifts or home decor."}
             </p>

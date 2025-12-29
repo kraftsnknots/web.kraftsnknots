@@ -28,7 +28,7 @@ export default function MyOrders() {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.user);
   const { list: orders, status } = useSelector((state) => state.orders);
-  
+
 
   const [filterStatus, setFilterStatus] = useState("all");
   const [selectedOrder, setSelectedOrder] = useState(null);
@@ -122,7 +122,7 @@ export default function MyOrders() {
         <h3>My Orders</h3>
 
         {orders.length > 0 && (
-          <div className="sorted-buttons d-flex align-items-center justify-content-end">
+          <div className="sorted-buttons">
             {["all", "processing", "delivered", "cancelled"].map((statusKey) => (
               <Button
                 key={statusKey}
@@ -138,7 +138,7 @@ export default function MyOrders() {
                   ⬤
                 </span>{" "}
                 {statusKey === "all"
-                  ? "All Orders"
+                  ? <small>All <text>Orders</text></small>
                   : statusKey.charAt(0).toUpperCase() + statusKey.slice(1)}
               </Button>
             ))}
@@ -197,10 +197,10 @@ export default function MyOrders() {
                       <td>
                         <span
                           className={`status-chip ${order.payment?.status === "success"
-                              ? "delivered"
-                              : order.payment?.status === "failed"
-                                ? "cancelled"
-                                : "pending"
+                            ? "delivered"
+                            : order.payment?.status === "failed"
+                              ? "cancelled"
+                              : "pending"
                             }`}
                         >
                           {order.payment?.status || "pending"}
@@ -214,10 +214,10 @@ export default function MyOrders() {
                       <td>
                         <span
                           className={`status-chip ${order.status === "delivered"
-                              ? "delivered"
-                              : order.status === "cancelled"
-                                ? "cancelled"
-                                : "pending"
+                            ? "delivered"
+                            : order.status === "cancelled"
+                              ? "cancelled"
+                              : "pending"
                             }`}
                         >
                           {order.status || "processing"}
@@ -290,10 +290,10 @@ export default function MyOrders() {
                 </span>
                 <span
                   className={`status-chip ${selectedOrder.status === "delivered"
-                      ? "delivered"
-                      : selectedOrder.status === "cancelled"
-                        ? "cancelled"
-                        : "pending"
+                    ? "delivered"
+                    : selectedOrder.status === "cancelled"
+                      ? "cancelled"
+                      : "pending"
                     }`}
                 >
                   {selectedOrder.status || "processing"}

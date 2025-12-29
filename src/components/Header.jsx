@@ -17,7 +17,7 @@ const logoUrl =
   "https://firebasestorage.googleapis.com/v0/b/kraftsnknots-921a0.firebasestorage.app/o/logos%2Fknklogo2.png?alt=media&token=e3ba6239-845d-4d11-9976-120790ca53e3";
 // "https://firebasestorage.googleapis.com/v0/b/kraftsnknots-921a0.firebasestorage.app/o/logos%2Fknklogo4.png?alt=media&token=59b74f21-e205-4bf3-8df4-2f21ce57a5b7";
 
-export default function Header({ bg }) {
+export default function Header() {
 
   const [showCart, setShowCart] = useState(false);
   const [showWishlist, setShowWishlist] = useState(false);
@@ -71,7 +71,7 @@ export default function Header({ bg }) {
   );
 
   return (
-    <header className="ujaas-header">
+    <header className="kraftsnknots-header">
       {/* 🔹 Top Black Bar */}
       <div className="top-bar">
         <div className="top-bar-content">
@@ -94,14 +94,7 @@ export default function Header({ bg }) {
       {/* ================= MAIN NAVBAR ================= */}
       <div className="main-navbar m-0 d-flex align-items-center justify-content-between">
 
-        {/* ☰ Hamburger (Mobile Only) */}
-        <Button
-          variant="link"
-          className="d-md-none p-0 text-dark"
-          onClick={() => setShowMenu(true)}
-        >
-          <IoMenuOutline size={30} />
-        </Button>
+        
 
         {/* Center Logo */}
         <div className="main-logo-class d-flex align-items-center">
@@ -110,8 +103,17 @@ export default function Header({ bg }) {
           </Link>
         </div>
 
+        {/* ☰ Hamburger (Mobile Only) */}
+        <Button
+          variant="link"
+          className="hamburger-menu p-0 text-dark"
+          onClick={() => setShowMenu(true)}
+        >
+          <IoMenuOutline size={30} />
+        </Button>
+
         {/* Left Nav Links */}
-        <div className="align-items-center justify-content-start column-gap-5 nav-left">
+        <div className="align-items-center justify-content-start nav-left">
           <Link to="/" className="nav-link-custom"> HOME </Link>
           <Link to="/shop" className="nav-link-custom"> SHOP </Link>
           <Link to="/about" className="nav-link-custom"> ABOUT US </Link>
@@ -128,16 +130,19 @@ export default function Header({ bg }) {
             <small>({cart.length})</small>
           </Link>
           {/* 👤 Profile */}
-          <span> {user?.uid && (<div className="account-dropdown">
-            <Image src={profile.photoURL || dummy} className="display-pic" onClick={() => setAccDropDown(!accDropDown)} />
-            {accDropDown &&
-              (<div className="accdropdown">
-                <p> <strong>Hey! {profile.name}</strong> </p>
-                <p onClick={() => navigate("/account")}> <small>My Account</small> </p>
-                <p onClick={handleLogout}> <small>Sign Out</small> </p>
-              </div>)}
-          </div>)}
-          </span>
+          <Link style={{ cursor: "pointer", color: '#000', textDecorationLine: 'none' }}>
+            {user?.uid &&
+              <div className="account-dropdown">
+                <Image src={profile.photoURL || dummy} className="display-pic" onClick={() => setAccDropDown(!accDropDown)} />
+                {accDropDown &&
+                  <div className="accdropdown">
+                    <p> <strong>Hey! {profile.name}</strong> </p>
+                    <p onClick={() => navigate("/account")}> <small>My Account</small> </p>
+                    <p onClick={handleLogout}> <small>Sign Out</small> </p>
+                  </div>
+                }
+              </div>}
+          </Link>
         </div>
       </div>
 

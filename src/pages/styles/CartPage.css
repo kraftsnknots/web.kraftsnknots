@@ -31,6 +31,13 @@
     align-items: center;
 }
 
+.qty-total {
+    border: 2px solid red;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
+}
+
 .cart-header-row {
     border-top: 1px solid #e1e1e1;
     border-bottom: 1px solid #e1e1e1;
@@ -339,4 +346,31 @@
     .cart-total-section {
         max-width: 100%;
     }
+}
+
+
+@media (max-width: 600px) {
+    .cart-title {
+        font-size: 25px;
+    }
+
+    .cart-item-row {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .cart-col-product {
+        width: 100%;
+    }
+
+    .cart-coupon-input{
+        min-width: 60%;
+    }
+
+    .cart-coupon-form>button {
+        width: 40%;
+    }
+
 }

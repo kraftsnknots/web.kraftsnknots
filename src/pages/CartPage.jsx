@@ -172,7 +172,6 @@ export default function CartPage() {
                                                 </div>
                                             </div>
                                         </div>
-
                                         {/* QUANTITY COLUMN */}
                                         <div className="cart-col-qty">
                                             <div className="qty-control">
@@ -202,7 +201,6 @@ export default function CartPage() {
                                         <div className="cart-col-subtotal">
                                             <span>₹ {lineTotal.toFixed(2)}</span>
                                         </div>
-
                                         <div className="cart-col-clear">
                                             <i class="bi bi-x-lg cart-delete" onClick={() => dispatch(removeFromCart(item.id))}></i>
                                         </div>
@@ -226,7 +224,7 @@ export default function CartPage() {
                                     onChange={(e) => setCouponCode(e.target.value)}
                                 />
                                 <button type="submit" className="btn-dark">
-                                    APPLY COUPON
+                                    APPLY
                                 </button>
                             </form>
                             {couponError && (
@@ -253,7 +251,7 @@ export default function CartPage() {
                                 <div className="cart-total-row">
                                     <div className="cart-total-label">SUBTOTAL</div>
                                     <div className="cart-total-value">
-                                         ₹ {subtotal.toFixed(2)}
+                                        ₹ {subtotal.toFixed(2)}
                                     </div>
                                 </div>
 
@@ -268,7 +266,7 @@ export default function CartPage() {
                                 <div className="cart-total-row">
                                     <div className="cart-total-label">TOTAL</div>
                                     <div className="cart-total-value">
-                                         ₹ {total.toFixed(2)}
+                                        ₹ {total.toFixed(2)}
                                     </div>
                                 </div>
                             </div>
