@@ -73,7 +73,7 @@ export default function Header() {
   return (
     <header className="kraftsnknots-header">
       {/* 🔹 Top Black Bar */}
-      <div className="top-bar">
+      <div className="top-bar"> 
         <div className="top-bar-content">
           <span className="email">support@kraftsnknots.com</span>
           <span className="promo">free shipping on orders over ₹2500</span>

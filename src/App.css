@@ -20,11 +20,13 @@
 }
 
 :root {
-  background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%) !important;
+  /* background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%) !important; */
+  background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
 }
 
 body {
-  background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%) !important;
+  /* background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%) !important; */
+  background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
 }
 
 .logo {
@@ -48,10 +50,12 @@ body {
 
 .root-bg {
   background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%);
+  background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
 }
 
 .root-bg-black {
   background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(0, 0, 0, 1) 5%, rgba(0, 0, 0, 1) 95%, rgba(249, 211, 226, 1) 100%);
+  background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
 }
 
 @keyframes logo-spin {

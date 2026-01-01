@@ -1,6 +1,6 @@
 /* 🖤 Top Black Bar */
 .top-bar {
-    background: #000;
+    background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
     color: #ea8c8e;
     font-size: 11px;
     padding: 6px 0;
@@ -42,7 +42,8 @@
     height: 120px;
     /* padding: 0 15%; */
     /* border-bottom: 10px groove #ea8c8e; */
-    background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%);
+    /* background: linear-gradient(90deg, rgba(249, 211, 226, 1) 0%, rgba(255, 255, 255, 1) 5%, rgba(255, 255, 255, 1) 95%, rgba(249, 211, 226, 1) 100%); */
+    background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
     /* box-shadow: rgba(0, 0, 0, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; */
 }
 

@@ -1,3 +1,12 @@
+.color-pink{
+  background: linear-gradient(90deg, #f9d4e3 0%, #fff3f7 30%, #fff3f7 80%, #f9d4e3 100%);
+  font-family: "Work Sans", sans-serif;
+  padding-bottom: "10px";
+}
+.text-decoration{
+  text-decoration: none!important;
+  color: #ea8c8e;
+}
 .footer-subscription::placeholder {
   color: #a7a7a7 !important;
 }

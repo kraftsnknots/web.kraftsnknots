@@ -17,14 +17,7 @@ const logoUrl =
 export default function Footer() {
   const navigate = useNavigate();
   return (
-    <footer
-      className="color-pink"
-      style={{
-        backgroundColor: "#000",
-        fontFamily: '"Work Sans", sans-serif',
-        paddingBottom: "10px",
-      }}
-    >
+    <footer className="color-pink">
 
       {/* Footer Content */}
       <Container fluid className="m-0 pt-5 d-flex flex-column align-items-center">
@@ -74,7 +67,7 @@ export default function Footer() {
 
         <Row className="footer-bottom-row">
           {/* Contact Column */}
-          <Col lg={3} md={6} className="mb-4 color-pink">
+          <Col lg={3} md={6} className="mb-4 ">
             <h6
               className="mb-4"
               style={{
@@ -94,7 +87,7 @@ export default function Footer() {
           </Col>
 
           {/* Services Column */}
-          <Col lg={3} md={6} className="mb-4 color-pink">
+          <Col lg={3} md={6} className="mb-4">
             <h6
               className="mb-4"
               style={{
@@ -112,7 +105,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -123,7 +116,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -134,7 +127,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -145,7 +138,7 @@ export default function Footer() {
               <li className="mb-0">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -157,7 +150,7 @@ export default function Footer() {
           </Col>
 
           {/* Orders Column */}
-          <Col lg={3} md={6} className="mb-4 color-pink">
+          <Col lg={3} md={6} className="mb-4">
             <h6
               className="mb-4"
               style={{
@@ -175,7 +168,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -186,7 +179,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -197,7 +190,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -208,7 +201,7 @@ export default function Footer() {
               <li className="mb-0">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -220,7 +213,7 @@ export default function Footer() {
           </Col>
 
           {/* Most Popular Column */}
-          <Col lg={3} md={6} className="mb-4 color-pink">
+          <Col lg={3} md={6} className="mb-4">
             <h6
               className="mb-4"
               style={{
@@ -238,7 +231,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -249,7 +242,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -260,7 +253,7 @@ export default function Footer() {
               <li className="mb-2">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}
@@ -271,7 +264,7 @@ export default function Footer() {
               <li className="mb-0">
                 <a
                   href="#"
-                  className="color-pink text-decoration-none"
+                  className="text-decoration"
                   style={{ transition: "opacity 0.3s" }}
                   onMouseEnter={(e) => (e.target.style.opacity = "0.7")}
                   onMouseLeave={(e) => (e.target.style.opacity = "1")}

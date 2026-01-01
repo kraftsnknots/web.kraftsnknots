@@ -9,7 +9,7 @@ const flowerImg =
 
 export default function Subscription() {
   return (
-    <section className="subscription-banner text-light">
+    <section className="subscription-banner text-light"> 
       <Row className="align-items-center justify-content-center m-0 w-100">
         {/* 🕯 Left Candle Image */}
         <Col md={5} className="d-flex justify-content-center align-items-center">
